@@ -1,6 +1,6 @@
 ﻿/* ----------------------------------------------------------------------------
 Transonic MIDI Library
-Copyright (C) 1997-2017  George E Greaney
+Copyright (C) 1995-2017  George E Greaney
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -22,66 +22,82 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
+using Transonic.MIDI.System;
+
 namespace Transonic.MIDI
 {
     public class Sequence
     {
         public const int DEFAULTDIVISION = 120;
+        public const int DEFAULTTEMPO = 500000;
 
+        public MidiSystem midiSystem;
         public List<Track> tracks;
-        public int lastTrack;
         public int division;
         public int duration;
-        public Track tempoMap;
+        public List<Event> tempoMap;
 
         public Sequence(int _division)
         {
+            midiSystem = null;
             division = _division;
             duration = 0;
-            tracks = new List<Track>(256);
-            for (int i = 0; i < 256; i++)            
-            {
-                Track track = new Track(i);
-                tracks.Add(track);
-            }
-            
-            lastTrack = 0;
+
+            tracks = new List<Track>();
+            tempoMap = new List<Event>();
         }
 
-        public void setTrack(Track track, int trackNumber)
+        public void addTrack(Track track)
         {
-            tracks[trackNumber] = track;
-            if (trackNumber > lastTrack) lastTrack = trackNumber;
-            if (trackNumber == 0) tempoMap = track;
+            tracks.Add(track);
+        }
+
+        public void deleteTrack(Track track)
+        {
+            tracks.Remove(track);
         }
 
         public void finalizeLoad()
         {
-            for (int i = 0; i <= lastTrack; i++) 
+            calcTempoMap();
+            for (int i = 1; i < tracks.Count; i++) 
             {
                 tracks[i].finalizeLoad();
                 if (duration < tracks[i].duration) duration = tracks[i].duration;
             }
-            Console.WriteLine("seq length = {0}", duration);
-            calcTempoMap();
         }
 
+        public void setMidiSystem(MidiSystem system)
+        {
+            midiSystem = system;
+            for (int i = 1; i < tracks.Count; i++)
+            {
+                //tracks[i].setInputDevice(system.inputDevices[0]);
+                //tracks[i].setInputChannel(i);
+                tracks[i].setOutputDevice(system.outputDevices[0]);
+                tracks[i].setOutputChannel(i-1);
+            }
+        }
+
+        //build the tempo map from tempo message ONLY from track 0; tempo messages in other tracks will be IGNORED
         public void calcTempoMap()
         {
             int time = 0;               //time in MICROseconds
             int tempo = 0;              //microseconds per quarter note
             int prevtick = 0;           //tick of prev tempo event
 
-            for (int i = 0; i < tempoMap.events.Count; i++)
+            Track tempoTrack = tracks[0];
+            for (int i = 0; i < tempoTrack.events.Count; i++)
             {
-                Event evt = tempoMap.events[i];
+                Event evt = tempoTrack.events[i];
                 if (evt.msg is TempoMessage)
                 {
                     TempoMessage tempoMsg = (TempoMessage)evt.msg;
-                    int msgtick = (int)evt.time;                            //the tick this tempo message occurs at
-                    int delta = (msgtick - prevtick);                       //amount of ticks at _prev_ tempo
-                    time += (int)((((float)delta) / division) * tempo);     //calc time in microsec of this tempo event
-                    tempoMsg.timing = new Timing(msgtick, time, 0);         //timing maps time -> ticks
+                    int msgtick = (int)evt.time;                                //the tick this tempo message occurs at
+                    int delta = (msgtick - prevtick);                           //amount of ticks at _prev_ tempo
+                    time += (int)((((float)delta) / division) * tempo);         //calc time in microsec of this tempo event
+                    tempoMsg.timing = new Timing(msgtick, time, 0);
+                    tempoMap.Add(evt);
 
                     prevtick = msgtick;
                     tempo = tempoMsg.tempo;
@@ -97,8 +113,20 @@ namespace Transonic.MIDI
                 tracks[i].dump();
             }
         }
+
+        public void allNotesOff()
+        {
+            for (int trackNum = 1; trackNum < tracks.Count; trackNum++)
+            {
+                tracks[trackNum].allNotesOff();
+            }
+        }
     }
 
+//-----------------------------------------------------------------------------
+
+    //maps a tempo message or a time signature message to a elapsed time, so if move the cur pos
+    //in a sequence, we can calculate what time that is; needs to be recalculated any time tempo or time sig change
     public class Timing
     {
         public int tick;
@@ -112,4 +140,6 @@ namespace Transonic.MIDI
             beat = _beat;
         }
     }
+
+
 }

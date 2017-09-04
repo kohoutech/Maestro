@@ -28,13 +28,15 @@ using System.Windows.Forms;
 
 using Transonic.MIDI;
 using Transonic.MIDI.Engine;
+using Transonic.MIDI.System;
+using Transonic.Widget;
 using Maestro.UI;
-using Maestro.Widgets;
 
 namespace Maestro
 {
-    public partial class MaestroWindow : Form, IMidiView
+    public partial class MaestroWindow : Form, IMidiView, iKeyboardWindow
     {
+        MidiSystem midiSystem;
         Transport transport;
         Sequence currentSeq;
         public int displayTrackNum;
@@ -44,6 +46,7 @@ namespace Maestro
 
         public MaestroWindow()
         {
+            midiSystem = new MidiSystem();
             transport = new Transport(this);
             transport.init();
             currentSeq = new Sequence(Sequence.DEFAULTDIVISION);
@@ -60,6 +63,7 @@ namespace Maestro
             keyboard = new KeyboardBar(this, KeyboardBar.Range.EIGHTYEIGHT, KeyboardBar.KeySize.SMALL);
             keyboard.Location = new Point(0, controlPanel.Bottom);
             keyboard.Width = this.ClientSize.Width;
+            keyboard.selectedColor = Color.Yellow;
             this.Controls.Add(keyboard);
 
             displayTrackNum = 0;
@@ -75,10 +79,9 @@ namespace Maestro
 
         public void openSequence(String filename) 
         {
-            MidiFile mfile = new MidiFile(filename);
-
-            currentSeq = mfile.readMidiFile();
+            currentSeq = MidiFile.readMidiFile(filename);
             this.Text = "Maestro [" + filename + "]";
+            currentSeq.setMidiSystem(midiSystem);
             transport.setSequence(currentSeq);
             controlPanel.setSequence(currentSeq);
             playTransportMenuItem.Enabled = true;
@@ -96,8 +99,8 @@ namespace Maestro
         public void stopSequence()
         {
             transport.stopSequence();
-            controlPanel.setPlaying(false);
-            //keyboard.allKeysUp();
+            masterTimer.Stop();
+            controlPanel.setPlaying(false);            
         }
 
         public void halfSpeedSequence(bool on)
@@ -107,6 +110,7 @@ namespace Maestro
 
         public void setSequencePos(int tick)
         {
+            keyboard.allKeysUp();
             transport.setSequencePos(tick);
             int mstime = transport.getMilliSecTime();
             controlPanel.timerTick(tick, mstime);
@@ -122,16 +126,16 @@ namespace Maestro
 
         private void openFileMenuItem_Click(object sender, EventArgs e)
         {
-            String filename = "";
+            String filename;
             openFileDialog.InitialDirectory = Application.StartupPath;
-            openFileDialog.InitialDirectory = @"N:\midi";
             openFileDialog.DefaultExt = "*.mid";
             openFileDialog.Filter = "midi files|*.mid|All files|*.*";
             openFileDialog.ShowDialog();
             filename = openFileDialog.FileName;
-            if (filename.Length == 0) return;
-
-            openSequence(filename);
+            if (filename.Length > 0)
+            {
+                openSequence(filename);
+            }
         }
 
         private void exitFileMenuItem_Click(object sender, EventArgs e)
@@ -155,7 +159,7 @@ namespace Maestro
 
         private void aboutHelpMenuItem_Click(object sender, EventArgs e)
         {
-            String msg = "Maestro\nversion 1.0.0\n" + "\xA9 Transonic Software 1996-2017\n" + "http://transonic.kohoutech.com";
+            String msg = "Maestro\nversion 1.0.1\n" + "\xA9 Transonic Software 1996-2017\n" + "http://transonic.kohoutech.com";
             MessageBox.Show(msg, "About");
         }
 
@@ -163,7 +167,7 @@ namespace Maestro
 
         private void masterTimer_Tick(object sender, EventArgs e)
         {
-            int tick = transport.tickCount;
+            int tick = transport.tickNum;
             int mstime = transport.getMilliSecTime();
             controlPanel.timerTick(tick, mstime);
         }
@@ -194,8 +198,21 @@ namespace Maestro
 
         public void sequenceDone()
         {
+            masterTimer.Stop();
             controlPanel.setPlaying(false);
         }
+
+//- iKeyboardWindow methods ---------------------------------------------------
+
+        //for the moment pressing keys on the keyboard widget doesn't do anything, maybe later...
+        public void onKeyDown(int keyNumber)
+        {
+        }
+
+        public void onKeyUp(int keyNumber)
+        {
+        }
+
     }
 }
 

@@ -1,5 +1,5 @@
 ﻿/* ----------------------------------------------------------------------------
-Maestro : a music notation editor
+Transonic Widget Library
 Copyright (C) 1996-2017  George E Greaney
 
 This program is free software; you can redistribute it and/or
@@ -25,21 +25,23 @@ using System.Windows.Forms;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 
-using Maestro;
-
-namespace Maestro.UI
+namespace Transonic.Widget
 {
     public class KeyboardBar : UserControl
     {
         public enum Range {TWENTYFIVE = 0, THIRTYSEVEN, FORTYNINE, SIXTYONE, SEVENTYSIX, EIGHTYEIGHT, FULL }
         public enum KeySize { SMALL = 0, FULL };
-        
-        MaestroWindow maestroWindow;
+        public enum KeyMode { PLAYING = 0, SELECTING };
+
+        public Color selectedColor = Color.Red;
+
+        iKeyboardWindow window;
 
         Key[] keys;
         Key[] whitekeys;
         Key[] blackkeys;
         Rectangle keyframe;
+        Key mouseKey;
         
         int keytop;
         int keyleft;
@@ -62,10 +64,18 @@ namespace Maestro.UI
         int keycount;
         Range range;
         KeySize size;
+        KeyMode mode;
+        int dragstart;        
 
-        public KeyboardBar(MaestroWindow _maestroWindow, Range range, KeySize size)
+        //default keyboard bar, use for dropping into form from toolbox
+        public KeyboardBar() : this(null, Range.EIGHTYEIGHT, KeyboardBar.KeySize.SMALL)
         {
-            maestroWindow = _maestroWindow;
+        }
+
+        public KeyboardBar(iKeyboardWindow _window, Range range, KeySize size)
+        {
+            window = _window;
+            mode = KeyMode.SELECTING;
             InitDimensions(range, size);
             InitializeComponent();
             initKeyboard();            
@@ -108,9 +118,9 @@ namespace Maestro.UI
             range = _range;
             size = _size;
 
-            keytop = 20;                //keyboard margins in widget
-            keyleft = 15;
-            keyright = 15;
+            keytop = 10;                //keyboard margins in widget
+            keyleft = 10;
+            keyright = 10;
             keybottom = 10;
 
             whitekeycount = whiteKeyCounts[(int)range];         
@@ -276,25 +286,260 @@ namespace Maestro.UI
             Invalidate();
         }
 
-        //- painting ------------------------------------------------------------------
+        public void setKeyRange(int loRange, int hiRange)
+        {
+            allKeysUp();
+            for (int midiNum = loRange; midiNum <= hiRange; midiNum++)
+            {
+                int keyNum = midiNum - midibase;
+                if (!((keyNum < 0) || (keyNum >= keycount)))
+                {
+                    keys[keyNum].pressed = true;
+                }
+            }
+            Invalidate();
+        }
+
+        public void setKeyRange(List<int> range)
+        {
+            allKeysUp();
+            foreach (int midiNum in range)
+            {
+                int keyNum = midiNum - midibase;
+                if (!((keyNum < 0) || (keyNum >= keycount)))
+                {
+                    keys[keyNum].pressed = true;
+                }
+            }
+            Invalidate();
+        }
+
+        public List<int> getKeyRange()
+        {
+            List<int> range = new List<int>();
+            for (int i = 0; i < keycount; i++)
+            {
+                if (keys[i].pressed)
+                    range.Add(keys[i].midinum);
+            }
+            return range;
+        }
+
+//- mouse events --------------------------------------------------------------
+
+        public Key hitTest(Point p)
+        {
+            Key result = null;
+            if (keyframe.Contains(p))
+            {
+                //check black keys
+                if (p.Y < (keytop + blackkeyheight))
+                {
+                    for (int i = 0; i < blackkeycount; i++)
+                    {
+                        if (blackkeys[i].shape.Contains(p))
+                        {
+                            result = blackkeys[i];
+                            break;
+                        }
+                    }
+                }
+
+                //check white keys
+                if (result == null)
+                {
+                    for (int i = 0; i < whitekeycount; i++)
+                    {
+                        if (whitekeys[i].shape.Contains(p))
+                        {
+                            result = whitekeys[i];
+                            break;
+                        }
+                    }
+                }
+            }
+            return result;
+        }
+
+        protected override void OnMouseDown(MouseEventArgs e)
+        {
+            base.OnMouseDown(e);
+            mouseKey = hitTest(e.Location);
+            if (mouseKey != null)
+            {
+                if (mode == KeyMode.PLAYING)
+                {
+                    if (!mouseKey.sustain)
+                    {
+                        mouseKey.pressed = true;
+                        //auditWindow.auditorA.sendMidiMsg(0x90, mouseKey.midinum, 0x40);
+                        mouseKey.sustain = (e.Button == MouseButtons.Right);
+                        Invalidate();
+                    }
+                    else
+                    {
+                        mouseKey.sustain = false;
+                    }
+                }
+
+                //selecting
+                else
+                {
+                    allKeysUp();
+                    mouseKey.pressed = !mouseKey.pressed;
+                    dragstart = mouseKey.midinum;
+                    Invalidate();
+                }
+            }
+        }
+
+        //allow user to drag mouse over or off keyboard
+        protected override void OnMouseMove(MouseEventArgs e)
+        {
+            base.OnMouseMove(e);
+            if (mouseKey != null)
+            {
+                Key newkey = hitTest(e.Location);
+                if (newkey != mouseKey)
+                {
+                    if (mode == KeyMode.PLAYING)
+                    {
+                        if (!mouseKey.sustain)
+                        {
+                            mouseKey.pressed = false;
+                            //auditWindow.auditorA.sendMidiMsg(0x80, mouseKey.midinum, 0x0);
+                        }
+                        mouseKey = newkey;
+                        if (mouseKey != null)       //if dragged to another key
+                        {
+                            if (!mouseKey.sustain)
+                            {
+                                mouseKey.pressed = true;
+                                //auditWindow.auditorA.sendMidiMsg(0x90, mouseKey.midinum, 0x40);
+                                mouseKey.sustain = (e.Button == MouseButtons.Right);
+                            }
+                            else
+                            {
+                                mouseKey.sustain = false;
+                            }
+                        }
+                        Invalidate();
+                    }
+
+                    //selecting
+                    else
+                    {
+                        if (newkey != null)       //if dragged to another key
+                        {
+                            int nextkeynum;
+                            if (dragstart == mouseKey.midinum)           //initial drag
+                            {
+                                newkey.pressed = !newkey.pressed;       
+                                if (newkey.midinum > mouseKey.midinum)
+                                {
+                                    nextkeynum = (newkey.midinum - 1);  //dragging up
+                                }
+                                else
+                                {
+                                    nextkeynum = (newkey.midinum + 1);  //dragging back
+                                }
+                                if (nextkeynum != mouseKey.midinum)
+                                    keys[nextkeynum - midibase].pressed = !keys[nextkeynum - midibase].pressed;
+                                mouseKey = newkey;
+
+                            } 
+                            else
+                            if (dragstart < mouseKey.midinum)           //dragging to the right
+                            {
+                                if (newkey.midinum > mouseKey.midinum)
+                                {
+                                    newkey.pressed = !newkey.pressed;       //dragging up
+                                    nextkeynum = (newkey.midinum - 1);
+                                }
+                                else
+                                {
+                                    mouseKey.pressed = !mouseKey.pressed;   //dragging back
+                                    nextkeynum = (newkey.midinum + 1);
+                                }
+                                if (nextkeynum != mouseKey.midinum)
+                                    keys[nextkeynum - midibase].pressed = !keys[nextkeynum - midibase].pressed;
+                                mouseKey = newkey;
+                            }
+                            else
+                            {
+                                if (newkey.midinum < mouseKey.midinum)      //dragging to the left
+                                {
+                                    newkey.pressed = !newkey.pressed;       //dragging up
+                                    nextkeynum = (newkey.midinum + 1);
+                                }
+                                else
+                                {
+                                    mouseKey.pressed = !mouseKey.pressed;   //dragging back
+                                    nextkeynum = (newkey.midinum - 1);
+                                }
+                                if (nextkeynum != mouseKey.midinum)
+                                    keys[nextkeynum - midibase].pressed = !keys[nextkeynum - midibase].pressed;
+                                mouseKey = newkey;
+                            }
+                            Invalidate();
+                        }
+                    }
+                }
+            }
+        }
+
+        protected override void OnMouseUp(MouseEventArgs e)
+        {
+            base.OnMouseUp(e);
+            if (mouseKey != null)
+            {
+                if (mode == KeyMode.PLAYING)
+                {
+                    if (!mouseKey.sustain)
+                    {
+                        mouseKey.pressed = false;
+                        //auditWindow.auditorA.sendMidiMsg(0x80, mouseKey.midinum, 0x0);
+                        Invalidate();
+                    }
+                    mouseKey = null;
+                }
+
+                //selecting
+                else
+                {
+                    mouseKey = null;                    
+                }
+            }
+            else
+            {
+                foreach (Key key in keys)
+                {
+                    key.pressed = false;        //if user clicks outside keyboard, deselect all keys on mouseup
+                }
+                Invalidate();
+            }
+        }
+
+//- painting ------------------------------------------------------------------
 
         protected override void OnPaint(PaintEventArgs e)
         {
             base.OnPaint(e);
             Graphics g = e.Graphics;
             g.SmoothingMode = SmoothingMode.AntiAlias;
+            Brush selectedBrush = new SolidBrush(selectedColor);
 
             g.DrawRectangle(Pens.Black, keyframe); //keyboard outline
             for (int i = 0; i < whitekeycount; i++)
             {
                 g.DrawRectangle(Pens.Black, whitekeys[i].shape);
-                g.FillRectangle(whitekeys[i].pressed ? Brushes.Red : Brushes.White, whitekeys[i].interior);
+                g.FillRectangle(whitekeys[i].pressed ? selectedBrush : Brushes.White, whitekeys[i].interior);
                 
             }
             for (int i = 0; i < blackkeycount; i++)
             {
                 g.FillRectangle(Brushes.Black, blackkeys[i].shape);
-                g.FillRectangle(blackkeys[i].pressed ? Brushes.Red : Brushes.Black, blackkeys[i].interior);
+                g.FillRectangle(blackkeys[i].pressed ? selectedBrush : Brushes.Black, blackkeys[i].interior);
             }
         }
     }
@@ -330,4 +575,14 @@ namespace Maestro.UI
             interior = new Rectangle(shape.X + 1, shape.Y + 1, shape.Width - 2, shape.Height - 2);
         }
     }
+
+//-----------------------------------------------------------------------------
+
+    public interface iKeyboardWindow
+    {
+        void onKeyDown(int keyNumber);
+
+        void onKeyUp(int keyNumber);
+    }
+
 }

@@ -28,7 +28,7 @@ using System.Windows.Forms;
 
 using Transonic.MIDI;
 
-namespace Maestro.Widgets
+namespace Maestro.UI
 {
     public partial class ControlPanel : UserControl
     {
@@ -51,9 +51,12 @@ namespace Maestro.Widgets
 
             //populate track selector drop down with track names
             List<String> trackNames = new List<string>();
-            for (int i = 1; i <= seq.lastTrack; i++)
+            for (int i = 1; i < seq.tracks.Count; i++)
             {
-                trackNames.Add(seq.tracks[i].name);
+                String trackName = seq.tracks[i].name;
+                if (trackName == null)
+                    trackName = "Track " + i.ToString();
+                trackNames.Add(trackName);
             }
             cbxTracks.DataSource = trackNames;
             hsbSeqPos.Enabled = true;

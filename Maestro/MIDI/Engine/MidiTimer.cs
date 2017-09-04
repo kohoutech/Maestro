@@ -23,6 +23,9 @@ using System.Linq;
 using System.Text;
 using System.Runtime.InteropServices;
 
+using Transonic.MIDI;
+using Transonic.MIDI.System;
+
 namespace Transonic.MIDI.Engine
 {
     public class MidiTimer
@@ -54,6 +57,16 @@ namespace Transonic.MIDI.Engine
             timerProc = timerCallback;          //set callback func
         }
 
+        public void start(uint msec)
+        {
+            stop();         //stop prev timer
+
+            id = timeSetEvent(msec, 0, timerProc, UIntPtr.Zero, (uint)(TIME_CALLBACK_FUNCTION | TIME_PERIODIC));
+            if (id == 0)
+                throw new Exception("timeSetEvent error");
+            //Console.WriteLine("started timer " + id.ToString());
+        }
+
         public void stop()
         {
             if (id != 0)
@@ -62,16 +75,6 @@ namespace Transonic.MIDI.Engine
                 //Console.WriteLine("stopped timer " + id.ToString());
                 id = 0;
             }
-        }
-
-        public void Start(uint msec)
-        {
-            stop();         //stop prev timer
-
-            id = timeSetEvent(msec, 0, timerProc, UIntPtr.Zero, (uint)(TIME_CALLBACK_FUNCTION | TIME_PERIODIC));
-            if (id == 0)
-                throw new Exception("timeSetEvent error");
-            //Console.WriteLine("started timer " + id.ToString());
         }
 
 // timer event & callback func ------------------------------------------------

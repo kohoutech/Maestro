@@ -22,15 +22,29 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-//interface for midi engine to communicate back to user interface
-
-namespace Transonic.MIDI.Engine
+namespace Transonic.MIDI.System
 {
-    public interface IMidiView
+    public abstract class SystemUnit
     {
-        //public void sequenceBegin();
-        void handleMessage(int track, Transonic.MIDI.Message message);
-        void sequenceDone();
- 
+        public String name;
+        public InputDevice inputDev;                    //connect from input device
+        public List<OutputDevice> outputDevList;        //connections to output devices
+
+        public SystemUnit(String _name)
+        {
+            name = _name;
+            inputDev = null;
+            outputDevList = new List<OutputDevice>();
+        }
+
+        //for connection to input devices
+        public virtual void receiveMessage(byte[] msg)
+        {
+        }
+
+        //for connection to output devices
+        public virtual void sendMessage(byte[] msg)
+        {
+        }
     }
 }

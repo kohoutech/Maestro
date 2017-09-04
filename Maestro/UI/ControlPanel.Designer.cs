@@ -1,4 +1,4 @@
-﻿namespace Maestro.Widgets
+﻿namespace Maestro.UI
 {
     partial class ControlPanel
     {

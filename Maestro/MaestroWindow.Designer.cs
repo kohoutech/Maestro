@@ -169,7 +169,7 @@
 
         #endregion
 
-        private Widgets.ControlPanel controlPanel1;
+        private UI.ControlPanel controlPanel1;
         private System.Windows.Forms.MenuStrip maestroMenu;
         private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem openFileMenuItem;
