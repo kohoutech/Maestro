@@ -48,6 +48,8 @@ namespace Maestro.UI
         {
             curSequence = seq;
             hsbSeqPos.Maximum = seq.duration;
+            hsbSeqPos.LargeChange = seq.division;
+            hsbSeqPos.SmallChange = seq.division / 8;
 
             //populate track selector drop down with track names
             List<String> trackNames = new List<string>();

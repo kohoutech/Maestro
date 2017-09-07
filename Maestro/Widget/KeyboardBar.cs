@@ -35,7 +35,7 @@ namespace Transonic.Widget
 
         public Color selectedColor = Color.Red;
 
-        iKeyboardWindow window;
+        IKeyboardWindow window;
 
         Key[] keys;
         Key[] whitekeys;
@@ -72,7 +72,7 @@ namespace Transonic.Widget
         {
         }
 
-        public KeyboardBar(iKeyboardWindow _window, Range range, KeySize size)
+        public KeyboardBar(IKeyboardWindow _window, Range range, KeySize size)
         {
             window = _window;
             mode = KeyMode.SELECTING;
@@ -578,7 +578,7 @@ namespace Transonic.Widget
 
 //-----------------------------------------------------------------------------
 
-    public interface iKeyboardWindow
+    public interface IKeyboardWindow
     {
         void onKeyDown(int keyNumber);
 

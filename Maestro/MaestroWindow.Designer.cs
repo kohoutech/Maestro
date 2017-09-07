@@ -54,7 +54,7 @@
             this.helpToolStripMenuItem});
             this.maestroMenu.Location = new System.Drawing.Point(0, 0);
             this.maestroMenu.Name = "maestroMenu";
-            this.maestroMenu.Size = new System.Drawing.Size(654, 24);
+            this.maestroMenu.Size = new System.Drawing.Size(664, 24);
             this.maestroMenu.TabIndex = 4;
             this.maestroMenu.Text = "menuStrip";
             // 
@@ -74,7 +74,7 @@
             this.openFileMenuItem.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.openFileMenuItem.Name = "openFileMenuItem";
             this.openFileMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
-            this.openFileMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.openFileMenuItem.Size = new System.Drawing.Size(146, 22);
             this.openFileMenuItem.Text = "&Open";
             this.openFileMenuItem.Click += new System.EventHandler(this.openFileMenuItem_Click);
             // 
@@ -103,7 +103,7 @@
             // 
             this.playTransportMenuItem.Enabled = false;
             this.playTransportMenuItem.Name = "playTransportMenuItem";
-            this.playTransportMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.playTransportMenuItem.Size = new System.Drawing.Size(98, 22);
             this.playTransportMenuItem.Text = "&Play";
             this.playTransportMenuItem.Click += new System.EventHandler(this.playTransportMenuItem_Click);
             // 
@@ -111,7 +111,7 @@
             // 
             this.stopTransportMenuItem.Enabled = false;
             this.stopTransportMenuItem.Name = "stopTransportMenuItem";
-            this.stopTransportMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.stopTransportMenuItem.Size = new System.Drawing.Size(98, 22);
             this.stopTransportMenuItem.Text = "&Stop";
             this.stopTransportMenuItem.Click += new System.EventHandler(this.stopTransportMenuItem_Click);
             // 
@@ -132,9 +132,9 @@
             // 
             // maestroStatus
             // 
-            this.maestroStatus.Location = new System.Drawing.Point(0, 179);
+            this.maestroStatus.Location = new System.Drawing.Point(0, 379);
             this.maestroStatus.Name = "maestroStatus";
-            this.maestroStatus.Size = new System.Drawing.Size(654, 22);
+            this.maestroStatus.Size = new System.Drawing.Size(664, 22);
             this.maestroStatus.TabIndex = 5;
             this.maestroStatus.Text = "statusStrip1";
             // 
@@ -150,12 +150,13 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(654, 201);
+            this.ClientSize = new System.Drawing.Size(664, 401);
             this.Controls.Add(this.maestroStatus);
             this.Controls.Add(this.maestroMenu);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.maestroMenu;
-            this.MaximumSize = new System.Drawing.Size(670, 240);
+            this.MaximumSize = new System.Drawing.Size(670, 500);
             this.MinimumSize = new System.Drawing.Size(670, 240);
             this.Name = "MaestroWindow";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;

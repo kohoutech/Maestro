@@ -82,6 +82,16 @@ namespace Transonic.MIDI
                 default :
                     break;
             }
+            //convert noteon msg w/ vel = 0 to noteoff msg
+            if (msg is NoteOnMessage)
+            {
+                NoteOnMessage noteOn = (NoteOnMessage)msg;
+                if (noteOn.velocity == 0)
+                {
+                    NoteOffMessage noteOff = new NoteOffMessage(noteOn.channel, noteOn.noteNumber, 0);
+                    msg = noteOff;
+                }
+            }
             return msg;
         }
 

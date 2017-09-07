@@ -30,11 +30,12 @@ using Transonic.MIDI;
 using Transonic.MIDI.Engine;
 using Transonic.MIDI.System;
 using Transonic.Widget;
+using Transonic.Score;
 using Maestro.UI;
 
 namespace Maestro
 {
-    public partial class MaestroWindow : Form, IMidiView, iKeyboardWindow
+    public partial class MaestroWindow : Form, IMidiView, IKeyboardWindow, IScoreWindow
     {
         MidiSystem midiSystem;
         Transport transport;
@@ -42,6 +43,7 @@ namespace Maestro
         public int displayTrackNum;
 
         ControlPanel controlPanel;
+        ScoreSheet score;
         KeyboardBar keyboard;        
 
         public MaestroWindow()
@@ -50,6 +52,7 @@ namespace Maestro
             transport = new Transport(this);
             transport.init();
             currentSeq = new Sequence(Sequence.DEFAULTDIVISION);
+            displayTrackNum = 0;
 
             InitializeComponent();
 
@@ -59,14 +62,21 @@ namespace Maestro
             controlPanel.Width = this.ClientSize.Width;
             this.Controls.Add(controlPanel);
 
+            //score sheet
+            score = new ScoreSheet(this);
+            score.setSequence(currentSeq);
+            score.setDisplayStaff(displayTrackNum);
+            score.Location = new Point(0, controlPanel.Bottom);
+            score.Width = this.ClientSize.Width;
+            this.Controls.Add(score);
+
             //keyboard bar
             keyboard = new KeyboardBar(this, KeyboardBar.Range.EIGHTYEIGHT, KeyboardBar.KeySize.SMALL);
-            keyboard.Location = new Point(0, controlPanel.Bottom);
+            keyboard.Location = new Point(0, score.Bottom);
             keyboard.Width = this.ClientSize.Width;
             keyboard.selectedColor = Color.Yellow;
+            keyboard.BackColor = Color.Yellow;
             this.Controls.Add(keyboard);
-
-            displayTrackNum = 0;
         }
 
         protected override void OnFormClosing(FormClosingEventArgs e)
@@ -83,6 +93,7 @@ namespace Maestro
             this.Text = "Maestro [" + filename + "]";
             currentSeq.setMidiSystem(midiSystem);
             transport.setSequence(currentSeq);
+            score.setSequence(currentSeq);
             controlPanel.setSequence(currentSeq);
             playTransportMenuItem.Enabled = true;
             stopTransportMenuItem.Enabled = true;
@@ -112,6 +123,7 @@ namespace Maestro
         {
             keyboard.allKeysUp();
             transport.setSequencePos(tick);
+            score.setCurrentBeat(tick);
             int mstime = transport.getMilliSecTime();
             controlPanel.timerTick(tick, mstime);
         }
@@ -120,18 +132,20 @@ namespace Maestro
         {
             keyboard.allKeysUp();
             displayTrackNum = trackNum;
+            score.setDisplayStaff(trackNum);
         }
 
 //- file events ---------------------------------------------------------------
 
         private void openFileMenuItem_Click(object sender, EventArgs e)
         {
-            String filename;
-            openFileDialog.InitialDirectory = Application.StartupPath;
-            openFileDialog.DefaultExt = "*.mid";
-            openFileDialog.Filter = "midi files|*.mid|All files|*.*";
-            openFileDialog.ShowDialog();
-            filename = openFileDialog.FileName;
+            //String filename;
+            //openFileDialog.InitialDirectory = Application.StartupPath;
+            //openFileDialog.DefaultExt = "*.mid";
+            //openFileDialog.Filter = "midi files|*.mid|All files|*.*";
+            //openFileDialog.ShowDialog();
+            //filename = openFileDialog.FileName;
+            String filename = @"N:\midi\Triumvirat\spartacus\Spartacus.mid";
             if (filename.Length > 0)
             {
                 openSequence(filename);
@@ -170,6 +184,7 @@ namespace Maestro
             int tick = transport.tickNum;
             int mstime = transport.getMilliSecTime();
             controlPanel.timerTick(tick, mstime);
+            //score.setCurrentPos(tick);
         }
 
         public void handleMessage(int track, Transonic.MIDI.Message message)
@@ -179,16 +194,9 @@ namespace Maestro
                 if (message is NoteOnMessage)
                 {
                     NoteOnMessage onMsg = (NoteOnMessage)message;
-                    if (onMsg.velocity > 0)
-                    {
-                        keyboard.setKeyDown(onMsg.noteNumber);
-                    }
-                    else
-                    {
-                        keyboard.setKeyUp(onMsg.noteNumber);
-                    }
+                    keyboard.setKeyDown(onMsg.noteNumber);
                 }
-                if (message is Transonic.MIDI.NoteOffMessage)
+                if (message is NoteOffMessage)
                 {
                     NoteOffMessage offMsg = (NoteOffMessage)message;
                     keyboard.setKeyUp(offMsg.noteNumber);
