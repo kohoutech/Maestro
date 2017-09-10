@@ -31,9 +31,8 @@ namespace Transonic.Score
     public class Measure
     {
         //dimensions based upon typograhy in Beethoven's Complete Piano Sonatas, Dover ed.
-        public static int noteSpacing = 12;
         public static int minWidth = 48;
-        public const int quantization = 4;         //quantize rests to 1/32 note pos (quarter note / 8)
+        public const int quantization = 8;         //quantize rests to 1/32 note pos (quarter note / 8)
 
         public Staff staff;
         public Measure prevMeasure;
@@ -43,7 +42,7 @@ namespace Transonic.Score
         List<BeatGroup> beats;
 
         public int number;                  //measure number 
-        public int startTime;               //measure start time in ticks
+        public int startTick;               //measure start time in ticks
         public int length;                  //number of beats in measure, determined by most recent key signature
 
         public TimeSignature timeSig;
@@ -55,7 +54,7 @@ namespace Transonic.Score
         public int staffpos;                //ofs in staff, in pixels
         public int width;                   //width of measure in pixels
 
-        public Measure(Staff _staff, int num, int start, int len)
+        public Measure(Staff _staff, int num, int _startTick, int numer, int denom, int _key)
         {
             staff = _staff;
             prevMeasure = null;
@@ -65,16 +64,26 @@ namespace Transonic.Score
             beats = new List<BeatGroup>();
 
             number = num;
-            length = len;
-            startTime = start;
+            startTick = _startTick;
             timeSig = null;
             keySig = null;
-            timeNumer = 4;
-            timeDenom = 4;
-            key = 0;
+
+            timeNumer = numer;
+            timeDenom = denom;
+            key = _key;
+            length = numer * quantization / (denom / 4);
 
             staffpos = 0;
             width = 50;
+        }
+
+        public void setTimeSignature(TimeSignature _timeSig) {
+            timeSig = _timeSig;
+        }
+
+        public void setKeySignature(KeySignature _keySig)
+        {
+            keySig = _keySig;
         }
 
         public void addSymbol(Symbol sym)
@@ -95,44 +104,54 @@ namespace Transonic.Score
         //insert a rest at any point in the measure there isn't a note playing
         public void insertRests()
         {
-            if (symbols.Count == 0)
+            if (symbols.Count == 0)     //no notes at all, insert measure long rest
             {
-                Rest rest = new Rest(0, timeNumer);
+                Rest rest = new Rest(0, timeNumer * quantization);
                 symbols.Add(rest);
                 rest.setMeasure(this);
             }
             else
             {
                 List<Symbol> syms = new List<Symbol>();
-                float beat = 0;
+                int beat = 0;
                 for (int i = 0; i < symbols.Count; i++)
                 {
                     Note note = (Note)symbols[i];
-                    if (note.start > (beat + quantization))
+                    if (note.beat > beat)
                     {
-                        float restLen = note.start - beat;
+                        int restLen = note.beat - beat;
                         Rest rest = new Rest(beat, restLen);
                         syms.Add(rest);
                         rest.setMeasure(this);
-                        beat = note.start + note.len;
+                    }
+                    if (beat < (note.beat + note.len))
+                    {
+                        beat = (note.beat + note.len);
                     }
                     syms.Add(note);
                 }
                 symbols = syms;
+                if (beat < (timeNumer * quantization))                  //any remaining time in measure
+                {
+                    int restLen = (timeNumer * quantization) - beat;
+                    Rest rest = new Rest(beat, restLen);
+                    symbols.Add(rest);
+                    rest.setMeasure(this);
+                }
             }
         }
 
         public void groupSymbols()
         {
-            float beat = 0;
-            BeatGroup group = new BeatGroup();
+            int beat = 0;
+            BeatGroup group = new BeatGroup(this, beat);
             beats.Add(group);
             foreach (Symbol sym in symbols)
             {
-                if (sym.start > beat)
+                if (sym.beat > beat)
                 {
-                    beat = sym.start;
-                    group = new BeatGroup();
+                    beat = sym.beat;
+                    group = new BeatGroup(this, beat);
                     beats.Add(group);
                 }
                 group.addSymbol(sym);
@@ -148,11 +167,11 @@ namespace Transonic.Score
             //symbols.Add(barline);
 
             groupSymbols();
-            int symPos = noteSpacing;
+            int symPos = 0;
             foreach (BeatGroup beat in beats)
             {
                 beat.setPos(symPos);
-                symPos += noteSpacing;
+                symPos += beat.width;
             }
 
             //link to other measures
@@ -164,36 +183,33 @@ namespace Transonic.Score
 
             //set measure pos and width
             staffpos = (prev != null) ? prev.staffpos + prev.width : 0;
-            width = symPos + noteSpacing;
+            width = symPos;
             if (width < minWidth) width = minWidth;
         }
 
+        //translate tick to pixels for this measure
         public int getBeatPos(int tick)
         {
-            int beat = tick - startTime;
+            tick -= startTick;
             int i = 0;
-            while ((i < symbols.Count - 1) && (symbols[i + 1].startTick < beat))
+            while ((i < beats.Count - 1) && (tick > beats[i+1].tick))
                 i++;
-            int ofs = beat - symbols[i].startTick;
-            int interval = symbols[i + 1].startTick - symbols[i].startTick;
-            int dist = symbols[i + 1].xpos - symbols[i].xpos;
-            int pos = (int)(((float)(ofs) / interval) * dist);
+            int pos = beats[i].sympos;
             return pos; 
         }
 
 //- display -------------------------------------------------------------------
  
-        public void paint(Graphics g, int xpos, int top)
-        {
-            int left = staffpos - xpos;
+        public void paint(Graphics g, int left, int top)
+        {            
 
             //measure num
             g.DrawString(number.ToString(), SystemFonts.DefaultFont, Brushes.Black, left, top - 14);
 
             //symbols
-            for (int i = 0; i < symbols.Count; i++)
+            for (int i = 0; i < beats.Count; i++)
             {
-                symbols[i].paint(g, left, top);
+                beats[i].paint(g, left, top);
             }
 
             //barline
@@ -205,25 +221,59 @@ namespace Transonic.Score
 
     public class BeatGroup
     {
-        List<Symbol> symbols;
-        int xpos;
+        public static int a = 6;
+        public static int b = 6;
+        public static int c = 14;
 
-        public BeatGroup()
+        public Measure measure;
+        public int beat;
+        public int tick;
+        public List<Symbol> symbols;
+        public int xpos;
+        public int sympos;
+        public int width;
+        public bool hasSharp;
+
+        public BeatGroup(Measure _measure, int _beat)
         {
+            measure = _measure;
+            beat = _beat;
+            tick = (beat * measure.staff.division) / Measure.quantization;
             symbols = new List<Symbol>();
+            xpos = 0;
+            width = a + c;
+            hasSharp = false;
         }
 
         public void addSymbol(Symbol sym)
         {
             symbols.Add(sym);
+            if (sym is Note) {
+                Note note = (Note)sym;
+                hasSharp |= note.hasSharp;
+            }
         }
 
         public void setPos(int _pos)
         {
             xpos = _pos;
+            sympos = hasSharp ? a + b : a;
             foreach (Symbol sym in symbols)
             {
-                sym.xpos = xpos;
+                sym.xpos = sympos;
+            }
+            width = sympos + c;
+            sympos += xpos;
+        }
+
+        public void paint(Graphics g, int xorg, int top)
+        {
+            int left = xorg + xpos;
+            //g.DrawLine(Pens.Blue, xorg, top, xorg, top + Staff.grandHeight);
+            //g.DrawLine(Pens.Green, xorg+a, top, xorg+a, top + Staff.grandHeight);
+            foreach (Symbol sym in symbols)
+            {
+                sym.paint(g, left, top);
             }
         }
     }

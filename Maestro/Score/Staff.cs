@@ -34,6 +34,8 @@ namespace Transonic.Score
         public List<Measure> measures;
         public int number;
         public int division;
+
+        public int curMeasureNum;
         public int leftMeasureNum;
         public int rightMeasureNum;
 
@@ -50,6 +52,7 @@ namespace Transonic.Score
             number = num;
             division = div;
             measures = new List<Measure>();
+            curMeasureNum = 0;
             leftMeasureNum = 0;
             rightMeasureNum = 0;
         }
@@ -59,38 +62,31 @@ namespace Transonic.Score
             measures.Add(measure);
         }
 
+//- transport -----------------------------------------------------------------
+
+        public void setCurrentMeasurePos(int tick)
+        {
+            int i = 0;
+            while ((i < measures.Count - 1) && (measures[i + 1].startTick < tick))
+                i++;
+            curMeasureNum = i;
+            int pos = measures[curMeasureNum].getBeatPos(tick);
+            pos += (measures[i].staffpos - measures[leftMeasureNum].staffpos);
+            if ((pos > (sheet.Width - 20)) || (pos < 0))
+            {
+                leftMeasureNum = i;
+            }
+        }
+
+        //translate tick to pixels for this staff
         public int getBeatPos(int tick)
         {
-            int measure = getBeatMeasure(tick);
-            int result = measures[measure].getBeatPos(tick);
-            return result;
+            int pos = measures[curMeasureNum].getBeatPos(tick);
+            pos += measures[curMeasureNum].staffpos;
+            return pos;
         }
 
-        public int getBeatMeasure(int tick)
-        {
-            int i = 0;
-            while ((i < measures.Count - 1) && (measures[i + 1].startTime < tick))
-                i++;
-            return i;
-        }
-
-        public void setCurrentMeasure(int tick)
-        {
-            int i = 0;
-            while ((i < measures.Count - 1) && (measures[i+1].startTime < tick)) 
-                i++;
-            leftMeasureNum = i;            
-        }
-
-        public void dump()
-        {
-            Console.WriteLine("Staff " + number);
-            foreach (Measure measure in measures)
-            {
-                measure.dump();
-            }
-            Console.WriteLine();
-        }
+//- display -------------------------------------------------------------------
 
         public void drawStaff(Graphics g, int ypos)
         {
@@ -109,12 +105,24 @@ namespace Transonic.Score
             drawStaff(g, ypos);
 
             int i = leftMeasureNum;
-            int xpos = measures[i].staffpos;
-            while ((i < measures.Count) && (measures[i].staffpos - xpos < sheet.Width))
+            int xpos = 0;
+            while ((i < measures.Count) && (xpos < sheet.Width))
             {
                 Measure measure = measures[i++];
                 measure.paint(g, xpos, staffMargin);
+                xpos += measure.width;
             }
+        }
+
+
+        public void dump()
+        {
+            Console.WriteLine("Staff " + number);
+            foreach (Measure measure in measures)
+            {
+                measure.dump();
+            }
+            Console.WriteLine();
         }
     }
 }

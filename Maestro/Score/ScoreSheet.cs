@@ -34,9 +34,12 @@ namespace Transonic.Score
     {
         IScoreWindow window;
         Sequence seq;
+        List<TimeSignature> timesigs;
+        List<KeySignature> keysigs;
         List<Staff> staves;
+
         Staff displayStaff;
-        int curTick;
+        int curTick;                        //cur tick being played by the transport
         int barPos;
 
         public ScoreSheet(IScoreWindow _window)
@@ -47,7 +50,7 @@ namespace Transonic.Score
             staves = new List<Staff>();
             displayStaff = null;
             curTick = 0;
-            barPos = 100;
+            barPos = -1;
         }
 
         private void InitializeComponent()
@@ -57,6 +60,7 @@ namespace Transonic.Score
             // ScoreSheet
             // 
             this.BackColor = System.Drawing.Color.LightGoldenrodYellow;
+            this.DoubleBuffered = true;
             this.Name = "ScoreSheet";
             this.Size = new System.Drawing.Size(650, 212);
             this.ResumeLayout(false);
@@ -74,14 +78,32 @@ namespace Transonic.Score
         private void parseSequence()
         {
             staves.Clear();
+
+            //these are separate from the midi tracks
+            timesigs = getTimeSigSymbols();
+            keysigs = getKeySigSymbols();
+
+            //create each staff out of track's midi data, add & layout symbols to measures
             for (int i = 1; i < seq.tracks.Count; i++)
             {
-                Staff staff = parseTrack(seq.tracks[i], i);
+                Staff staff = parseTrack(seq.tracks[i], i, timesigs, keysigs);
                 staves.Add(staff);
             }
         }
 
-        private Staff parseTrack(Track track, int staffNum)
+        private List<TimeSignature> getTimeSigSymbols()
+        {
+            List<TimeSignature> timesigs = new List<TimeSignature>();
+            return timesigs;
+        }
+
+        private List<KeySignature> getKeySigSymbols()
+        {
+            List<KeySignature> keysigs = new List<KeySignature>();
+            return keysigs;
+        }
+        
+        private Staff parseTrack(Track track, int staffNum, List<TimeSignature> timesigs, List<KeySignature> keysigs)
         {
             Staff staff = new Staff(this, staffNum, seq.division);
             List<Symbol> syms = getTrackSymbols(track);                //get all the notes, time & key sigs for this track
@@ -127,15 +149,6 @@ namespace Transonic.Score
                         }
                     }
                 }
-
-                if (evt.msg is TimeSignatureMessage)
-                {
-                }
-
-                if (evt.msg is KeySignatureMessage)
-                {
-                }
-
             }
             return notes;
         }
@@ -145,7 +158,7 @@ namespace Transonic.Score
             int ticksPerMeasure = seq.division * 4;         //for the moment assume 4/4 time
             int measureNum = 1;
             int measureTime = 0;
-            Measure measure = new Measure(staff, measureNum, measureTime, ticksPerMeasure);        //initial measure
+            Measure measure = new Measure(staff, measureNum, measureTime, 4, 4, 0);        //initial measure
             staff.addMeasure(measure);
 
             foreach (Symbol sym in syms)
@@ -158,7 +171,7 @@ namespace Transonic.Score
                     while (noteMeasure > measureNum)                        //add empty measures until we get to the one we're one now
                     {
                         measureTime += ticksPerMeasure;
-                        measure = new Measure(staff, ++measureNum, measureTime, 4);
+                        measure = new Measure(staff, ++measureNum, measureTime, 4, 4, 0);
                         staff.addMeasure(measure);
                     }
                     measure.addSymbol(note);
@@ -167,12 +180,15 @@ namespace Transonic.Score
             }
         }
 
+//-----------------------------------------------------------------------------
+
+        //set the staff to be displayed
         public void setDisplayStaff(int staffNum)
         {
             if (staffNum < seq.tracks.Count)
             {
                 displayStaff = staves[staffNum - 1];
-                displayStaff.setCurrentMeasure(curTick);
+                displayStaff.setCurrentMeasurePos(curTick);
                 Invalidate();
             }
             else
@@ -181,14 +197,15 @@ namespace Transonic.Score
             }
         }
 
-        public void setCurrentBeat(int tick)
+        //set current tick in display staff
+        public void setDisplayStaffPos(int tick)
         {
             curTick = tick;
             if (displayStaff != null)
-            {
-                
+            {                
+                displayStaff.setCurrentMeasurePos(curTick);
                 barPos = displayStaff.getBeatPos(tick);
-                displayStaff.setCurrentMeasure(curTick);
+                barPos -= displayStaff.measures[displayStaff.leftMeasureNum].staffpos;
                 Invalidate();
             }
         }
@@ -198,7 +215,7 @@ namespace Transonic.Score
         protected override void OnPaint(PaintEventArgs e)
         {
             base.OnPaint(e);
-            Graphics g = e.Graphics;
+            Graphics g = e.Graphics;            
             g.SmoothingMode = SmoothingMode.AntiAlias;
 
             if (displayStaff != null)
@@ -206,7 +223,10 @@ namespace Transonic.Score
                 displayStaff.paint(g);
             }
 
-            g.DrawLine(Pens.Red, barPos, 0, barPos, this.Height);
+            if (barPos >= 0)
+            {
+                g.DrawLine(Pens.Red, barPos, 0, barPos, this.Height);
+            }
         }
     }
 

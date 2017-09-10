@@ -33,13 +33,20 @@ namespace Transonic.Score.Symbols
         public Measure measure;
         public int startTick;           //start tick relative to measure start
         public int duration;            //length in ticks
-        public float start;             //symbol start in measure in fractions of a beat
-        public float len;               //symbol len in fractions of a beat
+
+        public int beat;                //beat that symbol starts on
+        public int len;                 //symbol len in beats
+
         public int xpos;                //symbol pos from measure left in pixels
         public int ypos;                //symbol pos from measure top in pixels
 
         public Symbol()
         {
+            measure = null;
+            startTick = 0;
+            duration = 0;
+            beat = 0;
+            len = 0;
             xpos = 0;
             ypos = 0;
         }
@@ -89,15 +96,15 @@ namespace Transonic.Score.Symbols
 
     public class Rest : Symbol
     {
-        public Rest(float _start, float _len)
+        public Rest(int _start, int _len) : base()
         {
-            start = _start;
+            beat = _start;
             len = _len;
         }
 
-        public override void paint(Graphics g, int xpos, int ypos)
+        public override void paint(Graphics g, int left, int top)
         {
-            g.FillRectangle(Brushes.Blue, xpos + xpos, ypos + Staff.lineSpacing, 6, 3);
+            g.FillRectangle(Brushes.Blue, left + 6, top + Staff.lineSpacing, 8, 4);
 
         }
     }

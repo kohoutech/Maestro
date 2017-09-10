@@ -123,7 +123,7 @@ namespace Maestro
         {
             keyboard.allKeysUp();
             transport.setSequencePos(tick);
-            score.setCurrentBeat(tick);
+            score.setDisplayStaffPos(tick);
             int mstime = transport.getMilliSecTime();
             controlPanel.timerTick(tick, mstime);
         }
@@ -139,13 +139,12 @@ namespace Maestro
 
         private void openFileMenuItem_Click(object sender, EventArgs e)
         {
-            //String filename;
-            //openFileDialog.InitialDirectory = Application.StartupPath;
-            //openFileDialog.DefaultExt = "*.mid";
-            //openFileDialog.Filter = "midi files|*.mid|All files|*.*";
-            //openFileDialog.ShowDialog();
-            //filename = openFileDialog.FileName;
-            String filename = @"N:\midi\Triumvirat\spartacus\Spartacus.mid";
+            String filename;
+            openFileDialog.InitialDirectory = Application.StartupPath;
+            openFileDialog.DefaultExt = "*.mid";
+            openFileDialog.Filter = "midi files|*.mid|All files|*.*";
+            openFileDialog.ShowDialog();
+            filename = openFileDialog.FileName;
             if (filename.Length > 0)
             {
                 openSequence(filename);
@@ -173,7 +172,7 @@ namespace Maestro
 
         private void aboutHelpMenuItem_Click(object sender, EventArgs e)
         {
-            String msg = "Maestro\nversion 1.0.1\n" + "\xA9 Transonic Software 1996-2017\n" + "http://transonic.kohoutech.com";
+            String msg = "Maestro\nversion 1.1.0\n" + "\xA9 Transonic Software 1996-2017\n" + "http://transonic.kohoutech.com";
             MessageBox.Show(msg, "About");
         }
 
@@ -184,7 +183,7 @@ namespace Maestro
             int tick = transport.tickNum;
             int mstime = transport.getMilliSecTime();
             controlPanel.timerTick(tick, mstime);
-            //score.setCurrentPos(tick);
+            score.setDisplayStaffPos(tick);
         }
 
         public void handleMessage(int track, Transonic.MIDI.Message message)

@@ -30,7 +30,7 @@ namespace Transonic.Score.Symbols
 {
     public class Note : Symbol
     {
-        public const int quantization = 4;         //quantize notes to 1/32 note pos (quarter note / 8)
+        public const int quantization = 8;         //quantize notes to 1/32 note pos (quarter note / 8)
 
         public const String flat = "\u266d";
         public const String natural = "\u266e";
@@ -41,6 +41,10 @@ namespace Transonic.Score.Symbols
         public int noteNumber;          //midi pitch
         public int octave;
         public int step;
+        public int ledgerLinesAbove;
+        public bool ledgerLinesMiddle;
+        public int ledgerLinesBelow;
+        public bool hasSharp;
 
         public Note(int _start, int _noteNum, int _dur)
         {
@@ -50,25 +54,27 @@ namespace Transonic.Score.Symbols
 
             octave = noteNumber / 12;
             step = noteNumber % 12;
+            ledgerLinesAbove = 0;
+            ledgerLinesMiddle = false;
+            ledgerLinesBelow = 0;
         }
 
         public override void setMeasure(Measure measure)
         {
             base.setMeasure(measure);
 
-            startTick -= measure.startTime;
+            startTick -= measure.startTick;
 
-            //quantize val to nearest beat fraction
-            float val = (float)startTick / measure.staff.division;
-            int roundoff = (int)((val * quantization) + 0.5f);
-            start = ((float)roundoff) / quantization;
+            //quantize start to nearest beat
+            double val = (double)startTick / measure.staff.division;
+            beat = (int)((val * quantization) + 0.5f);
 
-            //quatize duration to next beat fraction
-            val = (float)duration / measure.staff.division;
-            roundoff = (int)((val * quantization) + 1.0f);
-            len = ((float)roundoff) / quantization;
+            //quatize duration to next beat
+            val = (double)duration / measure.staff.division;
+            len = (int) Math.Ceiling((val * quantization * 2));
 
             setVertPos();
+            hasSharp = (keyOfC[step] == 1);
         }
 
         int[] scaleTones = { 0, 0, 1, 1, 2, 3, 3, 4, 4, 5, 5, 6 };
@@ -85,6 +91,12 @@ namespace Transonic.Score.Symbols
             {
                 int cpos = Staff.lineSpacing * 5;        //pos of middle C
                 ypos = cpos - (((octave - 5) * halfStep * 7) + (scaleTones[step] * halfStep));
+                if (ypos < 0)
+                {
+                    ledgerLinesAbove = ypos / Staff.lineSpacing;
+                }
+                ledgerLinesMiddle |= (noteNumber == 60 | noteNumber == 61);
+
             }
 
             //bass clef
@@ -92,6 +104,10 @@ namespace Transonic.Score.Symbols
             {
                 int cpos = Staff.grandHeight + Staff.lineSpacing * 12 + halfStep;    //pos of MIDI C = 0
                 ypos = cpos - ((octave * halfStep * 7) + (scaleTones[step] * halfStep));
+                if (ypos > Staff.grandHeight)
+                {
+                    ledgerLinesBelow = (ypos - Staff.grandHeight) / Staff.lineSpacing;
+                }
             }
         }
 
@@ -101,24 +117,52 @@ namespace Transonic.Score.Symbols
             float dur = (float)duration / measure.staff.division;
 
             Console.WriteLine("Measure " + measure.number + " note: " + noteNumber +
-                " at " + start.ToString("F2") + "(" + tick.ToString("F2") +
+                " at " + beat.ToString("F2") + "(" + tick.ToString("F2") +
                 ") len " + len.ToString("F2") + "(" + dur.ToString("F2") + ")");
         }
 
-        public override void paint(Graphics g, int xorg, int yorg)
+//- display -------------------------------------------------------------------
+
+        public override void paint(Graphics g, int xorg, int top)
         {
+            xorg += xpos;
+            if (ledgerLinesAbove < 0)
+            {
+                int linepos = top - Staff.lineSpacing;
+                for (int i = 0; i > ledgerLinesAbove; i--)
+                {
+                    g.DrawLine(Pens.Red, xorg - 2, linepos, xorg + 10, linepos);
+                    linepos -= Staff.lineSpacing;
+                }
+            }
 
-            g.FillEllipse(Brushes.Red, xorg + xpos, yorg + ypos - 4, 8, 8);            
+            if (ledgerLinesMiddle)
+            {
+                g.DrawLine(Pens.Red, xorg - 2, top + (Staff.lineSpacing * 5), xorg + 10, top + (Staff.lineSpacing * 5));
+            }
 
+            if (ledgerLinesBelow > 0)
+            {
+                int linepos = top + Staff.grandHeight + Staff.lineSpacing;
+                for (int i = 0; i < ledgerLinesBelow; i++)
+                {
+                    g.DrawLine(Pens.Red, xorg - 2, linepos, xorg + 10, linepos);
+                    linepos += Staff.lineSpacing;
+                }
+            }
 
-            //String quart = char.ConvertFromUtf32(0x1d15f);
-            //    Font notefont = new Font("Segoe UI Symbol", 48);
-            //    g.DrawString(quart, notefont, Brushes.Blue, xpos, notepos);
-            //    if (hassharp[step] == 1)
-            //    {
-            //        Font sharpfont = new Font("Arial", 16);
-            //        g.DrawString(sharp, notefont, Brushes.Blue, xpos - 12, notepos - 12);
-            //    }
+            top += ypos;
+
+            if (hasSharp)
+            {
+                Font sharpfont = new Font("Arial", 14);
+                g.DrawString(sharp, sharpfont, Brushes.Red, xorg - 12, top - 12);
+
+            }
+
+            g.FillEllipse(Brushes.Red, xorg, top - 4, 8, 8);
+            g.DrawLine(Pens.Red, xorg + 8, top, xorg + 8, top - Staff.lineSpacing * 3);
+
         }
     }
 }
