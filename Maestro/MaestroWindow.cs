@@ -1,6 +1,6 @@
 ﻿/* ----------------------------------------------------------------------------
 Maestro : a music notation editor
-Copyright (C) 1996-2017  George E Greaney
+Copyright (C) 1996-2018  George E Greaney
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -37,46 +37,49 @@ namespace Maestro
 {
     public partial class MaestroWindow : Form, IMidiView, IKeyboardWindow, IScoreWindow
     {
+        //widgets
+        ControlPanel controlPanel;
+        ScoreSheet scoreSheet;
+        KeyboardBar keyboard;
+
+        ScoreDoc currentScore;
+
+        //midi
         MidiSystem midiSystem;
         Transport transport;
         Sequence currentSeq;
         public int displayTrackNum;
 
-        ControlPanel controlPanel;
-        ScoreSheet score;
-        KeyboardBar keyboard;        
 
         public MaestroWindow()
         {
+            currentScore = null;
+
+            //midi
             midiSystem = new MidiSystem();
             transport = new Transport(this);
             transport.init();
             currentSeq = new Sequence(Sequence.DEFAULTDIVISION);
             displayTrackNum = 0;
 
-            InitializeComponent();
-
             //control panel
             controlPanel = new ControlPanel(this);
-            controlPanel.Location = new Point(0, maestroMenu.Height);
-            controlPanel.Width = this.ClientSize.Width;
+            controlPanel.Dock = DockStyle.Top;
             this.Controls.Add(controlPanel);
-
-            //score sheet
-            score = new ScoreSheet(this);
-            score.setSequence(currentSeq);
-            score.setDisplayStaff(displayTrackNum);
-            score.Location = new Point(0, controlPanel.Bottom);
-            score.Width = this.ClientSize.Width;
-            this.Controls.Add(score);
 
             //keyboard bar
             keyboard = new KeyboardBar(this, KeyboardBar.Range.EIGHTYEIGHT, KeyboardBar.KeySize.SMALL);
-            keyboard.Location = new Point(0, score.Bottom);
-            keyboard.Width = this.ClientSize.Width;
             keyboard.selectedColor = Color.Yellow;
             keyboard.BackColor = Color.Yellow;
+            keyboard.Dock = DockStyle.Bottom;
             this.Controls.Add(keyboard);
+
+            //score sheet
+            scoreSheet = new ScoreSheet(this);
+            scoreSheet.Dock = DockStyle.Fill;
+            this.Controls.Add(scoreSheet);
+
+            InitializeComponent();
         }
 
         protected override void OnFormClosing(FormClosingEventArgs e)
@@ -93,7 +96,7 @@ namespace Maestro
             this.Text = "Maestro [" + filename + "]";
             currentSeq.setMidiSystem(midiSystem);
             transport.setSequence(currentSeq);
-            score.setSequence(currentSeq);
+            //score.setSequence(currentSeq);
             controlPanel.setSequence(currentSeq);
             playTransportMenuItem.Enabled = true;
             stopTransportMenuItem.Enabled = true;
@@ -123,7 +126,7 @@ namespace Maestro
         {
             keyboard.allKeysUp();
             transport.setSequencePos(tick);
-            score.setDisplayStaffPos(tick);
+            //score.setDisplayStaffPos(tick);
             int mstime = transport.getMilliSecTime();
             controlPanel.timerTick(tick, mstime);
         }
@@ -132,22 +135,39 @@ namespace Maestro
         {
             keyboard.allKeysUp();
             displayTrackNum = trackNum;
-            score.setDisplayStaff(trackNum);
+            //score.setDisplayStaff(trackNum);
         }
+
+        public void openScore(String filename)
+        {
+            currentScore = ScoreDoc.loadFromMusicXML(scoreSheet, filename);
+            this.Text = "Maestro [" + filename + "]";
+            //currentSeq.setMidiSystem(midiSystem);
+            //transport.setSequence(currentSeq);
+            //score.setSequence(currentSeq);
+            //controlPanel.setSequence(currentSeq);
+            //playTransportMenuItem.Enabled = true;
+            //stopTransportMenuItem.Enabled = true;            
+        }
+
+
 
 //- file events ---------------------------------------------------------------
 
         private void openFileMenuItem_Click(object sender, EventArgs e)
         {
             String filename;
-            openFileDialog.InitialDirectory = Application.StartupPath;
-            openFileDialog.DefaultExt = "*.mid";
-            openFileDialog.Filter = "midi files|*.mid|All files|*.*";
-            openFileDialog.ShowDialog();
-            filename = openFileDialog.FileName;
+            //openFileDialog.FileName = "";
+            //openFileDialog.InitialDirectory = Application.StartupPath;
+            //openFileDialog.DefaultExt = "*.mxl";
+            ////openFileDialog.Filter = "musicxml files|*.mxl|midi files|*.mid|All files|*.*";
+            //openFileDialog.Filter = "musicxml files|*.mxl|All files|*.*";
+            //openFileDialog.ShowDialog();
+            //filename = openFileDialog.FileName;
+            filename = "test.mxl";
             if (filename.Length > 0)
             {
-                openSequence(filename);
+                openScore(filename);
             }
         }
 
@@ -172,7 +192,7 @@ namespace Maestro
 
         private void aboutHelpMenuItem_Click(object sender, EventArgs e)
         {
-            String msg = "Maestro\nversion 1.1.0\n" + "\xA9 Transonic Software 1996-2017\n" + "http://transonic.kohoutech.com";
+            String msg = "Maestro\nversion 1.2.0\n" + "\xA9 Transonic Software 1996-2018\n" + "http://transonic.kohoutech.com";
             MessageBox.Show(msg, "About");
         }
 
@@ -183,7 +203,7 @@ namespace Maestro
             int tick = transport.tickNum;
             int mstime = transport.getMilliSecTime();
             controlPanel.timerTick(tick, mstime);
-            score.setDisplayStaffPos(tick);
+            //score.setDisplayStaffPos(tick);
         }
 
         public void handleMessage(int track, Transonic.MIDI.Message message)
@@ -212,11 +232,11 @@ namespace Maestro
 //- iKeyboardWindow methods ---------------------------------------------------
 
         //for the moment pressing keys on the keyboard widget doesn't do anything, maybe later...
-        public void onKeyDown(int keyNumber)
+        public void onKeyPress(int keyNumber)
         {
         }
 
-        public void onKeyUp(int keyNumber)
+        public void onKeyRelease(int keyNumber)
         {
         }
 

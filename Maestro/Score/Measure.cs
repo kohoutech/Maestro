@@ -1,6 +1,6 @@
 ﻿/* ----------------------------------------------------------------------------
 Transonic Score Library
-Copyright (C) 1997-2017  George E Greaney
+Copyright (C) 1997-2018 George E Greaney
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -23,6 +23,7 @@ using System.Linq;
 using System.Text;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Xml;
 
 using Transonic.Score.Symbols;
 
@@ -34,12 +35,12 @@ namespace Transonic.Score
         public static int minWidth = 48;
         public const int quantization = 8;         //quantize rests to 1/32 note pos (quarter note / 8)
 
-        public Staff staff;
+        public Part part;
         public Measure prevMeasure;
         public Measure nextMeasure;
 
-        List<Symbol> symbols;
-        List<BeatGroup> beats;
+        List<Symbol> symbols;               //symbols that aren't on beats
+        List<Beat> beats;
 
         public int number;                  //measure number 
         public int startTick;               //measure start time in ticks
@@ -54,14 +55,21 @@ namespace Transonic.Score
         public int staffpos;                //ofs in staff, in pixels
         public int width;                   //width of measure in pixels
 
+        public Measure(Part _part, int num)
+        {
+            part = _part;
+            symbols = new List<Symbol>();
+            beats = new List<Beat>();
+            number = num;
+        }
+
         public Measure(Staff _staff, int num, int _startTick, int numer, int denom, int _key)
         {
-            staff = _staff;
             prevMeasure = null;
             nextMeasure = null;
 
             symbols = new List<Symbol>();
-            beats = new List<BeatGroup>();
+            beats = new List<Beat>();
 
             number = num;
             startTick = _startTick;
@@ -91,189 +99,148 @@ namespace Transonic.Score
             symbols.Add(sym);
         }
 
-        public void dump()
-        {
-            foreach (Symbol sym in symbols)
-            {
-                sym.dump();
-            }
-        }
-
 //- layout -------------------------------------------------------------------
 
-        //insert a rest at any point in the measure there isn't a note playing
-        public void insertRests()
-        {
-            if (symbols.Count == 0)     //no notes at all, insert measure long rest
-            {
-                Rest rest = new Rest(0, timeNumer * quantization);
-                symbols.Add(rest);
-                rest.setMeasure(this);
-            }
-            else
-            {
-                List<Symbol> syms = new List<Symbol>();
-                int beat = 0;
-                for (int i = 0; i < symbols.Count; i++)
-                {
-                    Note note = (Note)symbols[i];
-                    if (note.beat > beat)
-                    {
-                        int restLen = note.beat - beat;
-                        Rest rest = new Rest(beat, restLen);
-                        syms.Add(rest);
-                        rest.setMeasure(this);
-                    }
-                    if (beat < (note.beat + note.len))
-                    {
-                        beat = (note.beat + note.len);
-                    }
-                    syms.Add(note);
-                }
-                symbols = syms;
-                if (beat < (timeNumer * quantization))                  //any remaining time in measure
-                {
-                    int restLen = (timeNumer * quantization) - beat;
-                    Rest rest = new Rest(beat, restLen);
-                    symbols.Add(rest);
-                    rest.setMeasure(this);
-                }
-            }
-        }
+        ////insert a rest at any point in the measure there isn't a note playing
+        //public void insertRests()
+        //{
+        //    if (symbols.Count == 0)     //no notes at all, insert measure long rest
+        //    {
+        //        Rest rest = new Rest(0, timeNumer * quantization);
+        //        symbols.Add(rest);
+        //        rest.setMeasure(this);
+        //    }
+        //    else
+        //    {
+        //        List<Symbol> syms = new List<Symbol>();
+        //        int beat = 0;
+        //        for (int i = 0; i < symbols.Count; i++)
+        //        {
+        //            Note note = (Note)symbols[i];
+        //            if (note.beat > beat)
+        //            {
+        //                int restLen = note.beat - beat;
+        //                Rest rest = new Rest(beat, restLen);
+        //                syms.Add(rest);
+        //                rest.setMeasure(this);
+        //            }
+        //            if (beat < (note.beat + note.len))
+        //            {
+        //                beat = (note.beat + note.len);
+        //            }
+        //            syms.Add(note);
+        //        }
+        //        symbols = syms;
+        //        if (beat < (timeNumer * quantization))                  //any remaining time in measure
+        //        {
+        //            int restLen = (timeNumer * quantization) - beat;
+        //            Rest rest = new Rest(beat, restLen);
+        //            symbols.Add(rest);
+        //            rest.setMeasure(this);
+        //        }
+        //    }
+        //}
 
-        public void groupSymbols()
-        {
-            int beat = 0;
-            BeatGroup group = new BeatGroup(this, beat);
-            beats.Add(group);
-            foreach (Symbol sym in symbols)
-            {
-                if (sym.beat > beat)
-                {
-                    beat = sym.beat;
-                    group = new BeatGroup(this, beat);
-                    beats.Add(group);
-                }
-                group.addSymbol(sym);
-            }
-        }
+        //public void groupSymbols()
+        //{
+        //    int beat = 0;
+        //    BeatGroup group = new BeatGroup(this, beat);
+        //    beats.Add(group);
+        //    foreach (Symbol sym in symbols)
+        //    {
+        //        if (sym.beat > beat)
+        //        {
+        //            beat = sym.beat;
+        //            group = new BeatGroup(this, beat);
+        //            beats.Add(group);
+        //        }
+        //        group.addSymbol(sym);
+        //    }
+        //}
 
-        public void layoutSymbols(Measure prev)
-        {
-            insertRests();
-            //BarLine barline = new BarLine();
-            //barline.start = timeNumer;
-            //barline.startTick = staff.division * timeNumer;
-            //symbols.Add(barline);
+        //public void layoutSymbols(Measure prev)
+        //{
+        //    insertRests();
+        //    //BarLine barline = new BarLine();
+        //    //barline.start = timeNumer;
+        //    //barline.startTick = staff.division * timeNumer;
+        //    //symbols.Add(barline);
 
-            groupSymbols();
-            int symPos = 0;
-            foreach (BeatGroup beat in beats)
-            {
-                beat.setPos(symPos);
-                symPos += beat.width;
-            }
+        //    groupSymbols();
+        //    int symPos = 0;
+        //    foreach (BeatGroup beat in beats)
+        //    {
+        //        beat.setPos(symPos);
+        //        symPos += beat.width;
+        //    }
 
-            //link to other measures
-            prevMeasure = prev;
-            if (prev != null)
-            {
-                prev.nextMeasure = this;
-            }
+        //    //link to other measures
+        //    prevMeasure = prev;
+        //    if (prev != null)
+        //    {
+        //        prev.nextMeasure = this;
+        //    }
 
-            //set measure pos and width
-            staffpos = (prev != null) ? prev.staffpos + prev.width : 0;
-            width = symPos;
-            if (width < minWidth) width = minWidth;
-        }
+        //    //set measure pos and width
+        //    staffpos = (prev != null) ? prev.staffpos + prev.width : 0;
+        //    width = symPos;
+        //    if (width < minWidth) width = minWidth;
+        //}
 
-        //translate tick to pixels for this measure
-        public int getBeatPos(int tick)
-        {
-            tick -= startTick;
-            int i = 0;
-            while ((i < beats.Count - 1) && (tick > beats[i+1].tick))
-                i++;
-            int pos = beats[i].sympos;
-            return pos; 
-        }
+        ////translate tick to pixels for this measure
+        //public int getBeatPos(int tick)
+        //{
+        //    tick -= startTick;
+        //    int i = 0;
+        //    while ((i < beats.Count - 1) && (tick > beats[i+1].tick))
+        //        i++;
+        //    int pos = beats[i].sympos;
+        //    return pos; 
+        //}
 
 //- display -------------------------------------------------------------------
  
-        public void paint(Graphics g, int left, int top)
+        public void paint(Graphics g)
         {            
 
-            //measure num
-            g.DrawString(number.ToString(), SystemFonts.DefaultFont, Brushes.Black, left, top - 14);
+            ////measure num
+            //g.DrawString(number.ToString(), SystemFonts.DefaultFont, Brushes.Black, left, top - 14);
 
-            //symbols
-            for (int i = 0; i < beats.Count; i++)
+            ////symbols
+            //for (int i = 0; i < beats.Count; i++)
+            //{
+            //    beats[i].paint(g, left, top);
+            //}
+
+            ////barline
+            //g.DrawLine(Pens.Black, left + width, top, left + width, top + Staff.grandHeight);
+        }
+
+//- reading/writing -----------------------------------------------------------
+
+        public static void parseMeasureXML(XmlNode measureNode, Part part)
+        {
+            XmlAttributeCollection attrs = measureNode.Attributes;
+            int number = Convert.ToInt32(attrs["number"].Value);        //required attr
+
+            Measure measure = new Measure(part, number);
+            part.measures.Add(measure);
+
+            foreach (XmlNode dataNode in measureNode.ChildNodes)
             {
-                beats[i].paint(g, left, top);
-            }
+                Console.WriteLine("have data type = " + dataNode.Name);
 
-            //barline
-            g.DrawLine(Pens.Black, left + width, top, left + width, top + Staff.grandHeight);
-        }
-    }
-
-//-----------------------------------------------------------------------------
-
-    public class BeatGroup
-    {
-        public static int a = 6;
-        public static int b = 6;
-        public static int c = 14;
-
-        public Measure measure;
-        public int beat;
-        public int tick;
-        public List<Symbol> symbols;
-        public int xpos;
-        public int sympos;
-        public int width;
-        public bool hasSharp;
-
-        public BeatGroup(Measure _measure, int _beat)
-        {
-            measure = _measure;
-            beat = _beat;
-            tick = (beat * measure.staff.division) / Measure.quantization;
-            symbols = new List<Symbol>();
-            xpos = 0;
-            width = a + c;
-            hasSharp = false;
-        }
-
-        public void addSymbol(Symbol sym)
-        {
-            symbols.Add(sym);
-            if (sym is Note) {
-                Note note = (Note)sym;
-                hasSharp |= note.hasSharp;
-            }
-        }
-
-        public void setPos(int _pos)
-        {
-            xpos = _pos;
-            sympos = hasSharp ? a + b : a;
-            foreach (Symbol sym in symbols)
-            {
-                sym.xpos = sympos;
-            }
-            width = sympos + c;
-            sympos += xpos;
-        }
-
-        public void paint(Graphics g, int xorg, int top)
-        {
-            int left = xorg + xpos;
-            //g.DrawLine(Pens.Blue, xorg, top, xorg, top + Staff.grandHeight);
-            //g.DrawLine(Pens.Green, xorg+a, top, xorg+a, top + Staff.grandHeight);
-            foreach (Symbol sym in symbols)
-            {
-                sym.paint(g, left, top);
+                switch(dataNode.Name) 
+                {
+                    case "note": break;
+                    case "backup": break;
+                    case "forward": break;
+                    case "direction": break;
+                    case "attributes": break;
+                    case "print": break;
+                    case "barline": break;
+                    default : break;
+                }
             }
         }
     }

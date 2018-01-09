@@ -1,6 +1,6 @@
 ﻿/* ----------------------------------------------------------------------------
 Transonic Score Library
-Copyright (C) 1997-2017  George E Greaney
+Copyright (C) 1997-2018  George E Greaney
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -25,32 +25,18 @@ using System.Windows.Forms;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 
-using Transonic.MIDI;
-using Transonic.Score.Symbols;
-
 namespace Transonic.Score
 {
     public class ScoreSheet : UserControl
     {
         IScoreWindow window;
-        Sequence seq;
-        List<TimeSignature> timesigs;
-        List<KeySignature> keysigs;
-        List<Staff> staves;
-
-        Staff displayStaff;
-        int curTick;                        //cur tick being played by the transport
-        int barPos;
+        ScoreDoc score;
 
         public ScoreSheet(IScoreWindow _window)
         {
             window = _window;
-            seq = null;
+            score = null;
             InitializeComponent();
-            staves = new List<Staff>();
-            displayStaff = null;
-            curTick = 0;
-            barPos = -1;
         }
 
         private void InitializeComponent()
@@ -59,7 +45,7 @@ namespace Transonic.Score
             // 
             // ScoreSheet
             // 
-            this.BackColor = System.Drawing.Color.LightGoldenrodYellow;
+            this.BackColor = Color.FromArgb(255, 255, 150);
             this.DoubleBuffered = true;
             this.Name = "ScoreSheet";
             this.Size = new System.Drawing.Size(650, 212);
@@ -67,148 +53,6 @@ namespace Transonic.Score
 
         }
 
-//- sequencing ----------------------------------------------------------------
-
-        public void setSequence(Sequence _seq)
-        {
-            seq = _seq;
-            parseSequence();
-        }
-
-        private void parseSequence()
-        {
-            staves.Clear();
-
-            //these are separate from the midi tracks
-            timesigs = getTimeSigSymbols();
-            keysigs = getKeySigSymbols();
-
-            //create each staff out of track's midi data, add & layout symbols to measures
-            for (int i = 1; i < seq.tracks.Count; i++)
-            {
-                Staff staff = parseTrack(seq.tracks[i], i, timesigs, keysigs);
-                staves.Add(staff);
-            }
-        }
-
-        private List<TimeSignature> getTimeSigSymbols()
-        {
-            List<TimeSignature> timesigs = new List<TimeSignature>();
-            return timesigs;
-        }
-
-        private List<KeySignature> getKeySigSymbols()
-        {
-            List<KeySignature> keysigs = new List<KeySignature>();
-            return keysigs;
-        }
-        
-        private Staff parseTrack(Track track, int staffNum, List<TimeSignature> timesigs, List<KeySignature> keysigs)
-        {
-            Staff staff = new Staff(this, staffNum, seq.division);
-            List<Symbol> syms = getTrackSymbols(track);                //get all the notes, time & key sigs for this track
-            buildStaff(staff, syms);                                   //create measures for staff & put symbols in them
-
-            Measure prevMeasure = null;
-            foreach (Measure measure in staff.measures)
-            {
-                measure.layoutSymbols(prevMeasure);
-                prevMeasure = measure;
-            }
-
-            //staff.dump();
-            return staff;
-        }
-
-        //scan track, convert note on/note off pairs into list of notes for single track
-        //if we can't find a note off for a note on, we ignore it (stuck note?)
-        //add in time and key signature symbols
-        public List<Symbol> getTrackSymbols(Track track)
-        {
-            List<Symbol> notes = new List<Symbol>();
-            for (int i = 0; i < track.events.Count; i++)
-            {
-                Event evt = track.events[i];
-
-                //note on/note off pair
-                if (evt.msg is NoteOnMessage)
-                {
-                    NoteOnMessage noteOn = (NoteOnMessage)evt.msg;
-                    for (int j = i + 1; j < track.events.Count; j++)
-                    {
-                        if (track.events[j].msg is NoteOffMessage)
-                        {
-                            NoteOffMessage noteOff = (NoteOffMessage)track.events[j].msg;
-                            if ((noteOn.noteNumber == noteOff.noteNumber) && (noteOn.channel == noteOff.channel))
-                            {
-                                int duration = (int)(track.events[j].time - evt.time);
-                                Note note = new Note((int)evt.time, noteOn.noteNumber, duration);
-                                notes.Add(note);
-                                break;
-                            }
-                        }
-                    }
-                }
-            }
-            return notes;
-        }
-
-        public void buildStaff(Staff staff, List<Symbol> syms)
-        {
-            int ticksPerMeasure = seq.division * 4;         //for the moment assume 4/4 time
-            int measureNum = 1;
-            int measureTime = 0;
-            Measure measure = new Measure(staff, measureNum, measureTime, 4, 4, 0);        //initial measure
-            staff.addMeasure(measure);
-
-            foreach (Symbol sym in syms)
-            {
-                if (sym is Note)
-                {
-                    Note note = (Note)sym;
-                    int noteTime = note.startTick;
-                    int noteMeasure = (noteTime / ticksPerMeasure) + 1;
-                    while (noteMeasure > measureNum)                        //add empty measures until we get to the one we're one now
-                    {
-                        measureTime += ticksPerMeasure;
-                        measure = new Measure(staff, ++measureNum, measureTime, 4, 4, 0);
-                        staff.addMeasure(measure);
-                    }
-                    measure.addSymbol(note);
-                    note.setMeasure(measure);
-                }
-            }
-        }
-
-//-----------------------------------------------------------------------------
-
-        //set the staff to be displayed
-        public void setDisplayStaff(int staffNum)
-        {
-            if (staffNum < seq.tracks.Count)
-            {
-                displayStaff = staves[staffNum - 1];
-                displayStaff.setCurrentMeasurePos(curTick);
-                Invalidate();
-            }
-            else
-            {
-                displayStaff = null;
-            }
-        }
-
-        //set current tick in display staff
-        public void setDisplayStaffPos(int tick)
-        {
-            curTick = tick;
-            if (displayStaff != null)
-            {                
-                displayStaff.setCurrentMeasurePos(curTick);
-                barPos = displayStaff.getBeatPos(tick);
-                barPos -= displayStaff.measures[displayStaff.leftMeasureNum].staffpos;
-                Invalidate();
-            }
-        }
 
 //- painting ------------------------------------------------------------------
 
@@ -218,20 +62,16 @@ namespace Transonic.Score
             Graphics g = e.Graphics;            
             g.SmoothingMode = SmoothingMode.AntiAlias;
 
-            if (displayStaff != null)
+            if (score != null)
             {
-                displayStaff.paint(g);
-            }
-
-            if (barPos >= 0)
-            {
-                g.DrawLine(Pens.Red, barPos, 0, barPos, this.Height);
+                score.paint(g);
             }
         }
     }
 
 //-----------------------------------------------------------------------------
 
+    //for communication with the program's UI that is using the score sheet
     public interface IScoreWindow
     {
     }

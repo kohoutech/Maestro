@@ -23,48 +23,52 @@ using System.Linq;
 using System.Text;
 using System.Drawing;
 using System.Drawing.Drawing2D;
-
-using Transonic.Score.Symbols;
+using System.Xml;
 
 namespace Transonic.Score
 {
-    public class Staff
+    public class Part
     {
         public ScoreDoc score;
-        public Part part;
+        public List<Staff> staves;
+        public List<Measure> measures;
 
-        public Staff(Part _part)
+        public Part(ScoreDoc _score)
         {
-            part = _part;
-            score = part.score;
+            score = _score;
+            staves = new List<Staff>();
+            measures = new List<Measure>();
         }
 
-//- display -------------------------------------------------------------------
 
-        public void drawStaff(Graphics g, int ypos)
-        {
-            //for (int i = 0; i < 5; i++)
-            //{
-            //    g.DrawLine(Pens.Black, 0, ypos, sheet.Width, ypos);
-            //    ypos += lineSpacing;
-            //}
-        }
+//- painting ------------------------------------------------------------------
 
         public void paint(Graphics g)
         {
-            //int ypos = staffMargin;
-            //drawStaff(g,ypos);
-            //ypos += (staffSpacing + staffHeight);
-            //drawStaff(g, ypos);
+            foreach (Staff staff in staves)
+            {
+                staff.paint(g);
+            }
+            foreach (Measure measure in measures)
+            {
+                measure.paint(g);
+            }
+        }
 
-            //int i = leftMeasureNum;
-            //int xpos = 0;
-            //while ((i < measures.Count) && (xpos < sheet.Width))
-            //{
-            //    Measure measure = measures[i++];
-            //    measure.paint(g, xpos, staffMargin);
-            //    xpos += measure.width;
-            //}
+
+//- reading/writing -----------------------------------------------------------
+
+        public static void parsePartXML(System.Xml.XmlNode partNode, ScoreDoc score)
+        {
+            Console.WriteLine("have part = " + partNode.Name);
+
+            Part part = new Part(score);
+            score.parts.Add(part);
+
+            foreach(XmlNode node in partNode.ChildNodes)
+            {
+                Measure.parseMeasureXML(node, part);                
+            }
         }
     }
 }

@@ -153,11 +153,8 @@
             this.ClientSize = new System.Drawing.Size(664, 401);
             this.Controls.Add(this.maestroStatus);
             this.Controls.Add(this.maestroMenu);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.maestroMenu;
-            this.MaximumSize = new System.Drawing.Size(670, 500);
-            this.MinimumSize = new System.Drawing.Size(670, 240);
             this.Name = "MaestroWindow";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Maestro";

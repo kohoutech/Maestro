@@ -104,8 +104,7 @@ namespace Transonic.Score.Symbols
 
         public override void paint(Graphics g, int left, int top)
         {
-            g.FillRectangle(Brushes.Blue, left + 6, top + Staff.lineSpacing, 8, 4);
-
+            //g.FillRectangle(Brushes.Blue, left + 6, top + Staff.lineSpacing, 8, 4);
         }
     }
 
