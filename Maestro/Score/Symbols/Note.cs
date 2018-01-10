@@ -23,6 +23,7 @@ using System.Linq;
 using System.Text;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Xml;
 
 using Transonic.Score;
 
@@ -45,6 +46,10 @@ namespace Transonic.Score.Symbols
         public bool ledgerLinesMiddle;
         public int ledgerLinesBelow;
         public bool hasSharp;
+
+        public Note()
+        {
+        }
 
         public Note(int _start, int _noteNum, int _dur)
         {
@@ -153,6 +158,38 @@ namespace Transonic.Score.Symbols
             //g.FillEllipse(Brushes.Red, xorg, top - 4, 8, 8);
             //g.DrawLine(Pens.Red, xorg + 8, top, xorg + 8, top - Staff.lineSpacing * 3);
 
+        }
+
+        internal static Note parseNoteXML(System.Xml.XmlNode noteNode)
+        {
+            Note note = new Note();
+
+            XmlNodeList childnodes = noteNode.ChildNodes;
+            int count = childnodes.Count;
+            int num = 0;
+            if (childnodes[num].Name.Equals("grace")) { num++; }
+            else if (childnodes[num].Name.Equals("cue")) { num++; }
+            else { num++;}
+            if (childnodes[num].Name.Equals("instrument")) { num++; }
+            parseEditorialVoice(childnodes[num]);
+            if ((num < count) && childnodes[num].Name.Equals("type")) { num++; };
+            if ((num < count) && childnodes[num].Name.Equals("dot")) { num++; };
+            if ((num < count) && childnodes[num].Name.Equals("accidental")) { num++; };
+            if ((num < count) && childnodes[num].Name.Equals("time-modification")) { num++; };
+            if ((num < count) && childnodes[num].Name.Equals("stem")) { num++; };
+            if ((num < count) && childnodes[num].Name.Equals("notehead")) { num++; };
+            if ((num < count) && childnodes[num].Name.Equals("notehead-text")) { num++; };
+            if ((num < count) && childnodes[num].Name.Equals("staff")) { num++; };
+            if ((num < count) && childnodes[num].Name.Equals("beam")) { num++; };
+            if ((num < count) && childnodes[num].Name.Equals("notations")) { num++; };
+            if ((num < count) && childnodes[num].Name.Equals("lyric")) { num++; };
+            if ((num < count) && childnodes[num].Name.Equals("play")) { num++; };
+            return note;
+        }
+
+        private static void parseEditorialVoice(XmlNode xmlNode)
+        {
+            throw new NotImplementedException();
         }
     }
 }

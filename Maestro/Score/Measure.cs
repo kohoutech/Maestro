@@ -232,7 +232,9 @@ namespace Transonic.Score
 
                 switch(dataNode.Name) 
                 {
-                    case "note": break;
+                    case "note":
+                        Note note = Note.parseNoteXML(dataNode);
+                        break;
                     case "backup": break;
                     case "forward": break;
                     case "direction": break;

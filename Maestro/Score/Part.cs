@@ -33,9 +33,12 @@ namespace Transonic.Score
         public List<Staff> staves;
         public List<Measure> measures;
 
-        public Part(ScoreDoc _score)
+        public String id;
+
+        public Part(ScoreDoc _score, String _id)
         {
             score = _score;
+            id = _id;
             staves = new List<Staff>();
             measures = new List<Measure>();
         }
@@ -60,9 +63,11 @@ namespace Transonic.Score
 
         public static void parsePartXML(System.Xml.XmlNode partNode, ScoreDoc score)
         {
-            Console.WriteLine("have part = " + partNode.Name);
+            XmlAttributeCollection attrs = partNode.Attributes;
+            String idstr = attrs["id"].Value;                       //required attr
 
-            Part part = new Part(score);
+
+            Part part = new Part(score, idstr);
             score.parts.Add(part);
 
             foreach(XmlNode node in partNode.ChildNodes)
