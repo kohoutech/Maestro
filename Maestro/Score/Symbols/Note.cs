@@ -40,15 +40,23 @@ namespace Transonic.Score.Symbols
         //public const String quarter = "\u2669";
 
         public int noteNumber;          //midi pitch
-        public int octave;
-        public int step;
         public int ledgerLinesAbove;
         public bool ledgerLinesMiddle;
         public int ledgerLinesBelow;
         public bool hasSharp;
 
+        public bool cue;
+        public bool chord;
+        public int step;
+        public double alter;
+        public int octave;
+        public double duration;
+        public string voice;
+
         public Note()
         {
+            cue = false;
+            chord = false;
         }
 
         public Note(int _start, int _noteNum, int _dur)
@@ -160,36 +168,274 @@ namespace Transonic.Score.Symbols
 
         }
 
-        internal static Note parseNoteXML(System.Xml.XmlNode noteNode)
+//- reading/writing -----------------------------------------------------------
+
+        public static Note parseNoteXML(System.Xml.XmlNode noteNode)
         {
             Note note = new Note();
 
             XmlNodeList childnodes = noteNode.ChildNodes;
             int count = childnodes.Count;
             int num = 0;
-            if (childnodes[num].Name.Equals("grace")) { num++; }
-            else if (childnodes[num].Name.Equals("cue")) { num++; }
-            else { num++;}
-            if (childnodes[num].Name.Equals("instrument")) { num++; }
-            parseEditorialVoice(childnodes[num]);
-            if ((num < count) && childnodes[num].Name.Equals("type")) { num++; };
-            if ((num < count) && childnodes[num].Name.Equals("dot")) { num++; };
-            if ((num < count) && childnodes[num].Name.Equals("accidental")) { num++; };
-            if ((num < count) && childnodes[num].Name.Equals("time-modification")) { num++; };
-            if ((num < count) && childnodes[num].Name.Equals("stem")) { num++; };
-            if ((num < count) && childnodes[num].Name.Equals("notehead")) { num++; };
-            if ((num < count) && childnodes[num].Name.Equals("notehead-text")) { num++; };
-            if ((num < count) && childnodes[num].Name.Equals("staff")) { num++; };
-            if ((num < count) && childnodes[num].Name.Equals("beam")) { num++; };
-            if ((num < count) && childnodes[num].Name.Equals("notations")) { num++; };
-            if ((num < count) && childnodes[num].Name.Equals("lyric")) { num++; };
-            if ((num < count) && childnodes[num].Name.Equals("play")) { num++; };
+
+            //choice
+            if (childnodes[num].Name.Equals("grace"))
+            {
+                parseGraceXML(num++, childnodes, note);
+                if (childnodes[num].Name.Equals("cue"))
+                {
+                    note.cue = true;
+                    num++;
+                    num = parseFullNoteXML(num, childnodes, note);
+                    
+                }
+                else
+                {
+                    num = parseFullNoteXML(num, childnodes, note);
+                    for (int i = 0; i < 2; i++)
+                    {
+                        if (childnodes[num].Name.Equals("tie"))
+                        {
+                            parseTieXML(num++, childnodes, note);
+                        }
+                    }
+                }
+            }
+            else if (childnodes[num].Name.Equals("cue")) 
+            {
+                note.cue = true;
+                num++;
+                num = parseFullNoteXML(num, childnodes, note);
+                num = parseDurationXML(num, childnodes, note);
+            }
+            else { 
+                num = parseFullNoteXML(num, childnodes, note);
+                num = parseDurationXML(num, childnodes, note);
+                for (int i = 0; i < 2; i++)
+                {
+                    if (childnodes[num].Name.Equals("tie"))
+                    {
+                        parseTieXML(num++, childnodes, note);
+                    }
+                }
+            }
+
+            if (childnodes[num].Name.Equals("instrument")) 
+            {
+                parseInstrumentXML(num++, childnodes, note);
+            }
+            num = parseEditorialVoice(num++, childnodes, note);             //required
+            if ((num < count) && childnodes[num].Name.Equals("type"))
+            {
+                parseTypeXML(num++, childnodes, note);
+            };
+            while ((num < count) && childnodes[num].Name.Equals("dot")) 
+            {
+                parseDotXML(num++, childnodes, note);
+            };
+            if ((num < count) && childnodes[num].Name.Equals("accidental")) 
+            {
+                parseAccidentalXML(num++, childnodes, note);
+            };
+            if ((num < count) && childnodes[num].Name.Equals("time-modification")) 
+            {
+                parseTimeModificationXML(num++, childnodes, note);
+            };
+            if ((num < count) && childnodes[num].Name.Equals("stem")) 
+            {
+                parseStemXML(num++, childnodes, note);
+            };
+            if ((num < count) && childnodes[num].Name.Equals("notehead")) 
+            {
+                parseNoteheadXML(num++, childnodes, note);
+            };
+            if ((num < count) && childnodes[num].Name.Equals("notehead-text")) 
+            {
+                parseNoteheadTextXML(num++, childnodes, note);
+            };
+            if ((num < count) && childnodes[num].Name.Equals("staff")) 
+            {
+                num = parseStaffXML(num, childnodes, note);
+            };
+            for (int i = 0; i < 8; i++)
+            {
+                if ((num < count) && childnodes[num].Name.Equals("beam"))
+                {
+                    parseBeamXML(num++, childnodes, note);
+                };
+            }
+            while ((num < count) && childnodes[num].Name.Equals("notations")) 
+            {
+                parseNotationsXML(num++, childnodes, note);
+            };
+            while ((num < count) && childnodes[num].Name.Equals("lyric")) 
+            {
+                parseLyricXML(num++, childnodes, note);
+            };
+            if ((num < count) && childnodes[num].Name.Equals("play"))
+            {
+                parsePlayXML(num++, childnodes, note);
+            };
             return note;
         }
 
-        private static void parseEditorialVoice(XmlNode xmlNode)
+        public static void parseGraceXML(int num, XmlNodeList childnodes, Note note)
         {
             throw new NotImplementedException();
         }
-    }
+        
+        public static int parseFullNoteXML(int num, XmlNodeList childnodes, Note note)
+        {
+            int count = childnodes.Count;
+            if ((num < count) && childnodes[num].Name.Equals("chord"))
+            {
+                note.chord = true;
+                num++;
+            };
+            if (childnodes[num].Name.Equals("pitch"))
+            {
+                parsePitchXML(num++, childnodes, note);
+            }
+            else if (childnodes[num].Name.Equals("unpitched"))
+            {
+                parseUnpitchedXML(num++, childnodes, note);
+            }
+            else
+            {
+                parseRestXML(num++, childnodes, note);
+            }
+            return num;
+        }
+
+        private static void parsePitchXML(int p, XmlNodeList childnodes, Note note)
+        {
+            int num = 0;
+            note.step = childnodes[num++].Value.ToUpper()[0] - 'A';
+            if (childnodes[num].Name.Equals("alter"))
+            {
+                note.alter = Convert.ToDouble(childnodes[num++].Value);
+            }
+            note.octave = Convert.ToInt32(childnodes[num].Value);
+        }
+
+        private static void parseUnpitchedXML(int p, XmlNodeList childnodes, Note note)
+        {
+            throw new NotImplementedException();
+        }
+
+        private static void parseRestXML(int p, XmlNodeList childnodes, Note note)
+        {
+            throw new NotImplementedException();
+        }
+
+        public static void parseTieXML(int num, XmlNodeList childnodes, Note note)
+        {
+            throw new NotImplementedException();
+        }
+
+        public static int parseDurationXML(int num, XmlNodeList childnodes, Note note)
+        {
+            note.duration = Convert.ToDouble(childnodes[0].Value);
+            return 1;
+        }
+
+        public static void parseInstrumentXML(int p, XmlNodeList childnodes, Note note)
+        {
+            throw new NotImplementedException();
+        }
+
+        public static int parseEditorialVoice(int p, XmlNodeList childnodes, Note note)
+        {
+            int num = p;
+            if (childnodes[num].Name.Equals("footnote"))
+            {
+                num = parseFootnoteXML(num, childnodes, note);
+            }
+            if (childnodes[num].Name.Equals("level"))
+            {
+                num = parseLevelXML(num, childnodes, note);
+            }
+            if (childnodes[num].Name.Equals("voice"))
+            {
+                num = parseVoiceXML(num, childnodes, note);
+            }
+            return num;
+        }
+
+        private static int parseVoiceXML(int num, XmlNodeList childnodes, Note note)
+        {
+            note.voice = childnodes[0].Value;
+            return 1;            
+        }
+
+        private static int parseLevelXML(int num, XmlNodeList childnodes, Note note)
+        {
+            throw new NotImplementedException();
+        }
+
+        private static int parseFootnoteXML(int num, XmlNodeList childnodes, Note note)
+        {
+            throw new NotImplementedException();
+        }
+
+        public static void parseTypeXML(int p, XmlNodeList childnodes, Note note)
+        {
+            throw new NotImplementedException();
+        }
+
+        public static void parseDotXML(int p, XmlNodeList childnodes, Note note)
+        {
+            throw new NotImplementedException();
+        }
+
+        public static void parseAccidentalXML(int p, XmlNodeList childnodes, Note note)
+        {
+            throw new NotImplementedException();
+        }
+
+        public static void parseTimeModificationXML(int p, XmlNodeList childnodes, Note note)
+        {
+            throw new NotImplementedException();
+        }
+        
+        public static void parseStemXML(int p, XmlNodeList childnodes, Note note)
+        {
+            throw new NotImplementedException();
+        }
+
+        public static void parseNoteheadXML(int p, XmlNodeList childnodes, Note note)
+        {
+            throw new NotImplementedException();
+        }
+
+        public static void parseNoteheadTextXML(int p, XmlNodeList childnodes, Note note)
+        {
+            throw new NotImplementedException();
+        }
+
+        public static int parseStaffXML(int num, XmlNodeList childnodes, Note note)
+        {
+            throw new NotImplementedException();
+        }
+
+        public static void parseBeamXML(int p, XmlNodeList childnodes, Note note)
+        {
+            throw new NotImplementedException();
+        }
+
+        public static void parseNotationsXML(int p, XmlNodeList childnodes, Note note)
+        {
+            throw new NotImplementedException();
+        }
+
+        public static void parseLyricXML(int p, XmlNodeList childnodes, Note note)
+        {
+            throw new NotImplementedException();
+        }
+
+        public static void parsePlayXML(int p, XmlNodeList childnodes, Note note)
+        {
+            throw new NotImplementedException();
+        }
+     }
 }
