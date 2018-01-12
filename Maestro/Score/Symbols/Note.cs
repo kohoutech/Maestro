@@ -52,11 +52,20 @@ namespace Transonic.Score.Symbols
         public int octave;
         public double duration;
         public string voice;
+        public string notetype;
+        public int dot;
 
         public Note()
         {
             cue = false;
             chord = false;
+            step = 0;
+            alter = 0.0;
+            octave = 0;
+            duration = 0.0;
+            voice = "";
+            notetype = "quarter";
+            dot = 0;
         }
 
         public Note(int _start, int _noteNum, int _dur)
@@ -227,7 +236,7 @@ namespace Transonic.Score.Symbols
             num = parseEditorialVoice(num++, childnodes, note);             //required
             if ((num < count) && childnodes[num].Name.Equals("type"))
             {
-                parseTypeXML(num++, childnodes, note);
+                parseNoteTypeXML(num++, childnodes, note);
             };
             while ((num < count) && childnodes[num].Name.Equals("dot")) 
             {
@@ -294,36 +303,38 @@ namespace Transonic.Score.Symbols
             };
             if (childnodes[num].Name.Equals("pitch"))
             {
-                parsePitchXML(num++, childnodes, note);
+                parsePitchXML(childnodes[num++], note);
             }
             else if (childnodes[num].Name.Equals("unpitched"))
             {
-                parseUnpitchedXML(num++, childnodes, note);
+                parseUnpitchedXML(childnodes[num++], note);
             }
             else
             {
-                parseRestXML(num++, childnodes, note);
+                parseRestXML(childnodes[num++], note);
             }
             return num;
         }
 
-        private static void parsePitchXML(int p, XmlNodeList childnodes, Note note)
+        private static void parsePitchXML(XmlNode pitchNode, Note note)
         {
             int num = 0;
-            note.step = childnodes[num++].Value.ToUpper()[0] - 'A';
+            XmlNodeList childnodes = pitchNode.ChildNodes;
+            string stepstr = childnodes[num++].InnerText.ToUpper();
+            note.step = stepstr[0] - 'A';
             if (childnodes[num].Name.Equals("alter"))
             {
-                note.alter = Convert.ToDouble(childnodes[num++].Value);
+                note.alter = Convert.ToDouble(childnodes[num++].InnerText);
             }
-            note.octave = Convert.ToInt32(childnodes[num].Value);
+            note.octave = Convert.ToInt32(childnodes[num].InnerText);
         }
 
-        private static void parseUnpitchedXML(int p, XmlNodeList childnodes, Note note)
+        private static void parseUnpitchedXML(XmlNode unpitchedNode, Note note)
         {
             throw new NotImplementedException();
         }
 
-        private static void parseRestXML(int p, XmlNodeList childnodes, Note note)
+        private static void parseRestXML(XmlNode restNode, Note note)
         {
             throw new NotImplementedException();
         }
@@ -378,14 +389,14 @@ namespace Transonic.Score.Symbols
             throw new NotImplementedException();
         }
 
-        public static void parseTypeXML(int p, XmlNodeList childnodes, Note note)
+        public static void parseNoteTypeXML(int p, XmlNodeList childnodes, Note note)
         {
-            throw new NotImplementedException();
+            note.notetype = childnodes[p].Value;
         }
 
         public static void parseDotXML(int p, XmlNodeList childnodes, Note note)
         {
-            throw new NotImplementedException();
+            note.dot++;
         }
 
         public static void parseAccidentalXML(int p, XmlNodeList childnodes, Note note)
@@ -400,7 +411,7 @@ namespace Transonic.Score.Symbols
         
         public static void parseStemXML(int p, XmlNodeList childnodes, Note note)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
         public static void parseNoteheadXML(int p, XmlNodeList childnodes, Note note)
@@ -415,7 +426,8 @@ namespace Transonic.Score.Symbols
 
         public static int parseStaffXML(int num, XmlNodeList childnodes, Note note)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
+            return 1;
         }
 
         public static void parseBeamXML(int p, XmlNodeList childnodes, Note note)
@@ -425,7 +437,7 @@ namespace Transonic.Score.Symbols
 
         public static void parseNotationsXML(int p, XmlNodeList childnodes, Note note)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
         public static void parseLyricXML(int p, XmlNodeList childnodes, Note note)
