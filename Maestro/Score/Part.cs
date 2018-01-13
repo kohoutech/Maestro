@@ -25,6 +25,8 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Xml;
 
+using Transonic.Score.MusicXML;
+
 namespace Transonic.Score
 {
     public class Part
@@ -55,24 +57,6 @@ namespace Transonic.Score
             foreach (Measure measure in measures)
             {
                 measure.paint(g);
-            }
-        }
-
-
-//- reading/writing -----------------------------------------------------------
-
-        public static void parsePartXML(System.Xml.XmlNode partNode, ScoreDoc score)
-        {
-            XmlAttributeCollection attrs = partNode.Attributes;
-            String idstr = attrs["id"].Value;                       //required attr
-
-
-            Part part = new Part(score, idstr);
-            score.parts.Add(part);
-
-            foreach(XmlNode node in partNode.ChildNodes)
-            {
-                Measure.parseMeasureXML(node, part);                
             }
         }
     }

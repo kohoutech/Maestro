@@ -31,6 +31,7 @@ using Transonic.MIDI.Engine;
 using Transonic.MIDI.System;
 using Transonic.Widget;
 using Transonic.Score;
+using Transonic.Score.MusicXML;
 using Maestro.UI;
 
 namespace Maestro
@@ -140,7 +141,7 @@ namespace Maestro
 
         public void openScore(String filename)
         {
-            currentScore = ScoreDoc.loadFromMusicXML(scoreSheet, filename);
+            currentScore = XMLReader.loadFromMusicXML(scoreSheet, filename);
             this.Text = "Maestro [" + filename + "]";
             //currentSeq.setMidiSystem(midiSystem);
             //transport.setSequence(currentSeq);

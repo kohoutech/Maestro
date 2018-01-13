@@ -26,6 +26,7 @@ using System.Drawing.Drawing2D;
 using System.Xml;
 
 using Transonic.Score.Symbols;
+using Transonic.Score.MusicXML;
 
 namespace Transonic.Score
 {
@@ -216,35 +217,6 @@ namespace Transonic.Score
             //g.DrawLine(Pens.Black, left + width, top, left + width, top + Staff.grandHeight);
         }
 
-//- reading/writing -----------------------------------------------------------
-
-        public static void parseMeasureXML(XmlNode measureNode, Part part)
-        {
-            XmlAttributeCollection attrs = measureNode.Attributes;
-            int number = Convert.ToInt32(attrs["number"].Value);        //required attr
-
-            Measure measure = new Measure(part, number);
-            part.measures.Add(measure);
-
-            foreach (XmlNode dataNode in measureNode.ChildNodes)
-            {
-                Console.WriteLine("have data type = " + dataNode.Name);
-
-                switch(dataNode.Name) 
-                {
-                    case "note":
-                        Note note = Note.parseNoteXML(dataNode);
-                        break;
-                    case "backup": break;
-                    case "forward": break;
-                    case "direction": break;
-                    case "attributes": break;
-                    case "print": break;
-                    case "barline": break;
-                    default : break;
-                }
-            }
-        }
     }
 }
 
