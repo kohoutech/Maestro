@@ -27,6 +27,7 @@ namespace Transonic.Score.MusicXML
     public class SimpleTypes
     {
         //reading
+        //must cast the return int val to matching enum on the calling side
         static public int readSimpleType(SimpleTypeName name, String value)
         {
             String[] vals = SimpleTypeTbl[name];

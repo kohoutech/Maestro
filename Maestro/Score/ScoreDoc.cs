@@ -26,6 +26,7 @@ using System.Drawing.Drawing2D;
 using System.Xml;
 
 using Transonic.Score.MusicXML;
+using Transonic.Score.Symbols;
 
 namespace Transonic.Score
 {
@@ -36,6 +37,16 @@ namespace Transonic.Score
         public Part curPart;
 
         public String filename;
+
+        //score-header
+        public Work work;
+        public String movementNumber;
+        public String movementTitle;
+        public Identification identification;
+        public Defaults defaults;
+        public List<Credit> credits;
+        public PartList partList;
+
 
 //- cons ----------------------------------------------------------------------
 

@@ -81,6 +81,7 @@
     <Compile Include="Score\Staff.cs" />
     <Compile Include="Score\Symbols\Note.cs" />
     <Compile Include="Score\Symbols\Symbol.cs" />
+    <Compile Include="Score\Symbols\XmlClasses.cs" />
     <Compile Include="UI\ControlPanel.cs">
       <SubType>UserControl</SubType>
     </Compile>

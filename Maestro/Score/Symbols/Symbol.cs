@@ -94,18 +94,18 @@ namespace Transonic.Score.Symbols
     
 //-----------------------------------------------------------------------------
 
-    public class Rest : Symbol
-    {
-        public Rest(int _start, int _len) : base()
-        {
-            beat = _start;
-            len = _len;
-        }
+    //public class Rest : Symbol
+    //{
+    //    public Rest(int _start, int _len) : base()
+    //    {
+    //        beat = _start;
+    //        len = _len;
+    //    }
 
-        public override void paint(Graphics g, int left, int top)
-        {
-            //g.FillRectangle(Brushes.Blue, left + 6, top + Staff.lineSpacing, 8, 4);
-        }
-    }
+    //    public override void paint(Graphics g, int left, int top)
+    //    {
+    //        //g.FillRectangle(Brushes.Blue, left + 6, top + Staff.lineSpacing, 8, 4);
+    //    }
+    //}
 
 }

@@ -54,6 +54,8 @@ namespace Transonic.Score.Symbols
         public string notetype;
         public int dot;
 
+        public Accidental accidental;
+
         public Note()
         {
             cue = false;
