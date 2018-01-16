@@ -193,7 +193,7 @@ namespace Transonic.Score.Symbols
     public class StaffDetails		{}
     public class StaffDivide		{}
     public class StaffLayout		{}
-    public class staffTuning		{}
+    public class StaffTuning		{}
     public class Stem			{}
     public class Stick			{}
     public class StringSym			{}
@@ -224,5 +224,33 @@ namespace Transonic.Score.Symbols
     public class WavyLine		{}
     public class Wedge			{}
     public class Work			{}
+
+//- element groups ------------------------------------------------------------
+
+    public class AllMargins		{}
+    public class BeatUnit		{}
+    public class DisplayStepOctave	{}
+    public class Duration		{}
+    public class Editorial 		{}
+    public class EditorialVoice		{}
+    public class EditorialVoiceDirection	{}
+    public class Footnote		{}
+    public class FullNote		{}
+    public class HarmonyChord		{}
+    public class Layout			{}
+    public class LeftRightMargins	{}
+    public class LevelGroup			{}
+    public class MusicData		{}
+    public class NonTraditionalKey	{}
+    public class PartGroupGroup		{}
+    public class ScoreHeader		{}
+    public class ScorePartGroup		{}
+    public class SlashGroup			{}
+    public class StaffX			{}
+    public class TimeSignatureGroup		{}
+    public class TraditionalKey		{}
+    public class Tuning			{}
+    public class Voice			{}
+
 
 }

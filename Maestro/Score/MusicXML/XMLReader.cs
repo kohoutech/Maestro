@@ -142,11 +142,6 @@ namespace Transonic.Score.MusicXML
             }
         }
 
-        public static void parseDotXML(int p, XmlNodeList childnodes, Note note)
-        {
-            note.dot++;
-        }
-
 //- complex types -------------------------------------------------------------
 
         public static Accidental parseAccidentalXML(XmlNode node)
@@ -154,526 +149,637 @@ namespace Transonic.Score.MusicXML
             return null;
         }
 
-        public static void parseAccidentalMarkXML(XmlNode node, Symbol sym)
+        public static AccidentalMark parseAccidentalMarkXML(XmlNode node)
         {
+            return null;
         }
 
-        public static void parseAccidentalTextXML(XmlNode node, Symbol sym)
+        public static AccidentalText parseAccidentalTextXML(XmlNode node)
         {
+            return null;
         }
 
-        public static void parseAccordXML(XmlNode node, Symbol sym)
+        public static Accord parseAccordXML(XmlNode node)
         {
+            return null;
         }
 
-        public static void parseAccordionRegistrationXML(XmlNode node, Symbol sym)
+        public static AccordionRegistration parseAccordionRegistrationXML(XmlNode node)
         {
+            return null;
         }
 
-        public static void parseAppearanceXML(XmlNode node, Symbol sym)
+        public static Appearance parseAppearanceXML(XmlNode node)
         {
+            return null;
         }
 
-        public static void parseArpeggiateXML(XmlNode node, Symbol sym)
+        public static Arpeggiate parseArpeggiateXML(XmlNode node)
         {
+            return null;
         }
 
-        public static void parseArrowXML(XmlNode node, Symbol sym)
+        public static Arrow parseArrowXML(XmlNode node)
         {
+            return null;
         }
 
-        public static void parseArticulationsXML(XmlNode node, Symbol sym)
+        public static Articulations parseArticulationsXML(XmlNode node)
         {
+            return null;
         }
 
-        public static void parseAttributesXML(XmlNode node, Symbol sym)
+        public static Attributes parseAttributesXML(XmlNode node)
         {
+            return null;
         }
 
-        public static void parseBackupXML(XmlNode node, Symbol sym)
+        public static Backup parseBackupXML(XmlNode node)
         {
+            return null;
         }
 
-        public static void parseBarStyleColorXML(XmlNode node, Symbol sym)
+        public static BarStyleColor parseBarStyleColorXML(XmlNode node)
         {
+            return null;
         }
 
-        public static void parseBarlineXML(XmlNode node, Symbol sym)
+        public static Barline parseBarlineXML(XmlNode node)
         {
+            return null;
         }
 
-        public static void parseBarreXML(XmlNode node, Symbol sym)
+        public static Barre parseBarreXML(XmlNode node)
         {
+            return null;
         }
 
-        public static void parseBassXML(XmlNode node, Symbol sym)
+        public static Bass parseBassXML(XmlNode node)
         {
+            return null;
         }
 
-        public static void parseBassAlterXML(XmlNode node, Symbol sym)
+        public static BassAlter parseBassAlterXML(XmlNode node)
         {
+            return null;
         }
 
-        public static void parseBassStepXML(XmlNode node, Symbol sym)
+        public static BassStep parseBassStepXML(XmlNode node)
         {
+            return null;
         }
 
-        public static void parseBeamXML(XmlNode node, Symbol sym)
+        public static Beam parseBeamXML(XmlNode node)
         {
+            return null;
         }
 
-        public static void parseBeamXML(int p, XmlNodeList childnodes, Note note)
-        {
-            throw new NotImplementedException();
-        }
+        //public static void parseBeamXML(int p, XmlNodeList childnodes, Note note)
+        //{
+        //    throw new NotImplementedException();
+        //}
 
-        public static void parseBeatRepeatXML(XmlNode node, Symbol sym)
+        public static BeatRepeat parseBeatRepeatXML(XmlNode node)
         {
+            return null;
         }
 
-        public static void parseBeatUnitTiedXML(XmlNode node, Symbol sym)
+        public static BeatUnitTied parseBeatUnitTiedXML(XmlNode node)
         {
+            return null;
         }
 
-        public static void parseBeaterXML(XmlNode node, Symbol sym)
+        public static Beater parseBeaterXML(XmlNode node)
         {
+            return null;
         }
 
-        public static void parseBendXML(XmlNode node, Symbol sym)
+        public static Bend parseBendXML(XmlNode node)
         {
+            return null;
         }
 
-        public static void parseBookmarkXML(XmlNode node, Symbol sym)
+        public static Bookmark parseBookmarkXML(XmlNode node)
         {
+            return null;
         }
 
-        public static void parseBracketXML(XmlNode node, Symbol sym)
+        public static Bracket parseBracketXML(XmlNode node)
         {
+            return null;
         }
 
-        public static void parseBreathMarkXML(XmlNode node, Symbol sym)
+        public static BreathMark parseBreathMarkXML(XmlNode node)
         {
+            return null;
         }
 
-        public static void parseCaesuraXML(XmlNode node, Symbol sym)
+        public static Caesura parseCaesuraXML(XmlNode node)
         {
+            return null;
         }
 
-        public static void parseCancelXML(XmlNode node, Symbol sym)
+        public static Cancel parseCancelXML(XmlNode node)
         {
+            return null;
         }
 
-        public static void parseClefXML(XmlNode node, Symbol sym)
+        public static Clef parseClefXML(XmlNode node)
         {
+            return null;
         }
 
-        public static void parseCodaXML(XmlNode node, Symbol sym)
+        public static Coda parseCodaXML(XmlNode node)
         {
+            return null;
         }
 
-        public static void parseCreditXML(XmlNode node, Symbol sym)
+        public static Credit parseCreditXML(XmlNode node)
         {
+            return null;
         }
 
-        public static void parseDashesXML(XmlNode node, Symbol sym)
+        public static Dashes parseDashesXML(XmlNode node)
         {
+            return null;
         }
 
-        public static void parseDefaultsXML(XmlNode node, Symbol sym)
+        public static Defaults parseDefaultsXML(XmlNode node)
         {
+            return null;
         }
 
-        public static void parseDegreeXML(XmlNode node, Symbol sym)
+        public static Degree parseDegreeXML(XmlNode node)
         {
+            return null;
         }
 
-        public static void parseDegreeAlterXML(XmlNode node, Symbol sym)
+        public static DegreeAlter parseDegreeAlterXML(XmlNode node)
         {
+            return null;
         }
 
-        public static void parseDegreeTypeXML(XmlNode node, Symbol sym)
+        public static DegreeType parseDegreeTypeXML(XmlNode node)
         {
+            return null;
         }
 
-        public static void parseDegreeValueXML(XmlNode node, Symbol sym)
+        public static DegreeValue parseDegreeValueXML(XmlNode node)
         {
+            return null;
         }
 
-        public static void parseDirectionXML(XmlNode node, Symbol sym)
+        public static Direction parseDirectionXML(XmlNode node)
         {
+            return null;
         }
 
-        public static void parseDirectionTypeXML(XmlNode node, Symbol sym)
+        public static Directiontype parseDirectionTypeXML(XmlNode node)
         {
+            return null;
         }
 
-        public static void parseDistanceXML(XmlNode node, Symbol sym)
+        public static Distance parseDistanceXML(XmlNode node)
         {
+            return null;
         }
 
-        public static void parseDynamicsXML(XmlNode node, Symbol sym)
+        public static Dynamics parseDynamicsXML(XmlNode node)
         {
+            return null;
         }
 
-        public static void parseElisionXML(XmlNode node, Symbol sym)
+        public static Elision parseElisionXML(XmlNode node)
         {
+            return null;
         }
 
-        public static void parseEmptyXML(XmlNode node, Symbol sym)
+        public static Empty parseEmptyXML(XmlNode node)
         {
+            return null;
         }
 
-        public static void parseEmptyFontXML(XmlNode node, Symbol sym)
+        public static EmptyFont parseEmptyFontXML(XmlNode node)
         {
+            return null;
         }
 
-        public static void parseEmptyLineXML(XmlNode node, Symbol sym)
+        public static EmptyLine parseEmptyLineXML(XmlNode node)
         {
+            return null;
         }
 
-        public static void parseEmptyPlacementSmuflXML(XmlNode node, Symbol sym)
+        public static EmptyPlacementSmufl parseEmptyPlacementSmuflXML(XmlNode node)
         {
+            return null;
         }
 
-        public static void parseEmptyPlacementXML(XmlNode node, Symbol sym)
+        public static EmptyPlacement parseEmptyPlacementXML(XmlNode node)
         {
+            return null;
         }
 
-        public static void parseEmptyPrintObjectStyleAlignXML(XmlNode node, Symbol sym)
+        public static EmptyPrintObjectStyleAlign parseEmptyPrintObjectStyleAlignXML(XmlNode node)
         {
+            return null;
         }
 
-        public static void parseEmptyPrintStyleAlignIdXML(XmlNode node, Symbol sym)
+        public static EmptyPrintStyleAlignId parseEmptyPrintStyleAlignIdXML(XmlNode node)
         {
+            return null;
         }
 
-        public static void parseEmptyTrillSoundXML(XmlNode node, Symbol sym)
+        public static EmptyTrillSound parseEmptyTrillSoundXML(XmlNode node)
         {
+            return null;
         }
 
-        public static void parseEncodingXML(XmlNode node, Symbol sym)
+        public static Transonic.Score.Symbols.Encoding parseEncodingXML(XmlNode node)
         {
+            return null;
         }
 
-        public static void parseEndingXML(XmlNode node, Symbol sym)
+        public static Ending parseEndingXML(XmlNode node)
         {
+            return null;
         }
 
-        public static void parseExtendXML(XmlNode node, Symbol sym)
+        public static Extend parseExtendXML(XmlNode node)
         {
+            return null;
         }
 
-        public static void parseFeatureXML(XmlNode node, Symbol sym)
+        public static Feature parseFeatureXML(XmlNode node)
         {
+            return null;
         }
 
-        public static void parseFermataXML(XmlNode node, Symbol sym)
+        public static Fermata parseFermataXML(XmlNode node)
         {
+            return null;
         }
 
-        public static void parseFigureXML(XmlNode node, Symbol sym)
+        public static Figure parseFigureXML(XmlNode node)
         {
+            return null;
         }
 
-        public static void parseFiguredBassXML(XmlNode node, Symbol sym)
+        public static FiguredBass parseFiguredBassXML(XmlNode node)
         {
+            return null;
         }
 
-        public static void parseFingeringXML(XmlNode node, Symbol sym)
+        public static Fingering parseFingeringXML(XmlNode node)
         {
+            return null;
         }
 
-        public static void parseFirstFretXML(XmlNode node, Symbol sym)
+        public static FirstFret parseFirstFretXML(XmlNode node)
         {
+            return null;
         }
 
-        public static void parseFormattedSymbolIdXML(XmlNode node, Symbol sym)
+        public static FormattedSymbolId parseFormattedSymbolIdXML(XmlNode node)
         {
+            return null;
         }
 
-        public static void parseFormattedTextIdXML(XmlNode node, Symbol sym)
+        public static FormattedTextId parseFormattedTextIdXML(XmlNode node)
         {
+            return null;
         }
 
-        public static void parseFormattedTextXML(XmlNode node, Symbol sym)
+        public static FormattedText parseFormattedTextXML(XmlNode node)
         {
+            return null;
         }
 
-        public static void parseForwardXML(XmlNode node, Symbol sym)
+        public static Forward parseForwardXML(XmlNode node)
         {
+            return null;
         }
 
-        public static void parseFrameNoteXML(XmlNode node, Symbol sym)
+        public static FrameNote parseFrameNoteXML(XmlNode node)
         {
+            return null;
         }
 
-        public static void parseFrameXML(XmlNode node, Symbol sym)
+        public static Frame parseFrameXML(XmlNode node)
         {
+            return null;
         }
 
-        public static void parseFretXML(XmlNode node, Symbol sym)
+        public static Fret parseFretXML(XmlNode node)
         {
+            return null;
         }
 
-        public static void parseGlassXML(XmlNode node, Symbol sym)
+        public static Glass parseGlassXML(XmlNode node)
         {
+            return null;
         }
 
-        public static void parseGlissandoXML(XmlNode node, Symbol sym)
+        public static Glissando parseGlissandoXML(XmlNode node)
         {
+            return null;
         }
 
-        public static void parseGlyphXML(XmlNode node, Symbol sym)
+        public static Glyph parseGlyphXML(XmlNode node)
         {
+            return null;
         }
 
-        public static void parseGraceXML(XmlNode node, Symbol sym)
+        public static Grace parseGraceXML(XmlNode node)
         {
+            return null;
         }
 
-        public static void parseGraceXML(int num, XmlNodeList childnodes, Note note)
-        {
-            throw new NotImplementedException();
-        }
+        //public static void parseGraceXML(int num, XmlNodeList childnodes, Note note)
+        //{
+        //    throw new NotImplementedException();
+        //}
 
-        public static void parseGroupBarlineXML(XmlNode node, Symbol sym)
+        public static GroupBarline parseGroupBarlineXML(XmlNode node)
         {
+            return null;
         }
 
-        public static void parseGroupNameXML(XmlNode node, Symbol sym)
+        public static GroupName parseGroupNameXML(XmlNode node)
         {
+            return null;
         }
 
-        public static void parseGroupSymbolXML(XmlNode node, Symbol sym)
+        public static GroupSymbol parseGroupSymbolXML(XmlNode node)
         {
+            return null;
         }
 
-        public static void parseGroupingXML(XmlNode node, Symbol sym)
+        public static Grouping parseGroupingXML(XmlNode node)
         {
+            return null;
         }
 
-        public static void parseHammerOnPullOffXML(XmlNode node, Symbol sym)
+        public static HammerOnPullOff parseHammerOnPullOffXML(XmlNode node)
         {
+            return null;
         }
 
-        public static void parseHandbellXML(XmlNode node, Symbol sym)
+        public static Handbell parseHandbellXML(XmlNode node)
         {
+            return null;
         }
 
-        public static void parseHarmonClosedXML(XmlNode node, Symbol sym)
+        public static HarmonClosed parseHarmonClosedXML(XmlNode node)
         {
+            return null;
         }
 
-        public static void parseHarmonMuteXML(XmlNode node, Symbol sym)
+        public static HarmonMute parseHarmonMuteXML(XmlNode node)
         {
+            return null;
         }
 
-        public static void parseHarmonicXML(XmlNode node, Symbol sym)
+        public static Harmonic parseHarmonicXML(XmlNode node)
         {
+            return null;
         }
 
-        public static void parseHarmonyXML(XmlNode node, Symbol sym)
+        public static Harmony parseHarmonyXML(XmlNode node)
         {
+            return null;
         }
 
-        public static void parseHarpPedalsXML(XmlNode node, Symbol sym)
+        public static HarpPedals parseHarpPedalsXML(XmlNode node)
         {
+            return null;
         }
 
-        public static void parseHeelToeXML(XmlNode node, Symbol sym)
+        public static HeelToe parseHeelToeXML(XmlNode node)
         {
+            return null;
         }
 
-        public static void parseHoleXML(XmlNode node, Symbol sym)
+        public static Hole parseHoleXML(XmlNode node)
         {
+            return null;
         }
 
-        public static void parseHoleClosedXML(XmlNode node, Symbol sym)
+        public static HoleClosed parseHoleClosedXML(XmlNode node)
         {
+            return null;
         }
 
-        public static void parseHorizontalTurnXML(XmlNode node, Symbol sym)
+        public static HorizontalTurn parseHorizontalTurnXML(XmlNode node)
         {
+            return null;
         }
 
-        public static void parseIdentificationXML(XmlNode node, Symbol sym)
+        public static Identification parseIdentificationXML(XmlNode node)
         {
+            return null;
         }
 
-        public static void parseImageXML(XmlNode node, Symbol sym)
+        public static Image parseImageXML(XmlNode node)
         {
+            return null;
         }
 
-        public static void parseInstrumentXML(XmlNode node, Symbol sym)
+        public static Instrument parseInstrumentXML(XmlNode node)
         {
+            return null;
         }
 
-        public static void parseInstrumentXML(int p, XmlNodeList childnodes, Note note)
-        {
-            throw new NotImplementedException();
-        }
+        //public static void parseInstrumentXML(int p, XmlNodeList childnodes, Note note)
+        //{
+        //    throw new NotImplementedException();
+        //}
 
-        public static void parseInterchangeableXML(XmlNode node, Symbol sym)
+        public static Interchangeable parseInterchangeableXML(XmlNode node)
         {
+            return null;
         }
 
-        public static void parseInversionXML(XmlNode node, Symbol sym)
+        public static Inversion parseInversionXML(XmlNode node)
         {
+            return null;
         }
 
-        public static void parseKeyXML(XmlNode node, Symbol sym)
+        public static Key parseKeyXML(XmlNode node)
         {
+            return null;
         }
 
-        public static void parseKeyAccidentalXML(XmlNode node, Symbol sym)
+        public static KeyAccidental parseKeyAccidentalXML(XmlNode node)
         {
+            return null;
         }
 
-        public static void parseKeyOctaveXML(XmlNode node, Symbol sym)
+        public static KeyOctave parseKeyOctaveXML(XmlNode node)
         {
+            return null;
         }
 
-        public static void parseKindXML(XmlNode node, Symbol sym)
+        public static Kind parseKindXML(XmlNode node)
         {
+            return null;
         }
 
-        public static void parseLevelXML(XmlNode node, Symbol sym)
+        public static Level parseLevelXML(XmlNode node)
         {
+            return null;
         }
 
-        public static void parseLineWidthXML(XmlNode node, Symbol sym)
+        public static LineWidth parseLineWidthXML(XmlNode node)
         {
+            return null;
         }
 
-        public static void parseLinkXML(XmlNode node, Symbol sym)
+        public static Link parseLinkXML(XmlNode node)
         {
+            return null;
         }
 
-        public static void parseLyricXML(XmlNode node, Symbol sym)
+        public static Lyric parseLyricXML(XmlNode node)
         {
+            return null;
         }
 
-        public static void parseLyricXML(int p, XmlNodeList childnodes, Note note)
-        {
-            throw new NotImplementedException();
-        }
+        //public static void parseLyricXML(int p, XmlNodeList childnodes, Note note)
+        //{
+        //    throw new NotImplementedException();
+        //}
 
-        public static void parseLyricFontXML(XmlNode node, Symbol sym)
+        public static LyricFont parseLyricFontXML(XmlNode node)
         {
+            return null;
         }
 
-        public static void parseLyricLanguageXML(XmlNode node, Symbol sym)
+        public static LyricLanguage parseLyricLanguageXML(XmlNode node)
         {
+            return null;
         }
 
-        public static void parseMeasureLayoutXML(XmlNode node, Symbol sym)
+        public static MeasureLayout parseMeasureLayoutXML(XmlNode node)
         {
+            return null;
         }
 
-        public static void parseMeasureNumberingXML(XmlNode node, Symbol sym)
+        public static MeasureNumbering parseMeasureNumberingXML(XmlNode node)
         {
+            return null;
         }
 
-        public static void parseMeasureRepeatXML(XmlNode node, Symbol sym)
+        public static MeasureRepeat parseMeasureRepeatXML(XmlNode node)
         {
+            return null;
         }
 
-        public static void parseMeasureStyleXML(XmlNode node, Symbol sym)
+        public static MeasureStyle parseMeasureStyleXML(XmlNode node)
         {
+            return null;
         }
 
-        public static void parseMetronomeXML(XmlNode node, Symbol sym)
+        public static Metronome parseMetronomeXML(XmlNode node)
         {
+            return null;
         }
 
-        public static void parseMetronomeBeamXML(XmlNode node, Symbol sym)
+        public static MetronomeBeam parseMetronomeBeamXML(XmlNode node)
         {
+            return null;
         }
 
-        public static void parseMetronomeNoteXML(XmlNode node, Symbol sym)
+        public static MetronomeNote parseMetronomeNoteXML(XmlNode node)
         {
+            return null;
         }
 
-        public static void parseMetronomeTiedXML(XmlNode node, Symbol sym)
+        public static MetronomeTied parseMetronomeTiedXML(XmlNode node)
         {
+            return null;
         }
 
-        public static void parseMetronomeTupletXML(XmlNode node, Symbol sym)
+        public static MetronomeTuplet parseMetronomeTupletXML(XmlNode node)
         {
+            return null;
         }
 
-        public static void parseMidiDeviceXML(XmlNode node, Symbol sym)
+        public static MidiDevice parseMidiDeviceXML(XmlNode node)
         {
+            return null;
         }
 
-        public static void parseMidiInstrumentXML(XmlNode node, Symbol sym)
+        public static MidiInstrument parseMidiInstrumentXML(XmlNode node)
         {
+            return null;
         }
 
-        public static void parseMiscellaneousXML(XmlNode node, Symbol sym)
+        public static Miscellaneous parseMiscellaneousXML(XmlNode node)
         {
+            return null;
         }
 
-        public static void parseMiscellaneousFieldXML(XmlNode node, Symbol sym)
+        public static MiscellaneousField parseMiscellaneousFieldXML(XmlNode node)
         {
+            return null;
         }
 
-        public static void parseMordentXML(XmlNode node, Symbol sym)
+        public static Mordent parseMordentXML(XmlNode node)
         {
+            return null;
         }
 
-        public static void parseMultipleRestXML(XmlNode node, Symbol sym)
+        public static MultipleRest parseMultipleRestXML(XmlNode node)
         {
+            return null;
         }
 
-        public static void parseNameDisplayXML(XmlNode node, Symbol sym)
+        public static NameDisplay parseNameDisplayXML(XmlNode node)
         {
+            return null;
         }
 
-        public static void parseNonArpeggiateXML(XmlNode node, Symbol sym)
+        public static NonArpeggiate parseNonArpeggiateXML(XmlNode node)
         {
+            return null;
         }
 
-        public static void parseNotationsXML(XmlNode node, Symbol sym)
+        public static Notations parseNotationsXML(XmlNode node)
         {
+            return null;
         }
 
-        public static void parseNotationsXML(int p, XmlNodeList childnodes, Note note)
-        {
-            //throw new NotImplementedException();
-        }
+        //public static void parseNotationsXML(int p, XmlNodeList childnodes, Note note)
+        //{
+        //    //throw new NotImplementedException();
+        //}
         
-        public static void parseNoteXML(XmlNode node, Symbol sym)
-        {
-        }
-
-        public static Note parseNoteXML(System.Xml.XmlNode noteNode)
+        public static Note parseNoteXML(XmlNode node)
         {
             Note note = new Note();
 
-            XmlNodeList childnodes = noteNode.ChildNodes;
+            XmlNodeList childnodes = node.ChildNodes;
             int count = childnodes.Count;
             int num = 0;
 
             //choice
             if (childnodes[num].Name.Equals("grace"))
             {
-                parseGraceXML(num++, childnodes, note);
+                note.grace = parseGraceXML(childnodes[num++]);
                 if (childnodes[num].Name.Equals("cue"))
                 {
                     note.cue = true;
                     num++;
-                    num = parseFullNoteXML(num, childnodes, note);
-
+                    note.fullnote = parseFullNoteXML(ref num, childnodes);
                 }
                 else
                 {
-                    num = parseFullNoteXML(num, childnodes, note);
+                    note.fullnote = parseFullNoteXML(ref num, childnodes);
                     for (int i = 0; i < 2; i++)
                     {
                         if (childnodes[num].Name.Equals("tie"))
                         {
-                            parseTieXML(num++, childnodes, note);
+                            note.tie[i] = parseTieXML(childnodes[num++]);
                         }
                     }
                 }
@@ -682,34 +788,34 @@ namespace Transonic.Score.MusicXML
             {
                 note.cue = true;
                 num++;
-                num = parseFullNoteXML(num, childnodes, note);
-                num = parseDurationXML(num, childnodes, note);
+                note.fullnote = parseFullNoteXML(ref num, childnodes);
+                note.duration = parseDurationXML(ref num, childnodes);
             }
             else
             {
-                num = parseFullNoteXML(num, childnodes, note);
-                num = parseDurationXML(num, childnodes, note);
+                note.fullnote = parseFullNoteXML(ref num, childnodes);
+                note.duration = parseDurationXML(ref num, childnodes);
                 for (int i = 0; i < 2; i++)
                 {
                     if (childnodes[num].Name.Equals("tie"))
                     {
-                        parseTieXML(num++, childnodes, note);
+                        note.tie[i] = parseTieXML(childnodes[num++]);
                     }
                 }
             }
 
             if (childnodes[num].Name.Equals("instrument"))
             {
-                parseInstrumentXML(num++, childnodes, note);
+                note.instrument = parseInstrumentXML(childnodes[num++]);
             }
-            num = parseEditorialVoice(num++, childnodes, note);             //required
+            note.editorialVoice = parseEditorialVoiceXML(ref num, childnodes);             //required
             if ((num < count) && childnodes[num].Name.Equals("type"))
             {
-                parseNoteTypeXML(num++, childnodes, note);
+                note.notetype = parseNoteTypeXML(childnodes[num++]);
             };
             while ((num < count) && childnodes[num].Name.Equals("dot"))
             {
-                parseDotXML(num++, childnodes, note);
+                note.dot = parseEmptyPlacementXML(childnodes[num++]);
             };
             if ((num < count) && childnodes[num].Name.Equals("accidental"))
             {
@@ -717,410 +823,488 @@ namespace Transonic.Score.MusicXML
             };
             if ((num < count) && childnodes[num].Name.Equals("time-modification"))
             {
-                parseTimeModificationXML(num++, childnodes, note);
+                note.timeModification = parseTimeModificationXML(childnodes[num++]);
             };
             if ((num < count) && childnodes[num].Name.Equals("stem"))
             {
-                parseStemXML(num++, childnodes, note);
+                note.stem = parseStemXML(childnodes[num++]);
             };
             if ((num < count) && childnodes[num].Name.Equals("notehead"))
             {
-                parseNoteheadXML(num++, childnodes, note);
+                note.notehead = parseNoteheadXML(childnodes[num++]);
             };
             if ((num < count) && childnodes[num].Name.Equals("notehead-text"))
             {
-                parseNoteheadTextXML(num++, childnodes, note);
+                note.noteheadText = parseNoteheadTextXML(childnodes[num++]);
             };
             if ((num < count) && childnodes[num].Name.Equals("staff"))
             {
-                num = parseStaffXML(num, childnodes, note);
+                note.staff = parseStaffXML(ref num, childnodes);
             };
             for (int i = 0; i < 8; i++)
             {
                 if ((num < count) && childnodes[num].Name.Equals("beam"))
                 {
-                    parseBeamXML(num++, childnodes, note);
+                    note.beam = parseBeamXML(childnodes[num++]);
                 };
             }
             while ((num < count) && childnodes[num].Name.Equals("notations"))
             {
-                parseNotationsXML(num++, childnodes, note);
+                note.notations = parseNotationsXML(childnodes[num++]);
             };
             while ((num < count) && childnodes[num].Name.Equals("lyric"))
             {
-                parseLyricXML(num++, childnodes, note);
+                note.lyric = parseLyricXML(childnodes[num++]);
             };
             if ((num < count) && childnodes[num].Name.Equals("play"))
             {
-                parsePlayXML(num++, childnodes, note);
+                note.play = parsePlayXML(childnodes[num++]);
             };
+
             return note;
         }
         
-        public static void parseNoteSizeXML(XmlNode node, Symbol sym)
+        public static NoteSize parseNoteSizeXML(XmlNode node)
         {
+            return null;
         }
 
-        public static void parseNoteTypeXML(XmlNode node, Symbol sym)
+        public static NoteType parseNoteTypeXML(XmlNode node)
         {
+            return null;
         }
 
-        public static void parseNoteTypeXML(int p, XmlNodeList childnodes, Note note)
+        //public static void parseNoteTypeXML(int p, XmlNodeList childnodes, Note note)
+        //{
+        //    note.notetype = childnodes[p].Value;
+        //}
+
+        public static Notehead parseNoteheadXML(XmlNode node)
         {
-            note.notetype = childnodes[p].Value;
+            return null;
         }
 
-        public static void parseNoteheadXML(XmlNode node, Symbol sym)
+        //public static void parseNoteheadXML(int p, XmlNodeList childnodes, Note note)
+        //{
+        //    throw new NotImplementedException();
+        //}
+
+        public static NoteheadText parseNoteheadTextXML(XmlNode node)
         {
+            return null;
         }
 
-        public static void parseNoteheadXML(int p, XmlNodeList childnodes, Note note)
+        //public static void parseNoteheadTextXML(int p, XmlNodeList childnodes, Note note)
+        //{
+        //    throw new NotImplementedException();
+        //}
+
+        public static OctaveShift parseOctaveShiftXML(XmlNode node)
         {
-            throw new NotImplementedException();
+            return null;
         }
 
-        public static void parseNoteheadTextXML(XmlNode node, Symbol sym)
+        public static Offset parseOffsetXML(XmlNode node)
         {
+            return null;
         }
 
-        public static void parseNoteheadTextXML(int p, XmlNodeList childnodes, Note note)
+        public static Opus parseOpusXML(XmlNode node)
         {
-            throw new NotImplementedException();
+            return null;
         }
 
-        public static void parseOctaveShiftXML(XmlNode node, Symbol sym)
+        public static Ornaments parseOrnamentsXML(XmlNode node)
         {
+            return null;
         }
 
-        public static void parseOffsetXML(XmlNode node, Symbol sym)
+        public static OtherAppearance parseOtherAppearanceXML(XmlNode node)
         {
+            return null;
         }
 
-        public static void parseOpusXML(XmlNode node, Symbol sym)
+        public static OtherDirection parseOtherDirectionXML(XmlNode node)
         {
+            return null;
         }
 
-        public static void parseOrnamentsXML(XmlNode node, Symbol sym)
+        public static OtherNotation parseOtherNotationXML(XmlNode node)
         {
+            return null;
         }
 
-        public static void parseOtherAppearanceXML(XmlNode node, Symbol sym)
+        public static OtherPlacementText parseOtherPlacementTextXML(XmlNode node)
         {
+            return null;
         }
 
-        public static void parseOtherDirectionXML(XmlNode node, Symbol sym)
+        public static OtherPlay parseOtherPlayXML(XmlNode node)
         {
+            return null;
         }
 
-        public static void parseOtherNotationXML(XmlNode node, Symbol sym)
+        public static OtherText parseOtherTextXML(XmlNode node)
         {
+            return null;
         }
 
-        public static void parseOtherPlacementTextXML(XmlNode node, Symbol sym)
+        public static PageLayout parsePageLayoutXML(XmlNode node)
         {
+            return null;
         }
 
-        public static void parseOtherPlayXML(XmlNode node, Symbol sym)
+        public static PageMargins parsePageMarginsXML(XmlNode node)
         {
+            return null;
         }
 
-        public static void parseOtherTextXML(XmlNode node, Symbol sym)
+        public static PartGroup parsePartGroupXML(XmlNode node)
         {
+            return null;
         }
 
-        public static void parsePageLayoutXML(XmlNode node, Symbol sym)
+        public static PartList parsePartListXML(XmlNode node)
         {
+            return null;
         }
 
-        public static void parsePageMarginsXML(XmlNode node, Symbol sym)
+        public static PartName parsePartNameXML(XmlNode node)
         {
+            return null;
         }
 
-        public static void parsePartGroupXML(XmlNode node, Symbol sym)
+        public static PartSymbol parsPartSymbolXML(XmlNode node)
         {
+            return null;
         }
 
-        public static void parsePartListXML(XmlNode node, Symbol sym)
+        public static Pedal parsePedalXML(XmlNode node)
         {
+            return null;
         }
 
-        public static void parsePartNameXML(XmlNode node, Symbol sym)
+        public static PedalTuning parsePedalTuningXML(XmlNode node)
         {
+            return null;
         }
 
-        public static void parsPartSymbolXML(XmlNode node, Symbol sym)
+        public static PerMinute parsePerMinuteXML(XmlNode node)
         {
+            return null;
         }
 
-        public static void parsePedalXML(XmlNode node, Symbol sym)
+        public static Percussion parsePercussionXML(XmlNode node)
         {
+            return null;
         }
 
-        public static void parsePedalTuningXML(XmlNode node, Symbol sym)
+        public static Pitch parsePitchXML(XmlNode node)
         {
+            return null;
         }
 
-        public static void parsePerMinuteXML(XmlNode node, Symbol sym)
-        {
-        }
-
-        public static void parsePercussionXML(XmlNode node, Symbol sym)
-        {
-        }
-
-        public static void parsePitchXML(XmlNode node, Symbol sym)
-        {
-        }
-
-        private static void parsePitchXML(XmlNode pitchNode, Note note)
-        {
-            int num = 0;
-            XmlNodeList childnodes = pitchNode.ChildNodes;
-            string stepstr = childnodes[num++].InnerText.ToUpper();
-            note.step = stepstr[0] - 'A';
-            if (childnodes[num].Name.Equals("alter"))
-            {
-                note.alter = Convert.ToDouble(childnodes[num++].InnerText);
-            }
-            note.octave = Convert.ToInt32(childnodes[num].InnerText);
-        }
+        //private static void parsePitchXML(XmlNode pitchNode, Note note)
+        //{
+        //    int num = 0;
+        //    XmlNodeList childnodes = pitchNode.ChildNodes;
+        //    string stepstr = childnodes[num++].InnerText.ToUpper();
+        //    note.step = stepstr[0] - 'A';
+        //    if (childnodes[num].Name.Equals("alter"))
+        //    {
+        //        note.alter = Convert.ToDouble(childnodes[num++].InnerText);
+        //    }
+        //    note.octave = Convert.ToInt32(childnodes[num].InnerText);
+        //}
         
-        public static void parsePitchedXML(XmlNode node, Symbol sym)
+        public static Pitched parsePitchedXML(XmlNode node)
         {
+            return null;
         }
 
-        public static void parsePlacementTextXML(XmlNode node, Symbol sym)
+        public static PlacementText parsePlacementTextXML(XmlNode node)
         {
+            return null;
         }
 
-        public static void parsePlayXML(XmlNode node, Symbol sym)
+        public static Play parsePlayXML(XmlNode node)
         {
+            return null;
         }
 
-        public static void parsePlayXML(int p, XmlNodeList childnodes, Note note)
+        //public static void parsePlayXML(int p, XmlNodeList childnodes, Note note)
+        //{
+        //    throw new NotImplementedException();
+        //}
+
+        public static PrincipalVoice parsePrincipalVoiceXML(XmlNode node)
         {
-            throw new NotImplementedException();
+            return null;
         }
 
-        public static void parsePrincipalVoiceXML(XmlNode node, Symbol sym)
+        public static Print parsePrintXML(XmlNode node)
         {
+            return null;
         }
 
-        public static void parsePrintXML(XmlNode node, Symbol sym)
+        public static Repeat parseRepeatXML(XmlNode node)
         {
+            return null;
         }
 
-        public static void parseRepeatXML(XmlNode node, Symbol sym)
+        public static Rest parseRestXML(XmlNode node)
         {
+            return null;
         }
 
-        public static void parseRestXML(XmlNode node, Symbol sym)
+        //private static void parseRestXML(XmlNode restNode, Note note)
+        //{
+        //    throw new NotImplementedException();
+        //}
+
+        public static Root parseRootXML(XmlNode node)
         {
+            return null;
         }
 
-        private static void parseRestXML(XmlNode restNode, Note note)
+        public static RootAlter parseRootAlterXML(XmlNode node)
         {
-            throw new NotImplementedException();
+            return null;
         }
 
-        public static void parseRootXML(XmlNode node, Symbol sym)
+        public static RootStep parseRootStepXML(XmlNode node)
         {
+            return null;
         }
 
-        public static void parseRootAlterXML(XmlNode node, Symbol sym)
+        public static Scaling parseScalingXML(XmlNode node)
         {
+            return null;
         }
 
-        public static void parseRootStepXML(XmlNode node, Symbol sym)
+        public static Scordatura parseScordaturaXML(XmlNode node)
         {
+            return null;
         }
 
-        public static void parseScalingXML(XmlNode node, Symbol sym)
+        public static ScoreInstrument parseScoreInstrumentXML(XmlNode node)
         {
+            return null;
         }
 
-        public static void parseScordaturaXML(XmlNode node, Symbol sym)
+        public static ScorePart parseScorePartXML(XmlNode node)
         {
+            return null;
         }
 
-        public static void parseScoreInstrumentXML(XmlNode node, Symbol sym)
+        public static Segno parseSegnoXML(XmlNode node)
         {
+            return null;
         }
 
-        public static void parseScorePartXML(XmlNode node, Symbol sym)
+        public static Slash parseSlashXML(XmlNode node)
         {
+            return null;
         }
 
-        public static void parseSegnoXML(XmlNode node, Symbol sym)
+        public static Slide parseSlideXML(XmlNode node)
         {
+            return null;
         }
 
-        public static void parseSlashXML(XmlNode node, Symbol sym)
+        public static Slur parseSlurXML(XmlNode node)
         {
+            return null;
         }
 
-        public static void parseSlideXML(XmlNode node, Symbol sym)
+        public static Sound parseSoundXML(XmlNode node)
         {
+            return null;
         }
 
-        public static void parseSlurXML(XmlNode node, Symbol sym)
+        public static StaffDetails parseStaffDetailsXML(XmlNode node)
         {
+            return null;
         }
 
-        public static void parseSoundXML(XmlNode node, Symbol sym)
+        public static StaffDivide parseStaffDivideXML(XmlNode node)
         {
+            return null;
         }
 
-        public static void parseStaffDetailsXML(XmlNode node, Symbol sym)
+        public static StaffLayout parseStaffLayoutXML(XmlNode node)
         {
+            return null;
         }
 
-        public static void parseStaffDivideXML(XmlNode node, Symbol sym)
+        public static Staff parseStafftuningXML(XmlNode node)
         {
+            return null;
         }
 
-        public static void parseStaffLayoutXML(XmlNode node, Symbol sym)
+        public static Stem parseStemXML(XmlNode node)
         {
+            return null;
         }
 
-        public static void parseStafftuningXML(XmlNode node, Symbol sym)
+        //public static void parseStemXML(int p, XmlNodeList childnodes, Note note)
+        //{
+        //    //throw new NotImplementedException();
+        //}
+
+        public static Stick parseStickXML(XmlNode node)
         {
+            return null;
         }
 
-        public static void parseStemXML(XmlNode node, Symbol sym)
+        public static StringSym parseStringXML(XmlNode node)
         {
+            return null;
         }
 
-        public static void parseStemXML(int p, XmlNodeList childnodes, Note note)
+        public static StringMute parseStringMuteXML(XmlNode node)
         {
-            //throw new NotImplementedException();
+            return null;
         }
 
-        public static void parseStickXML(XmlNode node, Symbol sym)
+        public static StrongAccent parseStrongAccentXML(XmlNode node)
         {
+            return null;
         }
 
-        public static void parseStringXML(XmlNode node, Symbol sym)
+        public static StyleText parseStyleTextXML(XmlNode node)
         {
+            return null;
         }
 
-        public static void parseStringMuteXML(XmlNode node, Symbol sym)
+        public static Supports parseSupportsXML(XmlNode node)
         {
+            return null;
         }
 
-        public static void parseStrongAccentXML(XmlNode node, Symbol sym)
+        public static SystemDividers parseSystemDividersXML(XmlNode node)
         {
+            return null;
         }
 
-        public static void parseStyleTextXML(XmlNode node, Symbol sym)
+        public static SystemLayout parseSystemLayoutXML(XmlNode node)
         {
+            return null;
         }
 
-        public static void parseSupportsXML(XmlNode node, Symbol sym)
+        public static SystemMargins parseSystemMarginsXML(XmlNode node)
         {
+            return null;
         }
 
-        public static void parseSystemDividersXML(XmlNode node, Symbol sym)
+        public static Tap parseTapXML(XmlNode node)
         {
+            return null;
         }
 
-        public static void parseSystemLayoutXML(XmlNode node, Symbol sym)
+        public static Technical parseTechnicalXML(XmlNode node)
         {
+            return null;
         }
 
-        public static void parseSystemMarginsXML(XmlNode node, Symbol sym)
+        public static TextElementData parseTextElementDataXML(XmlNode node)
         {
+            return null;
         }
 
-        public static void parseTapXML(XmlNode node, Symbol sym)
+        public static Tie parseTieXML(XmlNode node)
         {
+            return null;
         }
 
-        public static void parseTechnicalXML(XmlNode node, Symbol sym)
+        //public static void parseTieXML(int num, XmlNodeList childnodes)
+        //{            
+        //    throw new NotImplementedException();
+        //}
+
+        public static Tied parseTiedXML(XmlNode node)
         {
+            return null;
         }
 
-        public static void parseTextElementDataXML(XmlNode node, Symbol sym)
+        public static Time parseTimeXML(XmlNode node)
         {
+            return null;
         }
 
-        public static void parseTieXML(XmlNode node, Symbol sym)
+        public static TimeModification parseTimeModificationXML(XmlNode node)
         {
+            return null;
         }
 
-        public static void parseTieXML(int num, XmlNodeList childnodes, Note note)
+        //public static void parseTimeModificationXML(int p, XmlNodeList childnodes)
+        //{
+        //    throw new NotImplementedException();
+        //}
+
+        public static Transpose parseTransposeXML(XmlNode node)
         {
-            throw new NotImplementedException();
+            return null;
         }
 
-        public static void parseTiedXML(XmlNode node, Symbol sym)
+        public static Tremolo parseTremoloXML(XmlNode node)
         {
+            return null;
         }
 
-        public static void parseTimeXML(XmlNode node, Symbol sym)
+        public static Tuplet parseTupletXML(XmlNode node)
         {
+            return null;
         }
 
-        public static void parseTimeModificationXML(XmlNode node, Symbol sym)
+        public static TupletDot parseTupletDotXML(XmlNode node)
         {
+            return null;
         }
 
-        public static void parseTimeModificationXML(int p, XmlNodeList childnodes, Note note)
+        public static TupletNumber parseTupletNumberXML(XmlNode node)
         {
-            throw new NotImplementedException();
+            return null;
         }
 
-        public static void parseTransposeXML(XmlNode node, Symbol sym)
+        public static TupletPortion parseTupletPortionXML(XmlNode node)
         {
+            return null;
         }
 
-        public static void parseTremoloXML(XmlNode node, Symbol sym)
+        public static TupletType parseTupletTypeXML(XmlNode node)
         {
+            return null;
         }
 
-        public static void parseTupletXML(XmlNode node, Symbol sym)
+        public static TypedText parseTypedTextXML(XmlNode node)
         {
+            return null;
         }
 
-        public static void parseTupletDotXML(XmlNode node, Symbol sym)
+        public static Unpitched parseUnpitchedXML(XmlNode node)
         {
+            return null;
         }
 
-        public static void parseTupletNumberXML(XmlNode node, Symbol sym)
+        //private static void parseUnpitchedXML(XmlNode unpitchedNode, Note note)
+        //{
+        //    throw new NotImplementedException();
+        //}
+
+        public static VirtualInstrument parseVirtualInstrumentXML(XmlNode node)
         {
+            return null;
         }
 
-        public static void parseTupletPortionXML(XmlNode node, Symbol sym)
+        public static WavyLine parseWavyLineXML(XmlNode node)
         {
+            return null;
         }
 
-        public static void parseTupletTypeXML(XmlNode node, Symbol sym)
+        public static Wedge parseWedgeXML(XmlNode node)
         {
-        }
-
-        public static void parseTypedTextXML(XmlNode node, Symbol sym)
-        {
-        }
-
-        public static void parseUnpitchedXML(XmlNode node, Symbol sym)
-        {
-        }
-
-        private static void parseUnpitchedXML(XmlNode unpitchedNode, Note note)
-        {
-            throw new NotImplementedException();
-        }
-
-        public static void parseVirtualInstrumentXML(XmlNode node, Symbol sym)
-        {
-        }
-
-        public static void parseWavyLineXML(XmlNode node, Symbol sym)
-        {
-        }
-
-        public static void parseWedgeXML(XmlNode node, Symbol sym)
-        {
+            return null;
         }
 
         public static Work parseWorkXML(XmlNode node)
@@ -1130,190 +1314,177 @@ namespace Transonic.Score.MusicXML
 
 //- element groups -------------------------------------------------------------
 
-        public static int parseAllMarginsXML(int num, XmlNodeList childnodes, Symbol sym)
+        public static AllMargins parseAllMarginsXML(ref int num, XmlNodeList childnodes)
         {
-            throw new NotImplementedException();
+            return null;
         }
         
-                    public static int parseBeatUnitXML(int num, XmlNodeList childnodes, Symbol sym)
+        public static BeatUnit parseBeatUnitXML(ref int num, XmlNodeList childnodes)
         {
-            throw new NotImplementedException();
+            return null;
         }
 
 
-        public static int parseDisplayStepOctaveXML(int num, XmlNodeList childnodes, Symbol sym)
+        public static DisplayStepOctave parseDisplayStepOctaveXML(ref int num, XmlNodeList childnodes)
         {
-            throw new NotImplementedException();
+            return null;
         }
 
-        public static int parseDurationXML(int num, XmlNodeList childnodes, Symbol sym)
+        public static Duration parseDurationXML(ref int num, XmlNodeList childnodes)
         {
-            throw new NotImplementedException();
+            return null;
         }
 
-        public static int parseDurationXML(int num, XmlNodeList childnodes, Note note)
+        //public static int parseDurationXML(int num, XmlNodeList childnodes, Note note)
+        //{
+        //    note.duration = Convert.ToDouble(childnodes[0].Value);
+        //    return 1;
+        //}
+
+        public static EditorialVoiceDirection parseEditorialVoiceDirectionXML(ref int num, XmlNodeList childnodes)
         {
-            note.duration = Convert.ToDouble(childnodes[0].Value);
-            return 1;
+            return null;
         }
 
-        public static int parseEditorialVoiceDirectionXML(int num, XmlNodeList childnodes, Symbol sym)
+        public static EditorialVoice parseEditorialVoiceXML(ref int num, XmlNodeList childnodes)
         {
-            throw new NotImplementedException();
+            return null;
         }
 
-        public static int parseEditorialVoiceXML(int num, XmlNodeList childnodes, Symbol sym)
+        //public static EditorialVoice parseEditorialVoice(ref int num, XmlNodeList childnodes)
+        //{
+        //    //if (childnodes[num].Name.Equals("footnote"))
+        //    //{
+        //    //    num = parseFootnoteXML(num, childnodes, note);
+        //    //}
+        //    //if (childnodes[num].Name.Equals("level"))
+        //    //{
+        //    //    num = parseLevelXML(num, childnodes, note);
+        //    //}
+        //    //if (childnodes[num].Name.Equals("voice"))
+        //    //{
+        //    //    num = parseVoiceXML(num, childnodes, note);
+        //    //}
+        //    //return num;
+        //    return null;
+        //}
+
+        public static Footnote parseFootnoteXML(ref int num, XmlNodeList childnodes)
         {
-            throw new NotImplementedException();
+            return null;
         }
 
-        public static int parseEditorialVoice(int p, XmlNodeList childnodes, Note note)
+        public static FullNote parseFullNoteXML(ref int num, XmlNodeList childnodes)
         {
-            int num = p;
-            if (childnodes[num].Name.Equals("footnote"))
-            {
-                num = parseFootnoteXML(num, childnodes, note);
-            }
-            if (childnodes[num].Name.Equals("level"))
-            {
-                num = parseLevelXML(num, childnodes, note);
-            }
-            if (childnodes[num].Name.Equals("voice"))
-            {
-                num = parseVoiceXML(num, childnodes, note);
-            }
-            return num;
+            //int count = childnodes.Count;
+            //if ((num < count) && childnodes[num].Name.Equals("chord"))
+            //{
+            //    note.chord = true;
+            //    num++;
+            //};
+            //if (childnodes[num].Name.Equals("pitch"))
+            //{
+            //    parsePitchXML(childnodes[num++], note);
+            //}
+            //else if (childnodes[num].Name.Equals("unpitched"))
+            //{
+            //    parseUnpitchedXML(childnodes[num++], note);
+            //}
+            //else
+            //{
+            //    parseRestXML(childnodes[num++], note);
+            //}
+            //return num;
+            return null;
         }
 
-        public static int parseEditorialXML(int num, XmlNodeList childnodes, Symbol sym)
+        public static HarmonyChord parseHarmonyChordXML(ref int num, XmlNodeList childnodes)
         {
-            throw new NotImplementedException();
+            return null;
         }
 
-        public static int parseFootnoteXML(int num, XmlNodeList childnodes, Symbol sym)
+        public static Layout parseLayoutXML(ref int num, XmlNodeList childnodes)
         {
-            throw new NotImplementedException();
+            return null;
         }
 
-        private static int parseFootnoteXML(int num, XmlNodeList childnodes, Note note)
+        public static LeftRightMargins parseLeftRightMarginsXML(ref int num, XmlNodeList childnodes)
         {
-            throw new NotImplementedException();
+            return null;
         }
 
-        public static int parseFullNoteXML(int num, XmlNodeList childnodes, Symbol sym)
+        public static LevelGroup parseLevelXML(ref int num, XmlNodeList childnodes)
         {
-            throw new NotImplementedException();
+            return null;
         }
 
-        public static int parseFullNoteXML(int num, XmlNodeList childnodes, Note note)
+        public static MusicData parseMusicDataXML(ref int num, XmlNodeList childnodes)
         {
-            int count = childnodes.Count;
-            if ((num < count) && childnodes[num].Name.Equals("chord"))
-            {
-                note.chord = true;
-                num++;
-            };
-            if (childnodes[num].Name.Equals("pitch"))
-            {
-                parsePitchXML(childnodes[num++], note);
-            }
-            else if (childnodes[num].Name.Equals("unpitched"))
-            {
-                parseUnpitchedXML(childnodes[num++], note);
-            }
-            else
-            {
-                parseRestXML(childnodes[num++], note);
-            }
-            return num;
+            return null;
         }
 
-        public static int parseHarmonyChordXML(int num, XmlNodeList childnodes, Symbol sym)
+        public static NonTraditionalKey parseNonTraditionalKeyXML(ref int num, XmlNodeList childnodes)
         {
-            throw new NotImplementedException();
+            return null;
         }
 
-        public static int parseLayoutXML(int num, XmlNodeList childnodes, Symbol sym)
+        public static PartGroup parsePartGroupXML(ref int num, XmlNodeList childnodes)
         {
-            throw new NotImplementedException();
+            return null;
         }
 
-        public static int parseLeftRightMarginsXML(int num, XmlNodeList childnodes, Symbol sym)
+        public static ScoreHeader parseScoreHeaderXML(ref int num, XmlNodeList childnodes)
         {
-            throw new NotImplementedException();
+            //int count = childnodes.Count;
+            return null;
         }
 
-        public static int parseLevelXML(int num, XmlNodeList childnodes, Symbol sym)
+        public static ScorePart parseScorePartXML(ref int num, XmlNodeList childnodes)
         {
-            throw new NotImplementedException();
+            return null;
         }
 
-        public static int parseMusicDataXML(int num, XmlNodeList childnodes, Symbol sym)
+        public static Slash parseSlashXML(ref int num, XmlNodeList childnodes)
         {
-            throw new NotImplementedException();
+            return null;
         }
 
-        public static int parseNonTraditionalKeyXML(int num, XmlNodeList childnodes, Symbol sym)
+        public static StaffX parseStaffXML(ref int num, XmlNodeList childnodes)
         {
-            throw new NotImplementedException();
+            return null;
         }
 
-        public static int parsePartGroupXML(int num, XmlNodeList childnodes, Symbol sym)
-        {
-            throw new NotImplementedException();
-        }
-
-        public static int parseScoreHeaderXML(int num, XmlNodeList childnodes, Symbol sym)
-        {
-            throw new NotImplementedException();
-        }
-
-        public static int parseScorePartXML(int num, XmlNodeList childnodes, Symbol sym)
-        {
-            throw new NotImplementedException();
-        }
-
-        public static int parseSlashXML(int num, XmlNodeList childnodes, Symbol sym)
-        {
-            throw new NotImplementedException();
-        }
-
-        public static int parseStaffXML(int num, XmlNodeList childnodes, Symbol sym)
-        {
-            throw new NotImplementedException();
-        }
-
-        public static int parseStaffXML(int num, XmlNodeList childnodes, Note note)
-        {
-            //throw new NotImplementedException();
-            return 1;
-        }
+        //public static int parseStaffXML(int num, XmlNodeList childnodes, Note note)
+        //{
+        //    //throw new NotImplementedException();
+        //    return 1;
+        //}
         
-        public static int parseTimeSignatureXML(int num, XmlNodeList childnodes, Symbol sym)
+        public static TimeSignature parseTimeSignatureXML(ref int num, XmlNodeList childnodes)
         {
-            throw new NotImplementedException();
+            return null;
         }
 
-        public static int parseTraditionalKeyXML(int num, XmlNodeList childnodes, Symbol sym)
+        public static TraditionalKey parseTraditionalKeyXML(ref int num, XmlNodeList childnodes)
         {
-            throw new NotImplementedException();
+            return null;
         }
 
-        public static int parseTuningXML(int num, XmlNodeList childnodes, Symbol sym)
+        public static Tuning parseTuningXML(ref int num, XmlNodeList childnodes)
         {
-            throw new NotImplementedException();
+            return null;
         }
 
-        public static int parseVoiceXML(int num, XmlNodeList childnodes, Symbol sym)
+        public static Voice parseVoiceXML(ref int num, XmlNodeList childnodes)
         {
-            throw new NotImplementedException();
+            return null;
         }
 
-        private static int parseVoiceXML(int num, XmlNodeList childnodes, Note note)
-        {
-            note.voice = childnodes[0].Value;
-            return 1;
-        }
+        //private static int parseVoiceXML(int num, XmlNodeList childnodes, Note note)
+        //{
+        //    note.voice = childnodes[0].Value;
+        //    return 1;
+        //}
     }
 
 //-----------------------------------------------------------------------------

@@ -44,17 +44,32 @@ namespace Transonic.Score.Symbols
         public int ledgerLinesBelow;
         public bool hasSharp;
 
-        public bool cue;
         public bool chord;
         public int step;
         public double alter;
         public int octave;
-        public double duration;
         public string voice;
-        public string notetype;
-        public int dot;
 
+        public Grace grace;
+        public bool cue;
+        public FullNote fullnote;
+        public Tie[] tie;
+        public Duration duration;
+        public Instrument instrument;
+        public EditorialVoice editorialVoice;
+        public NoteType notetype;
+        public EmptyPlacement dot;
         public Accidental accidental;
+        public TimeModification timeModification;
+        public Stem stem;
+        public Notehead notehead;
+        public NoteheadText noteheadText;
+        public StaffX staff;
+        public Beam beam;
+        public Notations notations;
+        public Lyric lyric;
+        public Play play;
+        
 
         public Note()
         {
@@ -63,24 +78,24 @@ namespace Transonic.Score.Symbols
             step = 0;
             alter = 0.0;
             octave = 0;
-            duration = 0.0;
+            duration = null;
             voice = "";
-            notetype = "quarter";
-            dot = 0;
+            notetype = null;
+            dot = null;
         }
 
-        public Note(int _start, int _noteNum, int _dur)
-        {
-            startTick = _start;
-            noteNumber = _noteNum;
-            duration = _dur;
+        //public Note(int _start, int _noteNum, int _dur)
+        //{
+        //    startTick = _start;
+        //    noteNumber = _noteNum;
+        //    duration = _dur;
 
-            octave = noteNumber / 12;
-            step = noteNumber % 12;
-            ledgerLinesAbove = 0;
-            ledgerLinesMiddle = false;
-            ledgerLinesBelow = 0;
-        }
+        //    octave = noteNumber / 12;
+        //    step = noteNumber % 12;
+        //    ledgerLinesAbove = 0;
+        //    ledgerLinesMiddle = false;
+        //    ledgerLinesBelow = 0;
+        //}
 
         public override void setMeasure(Measure measure)
         {
