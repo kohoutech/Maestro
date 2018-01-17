@@ -38,7 +38,7 @@ namespace Transonic.Score
 
         public String filename;
 
-        //score-header
+        //scoreheader
         public Work work;
         public String movementNumber;
         public String movementTitle;
@@ -53,6 +53,16 @@ namespace Transonic.Score
         public ScoreDoc(ScoreSheet _sheet)
         {
             sheet = _sheet;
+
+            //scoreheader
+            work = null;
+            movementNumber = null;
+            movementTitle = null;
+            identification = null;
+            defaults = null;
+            credits = new List<Credit>();
+            partList = null;
+
             parts = new List<Part>();
             curPart = null;
         }

@@ -56,12 +56,11 @@ namespace Transonic.Score
         public int staffpos;                //ofs in staff, in pixels
         public int width;                   //width of measure in pixels
 
-        public Measure(Part _part, int num)
+        public Measure(Part _part)
         {
             part = _part;
             symbols = new List<Symbol>();
             beats = new List<Beat>();
-            number = num;
         }
 
         public Measure(Staff _staff, int num, int _startTick, int numer, int denom, int _key)

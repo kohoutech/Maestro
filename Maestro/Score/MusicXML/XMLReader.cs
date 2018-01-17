@@ -65,31 +65,15 @@ namespace Transonic.Score.MusicXML
             return doc;
         }
 
-        private static int parseScoreHeader(XmlNodeList xmlNodeList, ScoreDoc doc)
-        {
-            int count = xmlNodeList.Count;
-            int num = 0;
-            if ((num < count) && xmlNodeList[num].Name.Equals("work")) {
-                doc.work = parseWorkXML(xmlNodeList[num++]);                
-            };
-            if ((num < count) && xmlNodeList[num].Name.Equals("movement-number")) { num++; };
-            if ((num < count) && xmlNodeList[num].Name.Equals("movement-title")) { num++; };
-            if ((num < count) && xmlNodeList[num].Name.Equals("identification")) { num++; };
-            if ((num < count) && xmlNodeList[num].Name.Equals("defaults")) { num++; };
-            while ((num < count) && xmlNodeList[num].Name.Equals("credit")) { num++; };
-            if ((num < count) && xmlNodeList[num].Name.Equals("part-list")) { num++; };
-            return num;
-        }
-
         private static void parseScorePartwise(XmlNodeList xmlNodeList, ScoreDoc doc)
         {
-            int num = parseScoreHeader(xmlNodeList, doc);
+            int num = 0;
+            parseScoreHeaderXML(ref num, xmlNodeList, doc);
             while (num < xmlNodeList.Count)
             {
                 if (xmlNodeList[num].Name.Equals("part"))             //only child type we have for now, there may be more
                 {
-                    XMLReader.parsePartXML(xmlNodeList[num], doc);
-                    num++;
+                    XMLReader.parsePartXML(xmlNodeList[num++], doc);                    
                 }
             }
         }
@@ -101,42 +85,87 @@ namespace Transonic.Score.MusicXML
 
         public static void parsePartXML(System.Xml.XmlNode partNode, ScoreDoc score)
         {
-            XmlAttributeCollection attrs = partNode.Attributes;
-            String idstr = attrs["id"].Value;                       //required attr
-
-
-            Part part = new Part(score, idstr);
+            Part part = new Part(score);
             score.parts.Add(part);
+
+            XmlAttributeCollection attrs = partNode.Attributes;
+            if (attrs["id"].Value != null)
+            {
+                part.id = attrs["id"].Value;                       //required attr
+            }
+            else
+            {
+                throw new MusicXMLReadException("MusicMXL error - part missing required id attribute");
+            }
 
             foreach (XmlNode node in partNode.ChildNodes)
             {
-                XMLReader.parseMeasureXML(node, part);
+                if (node.Name.Equals("measure"))
+                {
+                    XMLReader.parseMeasureXML(node, part);
+                }
             }
         }
 
         public static void parseMeasureXML(XmlNode measureNode, Part part)
         {
-            XmlAttributeCollection attrs = measureNode.Attributes;
-            int number = Convert.ToInt32(attrs["number"].Value);        //required attr
-
-            Measure measure = new Measure(part, number);
+            Measure measure = new Measure(part);
             part.measures.Add(measure);
 
+            XmlAttributeCollection attrs = measureNode.Attributes;
+            if (attrs["number"].Value != null)
+            {
+                measure.number = Convert.ToInt32(attrs["number"].Value);        //required attr
+            }
+            else
+            {
+                throw new MusicXMLReadException("MusicMXL error - measure missing required number attribute");
+            }
+
+            //music-data group
             foreach (XmlNode dataNode in measureNode.ChildNodes)
             {
-                Console.WriteLine("have data type = " + dataNode.Name);
-
                 switch (dataNode.Name)
                 {
                     case "note":
                         Note note = parseNoteXML(dataNode);
                         break;
-                    case "backup": break;
-                    case "forward": break;
-                    case "direction": break;
-                    case "attributes": break;
-                    case "print": break;
-                    case "barline": break;
+                    case "backup":
+                        Backup backup = parseBackupXML(dataNode);
+                        break;
+                    case "forward":
+                        Forward forward = parseForwardXML(dataNode);
+                        break;
+                    case "direction": 
+                        Direction direction = parseDirectionXML(dataNode);
+                        break;
+                    case "attributes": 
+                        Attributes attributes = parseAttributesXML(dataNode);
+                        break;
+                    case "harmony":
+                        Harmony harmony = parseHarmonyXML(dataNode);
+                        break;
+                    case "figured-bass":
+                        FiguredBass figuredBass = parseFiguredBassXML(dataNode);
+                        break;
+                    case "print": 
+                        Print print = parsePrintXML(dataNode);
+                        break;
+                    case "sound":
+                        Sound sound = parseSoundXML(dataNode);
+                        break;
+                    case "barline": 
+                        Barline barline = parseBarlineXML(dataNode);
+                        break;
+                    case "grouping":
+                        Grouping grouping = parseGroupingXML(dataNode);
+                        break;
+                    case "link":
+                        Link link = parseLinkXML(dataNode);
+                        break;
+                    case "bookmark":
+                        Bookmark bookmark = parseBookmarkXML(dataNode);
+                        break;
                     default: break;
                 }
             }
@@ -191,11 +220,13 @@ namespace Transonic.Score.MusicXML
 
         public static Attributes parseAttributesXML(XmlNode node)
         {
+            Console.WriteLine("parsing attributes node");
             return null;
         }
 
         public static Backup parseBackupXML(XmlNode node)
         {
+            Console.WriteLine("parsing backup node");
             return null;
         }
 
@@ -206,6 +237,7 @@ namespace Transonic.Score.MusicXML
 
         public static Barline parseBarlineXML(XmlNode node)
         {
+            Console.WriteLine("parsing barline node");
             return null;
         }
 
@@ -331,6 +363,7 @@ namespace Transonic.Score.MusicXML
 
         public static Direction parseDirectionXML(XmlNode node)
         {
+            Console.WriteLine("parsing direction node");            
             return null;
         }
 
@@ -456,6 +489,7 @@ namespace Transonic.Score.MusicXML
 
         public static Forward parseForwardXML(XmlNode node)
         {
+            Console.WriteLine("parsing forward node");            
             return null;
         }
 
@@ -1044,6 +1078,7 @@ namespace Transonic.Score.MusicXML
 
         public static Print parsePrintXML(XmlNode node)
         {
+            Console.WriteLine("parsing print node");
             return null;
         }
 
@@ -1433,10 +1468,34 @@ namespace Transonic.Score.MusicXML
             return null;
         }
 
-        public static ScoreHeader parseScoreHeaderXML(ref int num, XmlNodeList childnodes)
+        public static void parseScoreHeaderXML(ref int num, XmlNodeList childnodes, ScoreDoc doc)
         {
-            //int count = childnodes.Count;
-            return null;
+            int count = (childnodes != null) ? childnodes.Count : 0;
+
+            if ((num < count) && (childnodes[num].Name.Equals("work")))
+            {
+                doc.work = parseWorkXML(childnodes[num++]);
+            };
+            if ((num < count) && (childnodes[num].Name.Equals("identification")))
+            {
+                doc.identification = parseIdentificationXML(childnodes[num++]);
+            };
+            if ((num < count) && (childnodes[num].Name.Equals("defaults")))
+            {
+                doc.defaults = parseDefaultsXML(childnodes[num++]);
+            };
+            while ((num < count) && (childnodes[num].Name.Equals("credit")))
+            {
+                doc.credits.Add(parseCreditXML(childnodes[num++]));
+            };
+            if ((num < count) && (childnodes[num].Name.Equals("part-list")))
+            {
+                doc.partList = parsePartListXML(childnodes[num++]);
+            }
+            else
+            {
+                throw new MusicXMLReadException("MusicMXL error - missing part-list from score-header group");
+            }
         }
 
         public static ScorePart parseScorePartXML(ref int num, XmlNodeList childnodes)
