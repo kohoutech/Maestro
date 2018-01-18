@@ -47,6 +47,11 @@ namespace Transonic.Score
         public List<Credit> credits;
         public PartList partList;
 
+        //global settings
+        public float staffMargin;
+        public float staffSpacing;
+        public float sheetWidth;
+        public float staffHeight;
 
 //- cons ----------------------------------------------------------------------
 
@@ -62,6 +67,12 @@ namespace Transonic.Score
             defaults = null;
             credits = new List<Credit>();
             partList = null;
+
+            //globals
+            staffMargin = 50.0f;
+            staffSpacing = 8.0f;
+            sheetWidth = 400.0f;
+            staffHeight = staffSpacing * 4;
 
             parts = new List<Part>();
             curPart = null;

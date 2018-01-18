@@ -53,6 +53,13 @@ namespace Transonic.Score
 
         }
 
+        internal void setScore(ScoreDoc _score)
+        {
+            score = _score;
+            Invalidate();
+        }
+
+
 
 //- painting ------------------------------------------------------------------
 
@@ -67,6 +74,7 @@ namespace Transonic.Score
                 score.paint(g);
             }
         }
+
     }
 
 //-----------------------------------------------------------------------------

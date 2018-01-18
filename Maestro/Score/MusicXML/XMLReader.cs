@@ -87,6 +87,7 @@ namespace Transonic.Score.MusicXML
         {
             Part part = new Part(score);
             score.parts.Add(part);
+            score.curPart = part;
 
             XmlAttributeCollection attrs = partNode.Attributes;
             if (attrs["id"].Value != null)
@@ -293,6 +294,7 @@ namespace Transonic.Score.MusicXML
 
         public static Bookmark parseBookmarkXML(XmlNode node)
         {
+            Console.WriteLine("parsing bookmark node");
             return null;
         }
 
@@ -459,6 +461,7 @@ namespace Transonic.Score.MusicXML
 
         public static FiguredBass parseFiguredBassXML(XmlNode node)
         {
+            Console.WriteLine("parsing figured bass node");
             return null;
         }
 
@@ -550,6 +553,7 @@ namespace Transonic.Score.MusicXML
 
         public static Grouping parseGroupingXML(XmlNode node)
         {
+            Console.WriteLine("parsing grouping node");
             return null;
         }
 
@@ -580,6 +584,7 @@ namespace Transonic.Score.MusicXML
 
         public static Harmony parseHarmonyXML(XmlNode node)
         {
+            Console.WriteLine("parsing harmony node");
             return null;
         }
 
@@ -670,6 +675,7 @@ namespace Transonic.Score.MusicXML
 
         public static Link parseLinkXML(XmlNode node)
         {
+            Console.WriteLine("parsing link node");
             return null;
         }
 
@@ -793,7 +799,7 @@ namespace Transonic.Score.MusicXML
             Note note = new Note();
 
             XmlNodeList childnodes = node.ChildNodes;
-            int count = childnodes.Count;
+            int count = (childnodes != null) ? childnodes.Count : 0;
             int num = 0;
 
             //choice
@@ -1154,6 +1160,7 @@ namespace Transonic.Score.MusicXML
 
         public static Sound parseSoundXML(XmlNode node)
         {
+            Console.WriteLine("parsing sound node");
             return null;
         }
 

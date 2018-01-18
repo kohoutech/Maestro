@@ -142,10 +142,10 @@ namespace Maestro
         public void openScore(String filename)
         {
             currentScore = XMLReader.loadFromMusicXML(scoreSheet, filename);
+            scoreSheet.setScore(currentScore);
             this.Text = "Maestro [" + filename + "]";
             //currentSeq.setMidiSystem(midiSystem);
             //transport.setSequence(currentSeq);
-            //score.setSequence(currentSeq);
             //controlPanel.setSequence(currentSeq);
             //playTransportMenuItem.Enabled = true;
             //stopTransportMenuItem.Enabled = true;            

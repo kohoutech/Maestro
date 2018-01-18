@@ -41,7 +41,10 @@ namespace Transonic.Score
         {
             score = _score;
             id = null;
+
             staves = new List<Staff>();
+            staves.Add(new Staff(this));
+
             measures = new List<Measure>();
         }
 
