@@ -60,7 +60,7 @@ namespace Transonic.Score.Symbols
         {
         }
 
-        public virtual void paint(Graphics g, int xpos, int ypos)
+        public virtual void paint(Graphics g)
         {
         }
     }

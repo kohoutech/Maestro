@@ -40,11 +40,9 @@ namespace Transonic.Score
         public Measure prevMeasure;
         public Measure nextMeasure;
 
-        List<Symbol> symbols;               //symbols that aren't on beats
-        List<Beat> beats;
+        List<Beat> beats;        
 
         public int number;                  //measure number 
-        public int startTick;               //measure start time in ticks
         public int length;                  //number of beats in measure, determined by most recent key signature
 
         public TimeSignature timeSig;
@@ -53,36 +51,32 @@ namespace Transonic.Score
         public int timeDenom;
         public int key;
 
-        public int staffpos;                //ofs in staff, in pixels
-        public int width;                   //width of measure in pixels
+        public float staffpos;                //ofs in staff, in pixels
+        public float width;                   //width of measure in pixels
 
-        public Measure(Part _part)
+        public Measure(Part _part, int _number, Measure prev)
         {
             part = _part;
-            symbols = new List<Symbol>();
-            beats = new List<Beat>();
-        }
-
-        public Measure(Staff _staff, int num, int _startTick, int numer, int denom, int _key)
-        {
-            prevMeasure = null;
+            number = _number;
+            prevMeasure = prev;
             nextMeasure = null;
+            if (prevMeasure != null)
+            {
+                prevMeasure.nextMeasure = this;
+            }
 
-            symbols = new List<Symbol>();
             beats = new List<Beat>();
 
-            number = num;
-            startTick = _startTick;
-            timeSig = null;
-            keySig = null;
+            //timeSig = null;
+            //keySig = null;
 
-            timeNumer = numer;
-            timeDenom = denom;
-            key = _key;
-            length = numer * quantization / (denom / 4);
+            //timeNumer = numer;
+            //timeDenom = denom;
+            //key = _key;
+            //length = numer * quantization / (denom / 4);
 
-            staffpos = 0;
-            width = 50;
+            //staffpos = 0;
+            //width = 50;
         }
 
         public void setTimeSignature(TimeSignature _timeSig) {
@@ -94,9 +88,19 @@ namespace Transonic.Score
             keySig = _keySig;
         }
 
-        public void addSymbol(Symbol sym)
+        public void setPrint(Print print)
         {
-            symbols.Add(sym);
+        }
+
+        public void setBarLine(Barline barline)
+        {
+        }
+
+//- beats -------------------------------------------------------------------
+
+        public Beat getBeat(double beatPos)
+        {
+            return null;
         }
 
 //- layout -------------------------------------------------------------------
@@ -216,6 +220,11 @@ namespace Transonic.Score
             //g.DrawLine(Pens.Black, left + width, top, left + width, top + Staff.grandHeight);
         }
 
+    }
+
+//- measure attributes --------------------------------------------------------
+
+    public class Attributes { 
     }
 }
 

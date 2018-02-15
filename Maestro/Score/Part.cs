@@ -37,10 +37,10 @@ namespace Transonic.Score
 
         public String id;
 
-        public Part(ScoreDoc _score)
+        public Part(ScoreDoc _score, String _id)
         {
             score = _score;
-            id = null;
+            id = _id;
 
             staves = new List<Staff>();
             staves.Add(new Staff(this));

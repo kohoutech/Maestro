@@ -28,35 +28,37 @@ using Transonic.Score.Symbols;
 
 namespace Transonic.Score
 {
-    class Beat
+    public class Beat
     {
-        public static int a = 6;
-        public static int b = 6;
-        public static int c = 14;
 
         public Measure measure;
-        public int beat;
-        public int tick;
+        public float beat;
         public List<Symbol> symbols;
-        public int xpos;
-        public int sympos;
-        public int width;
-        public bool hasSharp;
+        public float xpos;
+
+        //public static int a = 6;
+        //public static int b = 6;
+        //public static int c = 14;
+        //public int tick;
+        //public int sympos;
+        //public int width;
+        //public bool hasSharp;
 
         public Beat(Measure _measure, int _beat)
         {
             measure = _measure;
             beat = _beat;
+            symbols = new List<Symbol>();
+            xpos = 0;
+
             //tick = (beat * measure.staff.division) / Measure.quantization;
-            //symbols = new List<Symbol>();
-            //xpos = 0;
             //width = a + c;
             //hasSharp = false;
         }
 
         public void addSymbol(Symbol sym)
         {
-            //symbols.Add(sym);
+            symbols.Add(sym);
             //if (sym is Note)
             //{
             //    Note note = (Note)sym;
@@ -64,9 +66,13 @@ namespace Transonic.Score
             //}
         }
 
-        public void setPos(int _pos)
+        public void setAttributes(Attributes attr)
         {
-            //xpos = _pos;
+        }
+
+        public void setPos(float _pos)
+        {
+            xpos = _pos;
             //sympos = hasSharp ? a + b : a;
             //foreach (Symbol sym in symbols)
             //{
@@ -76,14 +82,14 @@ namespace Transonic.Score
             //sympos += xpos;
         }
 
-        public void paint(Graphics g, int xorg, int top)
+        public void paint(Graphics g)
         {
-            int left = xorg + xpos;
+            //int left = xorg + xpos;
             //g.DrawLine(Pens.Blue, xorg, top, xorg, top + Staff.grandHeight);
             //g.DrawLine(Pens.Green, xorg+a, top, xorg+a, top + Staff.grandHeight);
             foreach (Symbol sym in symbols)
             {
-                sym.paint(g, left, top);
+                sym.paint(g);
             }
         }
     }

@@ -33,8 +33,6 @@ namespace Transonic.Score
     public class ScoreDoc
     {
         public ScoreSheet sheet;
-        public List<Part> parts;
-        public Part curPart;
 
         public String filename;
 
@@ -47,10 +45,15 @@ namespace Transonic.Score
         public List<Credit> credits;
         public PartList partList;
 
+        public List<Part> parts;
+        public Part curPart;
+
+        public float docWidth;
+        public float docHeight;
+
         //global settings
         public float staffMargin;
         public float staffSpacing;
-        public float sheetWidth;
         public float staffHeight;
 
 //- cons ----------------------------------------------------------------------
@@ -68,15 +71,19 @@ namespace Transonic.Score
             credits = new List<Credit>();
             partList = null;
 
+            docWidth = 400;
+            docHeight = 200;
+
             //globals
-            staffMargin = 50.0f;
-            staffSpacing = 8.0f;
-            sheetWidth = 400.0f;
-            staffHeight = staffSpacing * 4;
+            staffMargin = 50;
+            staffSpacing = 8;
+            staffHeight = staffSpacing * 5;
 
             parts = new List<Part>();
             curPart = null;
         }
+
+        
 
 
 //- painting ------------------------------------------------------------------

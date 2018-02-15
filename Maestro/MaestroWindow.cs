@@ -63,24 +63,47 @@ namespace Maestro
             currentSeq = new Sequence(Sequence.DEFAULTDIVISION);
             displayTrackNum = 0;
 
+            InitializeComponent();
+
             //control panel
             controlPanel = new ControlPanel(this);
-            controlPanel.Dock = DockStyle.Top;
+            controlPanel.Location = new Point(0, maestroMenu.Bottom);
+            controlPanel.Size = new Size(this.Width, controlPanel.Height);
             this.Controls.Add(controlPanel);
 
             //keyboard bar
             keyboard = new KeyboardBar(this, KeyboardBar.Range.EIGHTYEIGHT, KeyboardBar.KeySize.SMALL);
             keyboard.selectedColor = Color.Yellow;
             keyboard.BackColor = Color.Yellow;
-            keyboard.Dock = DockStyle.Bottom;
+            keyboard.Location = new Point(0, maestroStatus.Top - keyboard.Height);
+            keyboard.Size = new Size(this.Width, keyboard.Height);            
             this.Controls.Add(keyboard);
 
             //score sheet
             scoreSheet = new ScoreSheet(this);
-            scoreSheet.Dock = DockStyle.Fill;
-            this.Controls.Add(scoreSheet);
+            scoreSheet.Location = new Point(0, controlPanel.Bottom);
+            scoreSheet.Size = new Size(this.Width, keyboard.Top - controlPanel.Bottom);
+            //scoreSheet.Dock = DockStyle.Fill;
+            this.Controls.Add(scoreSheet);            
+        }
 
-            InitializeComponent();
+        protected override void OnResize(EventArgs e)
+        {
+            base.OnResize(e);
+            if (controlPanel != null) 
+            {            
+                controlPanel.Size = new Size(this.Width, controlPanel.Height);
+            }
+            if (keyboard != null)
+            {
+                keyboard.Location = new Point(0, maestroStatus.Top - keyboard.Height);
+                keyboard.Size = new Size(this.Width, keyboard.Height);
+            }
+            if (scoreSheet != null)
+            {
+                scoreSheet.Location = new Point(0, controlPanel.Bottom);
+                scoreSheet.Size = new Size(this.Width, keyboard.Top - controlPanel.Bottom);
+            }
         }
 
         protected override void OnFormClosing(FormClosingEventArgs e)

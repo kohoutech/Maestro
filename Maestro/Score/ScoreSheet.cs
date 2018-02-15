@@ -53,12 +53,24 @@ namespace Transonic.Score
 
         }
 
-        internal void setScore(ScoreDoc _score)
+        public  void setScore(ScoreDoc _score)
         {
             score = _score;
+            score.docWidth = this.Width;
+            score.docHeight = this.Height;
             Invalidate();
         }
 
+        protected override void OnResize(EventArgs e)
+        {
+            base.OnResize(e);
+            if (score != null)
+            {
+                score.docWidth = this.Width;
+                score.docHeight = this.Height;
+            }
+            //Invalidate();
+        }
 
 
 //- painting ------------------------------------------------------------------
@@ -66,7 +78,7 @@ namespace Transonic.Score
         protected override void OnPaint(PaintEventArgs e)
         {
             base.OnPaint(e);
-            Graphics g = e.Graphics;            
+            Graphics g = e.Graphics;
             g.SmoothingMode = SmoothingMode.AntiAlias;
 
             if (score != null)

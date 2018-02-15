@@ -41,11 +41,11 @@ namespace Transonic.Score
 
 //- display -------------------------------------------------------------------
 
-        public void drawStaff(Graphics g, float ypos)
+        public void drawStaff(Graphics g, ref float ypos)
         {
             for (int i = 0; i < 5; i++)
             {
-                g.DrawLine(Pens.Black, 0.0f, ypos, score.sheetWidth, ypos);
+                g.DrawLine(Pens.Black, 0.0f, ypos, score.docWidth, ypos);
                 ypos += score.staffSpacing;
             }
         }
@@ -53,9 +53,9 @@ namespace Transonic.Score
         public void paint(Graphics g)
         {
             float ypos = score.staffMargin;
-            drawStaff(g,ypos);
-            ypos += (score.staffSpacing + score.staffHeight);
-            drawStaff(g, ypos);
+            drawStaff(g, ref ypos);
+            ypos += score.staffHeight;
+            drawStaff(g, ref ypos);
 
             //int i = leftMeasureNum;
             //int xpos = 0;

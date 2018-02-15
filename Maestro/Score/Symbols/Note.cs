@@ -151,7 +151,7 @@ namespace Transonic.Score.Symbols
 
 //- display -------------------------------------------------------------------
 
-        public override void paint(Graphics g, int xorg, int top)
+        public override void paint(Graphics g)
         {
             //xorg += xpos;
             //if (ledgerLinesAbove < 0)
