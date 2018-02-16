@@ -224,7 +224,34 @@ namespace Transonic.Score
 
 //- measure attributes --------------------------------------------------------
 
-    public class Attributes { 
+    public class Attributes 
+    {
+        public Editorial editorial;
+        public double divisions;
+        public Key key;
+        public List<Time> times;
+        public int staves;
+        public PartSymbol partSymbol;
+        public int instrument;
+        public List<Clef> clefs;
+        public List<StaffDetails> staffdetails;
+        public List<Transpose> transposes;
+        public List<MeasureStyle> measurestyles;
+
+        public Attributes()
+        {
+            editorial = null;
+            divisions = 1;
+            key = null;
+            times = new List<Time>();
+            staves = 1;
+            partSymbol = null;
+            instrument = 1;
+            clefs = new List<Clef>();
+            staffdetails = new List<StaffDetails>();
+            transposes = new List<Transpose>();
+            measurestyles = new List<MeasureStyle>();
+        }
     }
 }
 

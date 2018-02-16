@@ -54,7 +54,7 @@ namespace Transonic.Score.Symbols
         public bool cue;
         public FullNote fullnote;
         public Tie[] tie;
-        public Duration duration;
+        public double duration;
         public Instrument instrument;
         public EditorialVoice editorialVoice;
         public NoteType notetype;
@@ -78,7 +78,7 @@ namespace Transonic.Score.Symbols
             step = 0;
             alter = 0.0;
             octave = 0;
-            duration = null;
+            duration = 0;
             voice = "";
             notetype = null;
             dot = null;

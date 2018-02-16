@@ -37,7 +37,6 @@ namespace Transonic.Score.Symbols
     public class Arpeggiate		{}
     public class Arrow			{}
     public class Articulations		{}
-    public class Backup : Symbol			{}
     public class BarStyleColor		{}
     public class Barline			{}
     public class Barre			{}
@@ -88,7 +87,6 @@ namespace Transonic.Score.Symbols
     public class FormattedSymbolId	{}
     public class FormattedTextId	{}
     public class FormattedText		{}
-    public class Forward : Symbol			{}
     public class FrameNote		{}
     public class Frame			{}
     public class Fret			{}

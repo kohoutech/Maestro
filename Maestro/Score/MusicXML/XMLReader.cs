@@ -129,22 +129,32 @@ namespace Transonic.Score.MusicXML
             //music-data group
             double beatpos = 0;
             Beat curBeat = measure.getBeat(beatpos);
+            double noteDuration = 0;
             foreach (XmlNode dataNode in measureNode.ChildNodes)
             {
                 switch (dataNode.Name)
                 {
                     case "note":
                         Note note = parseNoteXML(dataNode);
+                        if (!note.chord)
+                        {
+                            beatpos += noteDuration;
+                            curBeat = measure.getBeat(beatpos);
+                            noteDuration = note.duration;
+                        }
                         curBeat.addSymbol(note);
-
                         break;
                     case "backup":
                         Backup backup = parseBackupXML(dataNode);
                         curBeat.addSymbol(backup);
+                        beatpos -= backup.duration;
+                        curBeat = measure.getBeat(beatpos);
                         break;
                     case "forward":
                         Forward forward = parseForwardXML(dataNode);
                         curBeat.addSymbol(forward);
+                        beatpos += forward.duration;
+                        curBeat = measure.getBeat(beatpos);
                         break;
                     case "direction": 
                         Direction direction = parseDirectionXML(dataNode);
@@ -234,11 +244,97 @@ namespace Transonic.Score.MusicXML
             return null;
         }
 
+//- attribute types -----------------------------------------------------------
+
         public static Attributes parseAttributesXML(XmlNode node)
         {
             Console.WriteLine("parsing attributes node");
+            Attributes attrs = new Attributes();
+
+            XmlNodeList childnodes = node.ChildNodes;
+            int count = (childnodes != null) ? childnodes.Count : 0;
+            int num = 0;
+
+            attrs.editorial = parseEditorialXML(ref num, childnodes);    
+            if ((num < count) && childnodes[num].Name.Equals("divisions"))
+            {
+                attrs.divisions = Convert.ToDouble(childnodes[num].InnerText);
+            };
+            if ((num < count) && childnodes[num].Name.Equals("key"))
+            {
+                attrs.key = parseKeyXML(childnodes[num++]);
+            };
+            while ((num < count) && childnodes[num].Name.Equals("time"))
+            {
+                attrs.times.Add(parseTimeXML(childnodes[num++]));
+            };
+            if ((num < count) && childnodes[num].Name.Equals("staves"))
+            {
+                attrs.staves = Convert.ToInt32(childnodes[num].Value);
+            };
+            if ((num < count) && childnodes[num].Name.Equals("part-symbol"))
+            {
+                attrs.partSymbol = parsePartSymbolXML(childnodes[num++]);
+            };
+            if ((num < count) && childnodes[num].Name.Equals("instrument"))
+            {
+                attrs.instrument = Convert.ToInt32(childnodes[num].Value);
+            };
+            while ((num < count) && childnodes[num].Name.Equals("clef"))
+            {
+                attrs.clefs.Add(parseClefXML(childnodes[num++]));
+            };
+            while ((num < count) && childnodes[num].Name.Equals("staff-details"))
+            {
+                attrs.staffdetails.Add(parseStaffDetailsXML(childnodes[num++]));
+            };
+            while ((num < count) && childnodes[num].Name.Equals("transpose"))
+            {
+                attrs.transposes.Add(parseTransposeXML(childnodes[num++]));
+            };
+            while ((num < count) && childnodes[num].Name.Equals("measure-style"))
+            {
+                attrs.measurestyles.Add(parseMeasureStyleXML(childnodes[num++]));
+            };
+            return attrs;
+        }
+
+        public static Key parseKeyXML(XmlNode node)
+        {
             return null;
         }
+
+        public static Time parseTimeXML(XmlNode node)
+        {
+            return null;
+        }
+
+        public static PartSymbol parsePartSymbolXML(XmlNode node)
+        {
+            return null;
+        }
+
+        public static Clef parseClefXML(XmlNode node)
+        {
+            return null;
+        }
+
+        public static StaffDetails parseStaffDetailsXML(XmlNode node)
+        {
+            return null;
+        }
+
+        public static Transpose parseTransposeXML(XmlNode node)
+        {
+            return null;
+        }
+
+        public static MeasureStyle parseMeasureStyleXML(XmlNode node)
+        {
+            return null;
+        }
+
+//-----------------------------------------------------------------------------
 
         public static Backup parseBackupXML(XmlNode node)
         {
@@ -329,11 +425,6 @@ namespace Transonic.Score.MusicXML
         }
 
         public static Cancel parseCancelXML(XmlNode node)
-        {
-            return null;
-        }
-
-        public static Clef parseClefXML(XmlNode node)
         {
             return null;
         }
@@ -658,11 +749,6 @@ namespace Transonic.Score.MusicXML
             return null;
         }
 
-        public static Key parseKeyXML(XmlNode node)
-        {
-            return null;
-        }
-
         public static KeyAccidental parseKeyAccidentalXML(XmlNode node)
         {
             return null;
@@ -725,11 +811,6 @@ namespace Transonic.Score.MusicXML
         }
 
         public static MeasureRepeat parseMeasureRepeatXML(XmlNode node)
-        {
-            return null;
-        }
-
-        public static MeasureStyle parseMeasureStyleXML(XmlNode node)
         {
             return null;
         }
@@ -1030,11 +1111,6 @@ namespace Transonic.Score.MusicXML
             return null;
         }
 
-        public static PartSymbol parsPartSymbolXML(XmlNode node)
-        {
-            return null;
-        }
-
         public static Pedal parsePedalXML(XmlNode node)
         {
             return null;
@@ -1180,11 +1256,6 @@ namespace Transonic.Score.MusicXML
             return null;
         }
 
-        public static StaffDetails parseStaffDetailsXML(XmlNode node)
-        {
-            return null;
-        }
-
         public static StaffDivide parseStaffDivideXML(XmlNode node)
         {
             return null;
@@ -1285,11 +1356,6 @@ namespace Transonic.Score.MusicXML
             return null;
         }
 
-        public static Time parseTimeXML(XmlNode node)
-        {
-            return null;
-        }
-
         public static TimeModification parseTimeModificationXML(XmlNode node)
         {
             return null;
@@ -1299,11 +1365,6 @@ namespace Transonic.Score.MusicXML
         //{
         //    throw new NotImplementedException();
         //}
-
-        public static Transpose parseTransposeXML(XmlNode node)
-        {
-            return null;
-        }
 
         public static Tremolo parseTremoloXML(XmlNode node)
         {
@@ -1399,12 +1460,17 @@ namespace Transonic.Score.MusicXML
         //    return 1;
         //}
 
-        public static EditorialVoiceDirection parseEditorialVoiceDirectionXML(ref int num, XmlNodeList childnodes)
+        public static Editorial parseEditorialXML(ref int num, XmlNodeList childnodes)
         {
             return null;
         }
 
         public static EditorialVoice parseEditorialVoiceXML(ref int num, XmlNodeList childnodes)
+        {
+            return null;
+        }
+
+        public static EditorialVoiceDirection parseEditorialVoiceDirectionXML(ref int num, XmlNodeList childnodes)
         {
             return null;
         }

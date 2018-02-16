@@ -93,4 +93,16 @@ namespace Transonic.Score
             }
         }
     }
+
+//-----------------------------------------------------------------------------
+
+    public class Backup : Symbol 
+    {
+        public double duration;
+    }
+
+    public class Forward : Symbol 
+    {
+        public double duration;
+    }
 }
