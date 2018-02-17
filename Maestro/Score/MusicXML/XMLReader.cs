@@ -21,7 +21,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.IO;
 using System.Xml;
+using System.Xml.Serialization;
 
 using Transonic.Score;
 using Transonic.Score.Symbols;
@@ -35,50 +37,45 @@ namespace Transonic.Score.MusicXML
 
         public static ScoreDoc loadFromMusicXML(ScoreSheet sheet, String filename)
         {
-            XmlDocument xmlDoc = new XmlDocument();
-            xmlDoc.XmlResolver = null;
-            try
-            {
-                xmlDoc.Load(filename);
-            }
-            catch (Exception e)
-            {
-                throw new MusicXMLReadException("MusicMXL error loading file " + filename + " : " + e.Message);
-            }
+            FileStream fs = new FileStream(filename, FileMode.Open);
+            
+            XmlReaderSettings settings = new XmlReaderSettings();
+            settings.DtdProcessing = DtdProcessing.Parse;
+            settings.XmlResolver = null;
+            XmlReader reader = XmlReader.Create(fs, settings);
 
-            ScoreDoc doc = new ScoreDoc(sheet);
+            ScorePartwise scorePartwise;
+
+            XmlSerializer serializer = new XmlSerializer(typeof(ScorePartwise));
+            scorePartwise = (ScorePartwise)serializer.Deserialize(reader);
+            fs.Close();
+
+            ScoreDoc doc = parseScorePartwise(sheet, scorePartwise);
             doc.filename = filename;
-
-            if (xmlDoc.DocumentElement.Name.Equals("score-partwise"))
-            {
-                parseScorePartwise(xmlDoc.DocumentElement.ChildNodes, doc);
-            }
-            else if (xmlDoc.DocumentElement.Name.Equals("score-timewise"))
-            {
-                parseScoreTimewise(xmlDoc.DocumentElement.ChildNodes, doc);
-            }
-            else
-            {
-                throw new MusicXMLReadException("MusicMXL error - unknown root element: " + xmlDoc.DocumentElement.Name);
-            }
 
             return doc;
         }
 
-        private static void parseScorePartwise(XmlNodeList xmlNodeList, ScoreDoc doc)
+        public static ScoreDoc parseScorePartwise(ScoreSheet sheet, ScorePartwise scorePartwise)
         {
-            int nodenum = 0;
-            parseScoreHeaderXML(ref nodenum, xmlNodeList, doc);
-            while (nodenum < xmlNodeList.Count)
-            {
-                if (xmlNodeList[nodenum].Name.Equals("part"))             //only child type we have for now, there may be more
-                {
-                    XMLReader.parsePartXML(xmlNodeList[nodenum++], doc);                    
-                }
-            }
+            ScoreDoc doc = new ScoreDoc(sheet);
+            return doc;
         }
 
-        private static void parseScoreTimewise(XmlNodeList xmlNodeList, ScoreDoc doc)
+        //private static void parseScorePartwise(XmlNodeList xmlNodeList, ScoreDoc doc)
+        //{
+        //    int nodenum = 0;
+        //    parseScoreHeaderXML(ref nodenum, xmlNodeList, doc);
+        //    while (nodenum < xmlNodeList.Count)
+        //    {
+        //        if (xmlNodeList[nodenum].Name.Equals("part"))             //only child type we have for now, there may be more
+        //        {
+        //            XMLReader.parsePartXML(xmlNodeList[nodenum++], doc);                    
+        //        }
+        //    }
+        //}
+
+        private static ScoreDoc parseScoreTimewise(ScoreSheet sheet, ScoreTimewise scoreXML)
         {
             throw new NotImplementedException();
         }

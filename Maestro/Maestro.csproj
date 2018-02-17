@@ -70,6 +70,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Score\Beat.cs" />
     <Compile Include="Score\Measure.cs" />
+    <Compile Include="Score\MusicXML\ScoreXML.cs" />
     <Compile Include="Score\MusicXML\XMLReader.cs" />
     <Compile Include="Score\MusicXML\SimpleTypes.cs" />
     <Compile Include="Score\MusicXML\XMLWriter.cs" />
