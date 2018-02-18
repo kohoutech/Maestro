@@ -37,13 +37,13 @@ namespace Transonic.Score
         public String filename;
 
         //scoreheader
-        public Work work;
-        public String movementNumber;
-        public String movementTitle;
-        public Identification identification;
-        public Defaults defaults;
-        public List<Credit> credits;
-        public PartList partList;
+        //public Work work;
+        //public String movementNumber;
+        //public String movementTitle;
+        //public Identification identification;
+        //public Defaults defaults;
+        //public List<Credit> credits;
+        //public PartList partList;
 
         public List<Part> parts;
         public Part curPart;
@@ -63,13 +63,13 @@ namespace Transonic.Score
             sheet = _sheet;
 
             //scoreheader
-            work = null;
-            movementNumber = null;
-            movementTitle = null;
-            identification = null;
-            defaults = null;
-            credits = new List<Credit>();
-            partList = null;
+            //work = null;
+            //movementNumber = null;
+            //movementTitle = null;
+            //identification = null;
+            //defaults = null;
+            //credits = new List<Credit>();
+            //partList = null;
 
             docWidth = 400;
             docHeight = 200;
@@ -82,9 +82,6 @@ namespace Transonic.Score
             parts = new List<Part>();
             curPart = null;
         }
-
-        
-
 
 //- painting ------------------------------------------------------------------
 

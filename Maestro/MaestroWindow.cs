@@ -164,7 +164,7 @@ namespace Maestro
 
         public void openScore(String filename)
         {
-            currentScore = XMLReader.loadFromMusicXML(scoreSheet, filename);
+            currentScore = MusicXMLReader.loadFromMusicXML(scoreSheet, filename);
             scoreSheet.setScore(currentScore);
             this.Text = "Maestro [" + filename + "]";
             //currentSeq.setMidiSystem(midiSystem);

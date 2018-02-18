@@ -30,30 +30,18 @@ namespace Transonic.Score.Symbols
 {
     public class Symbol
     {
-        public Measure measure;
-        public int startTick;           //start tick relative to measure start
-        public int duration;            //length in ticks
+        public Beat beat;
+        public Staff staff;
 
-        public int beat;                //beat that symbol starts on
-        public int len;                 //symbol len in beats
-
-        public int xpos;                //symbol pos from measure left in pixels
-        public int ypos;                //symbol pos from measure top in pixels
+        public double xpos;                
+        public double ypos;                
 
         public Symbol()
         {
-            measure = null;
-            startTick = 0;
-            duration = 0;
-            beat = 0;
-            len = 0;
-            xpos = 0;
-            ypos = 0;
-        }
-
-        public virtual void setMeasure(Measure _measure)
-        {
-            measure = _measure;
+            beat = null;
+            staff = null;
+            xpos = 0.0;
+            ypos = 0.0;
         }
 
         public virtual void dump()

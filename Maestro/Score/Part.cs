@@ -43,7 +43,7 @@ namespace Transonic.Score
             id = _id;
 
             staves = new List<Staff>();
-            staves.Add(new Staff(this));
+            staves.Add(new Staff(this));        //temporary?
 
             measures = new List<Measure>();
         }

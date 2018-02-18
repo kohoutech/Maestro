@@ -71,9 +71,9 @@
     <Compile Include="Score\Beat.cs" />
     <Compile Include="Score\Measure.cs" />
     <Compile Include="Score\MusicXML\ScoreXML.cs" />
-    <Compile Include="Score\MusicXML\XMLReader.cs" />
+    <Compile Include="Score\MusicXML\MusicXMLReader.cs" />
     <Compile Include="Score\MusicXML\SimpleTypes.cs" />
-    <Compile Include="Score\MusicXML\XMLWriter.cs" />
+    <Compile Include="Score\MusicXML\MusicXMLWriter.cs" />
     <Compile Include="Score\Part.cs" />
     <Compile Include="Score\ScoreDoc.cs" />
     <Compile Include="Score\ScoreSheet.cs">

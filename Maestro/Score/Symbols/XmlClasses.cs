@@ -44,7 +44,6 @@ namespace Transonic.Score.Symbols
     public class BassAlter		{}
     public class BassStep		{}
     public class Beam			{}
-    public class BeatRepeat		{}
     public class BeatUnitTied		{}
     public class Beater			{}
     public class Bend			{}
@@ -52,8 +51,6 @@ namespace Transonic.Score.Symbols
     public class Bracket			{}
     public class BreathMark		{}
     public class Caesura			{}
-    public class Cancel			{}
-    public class Clef			{}
     public class Coda			{}
     public class Credit			{}
     public class Dashes			{}
@@ -67,7 +64,6 @@ namespace Transonic.Score.Symbols
     public class Distance		{}
     public class Dynamics		{}
     public class Elision			{}
-    public class Empty			{}
     public class EmptyFont		{}
     public class EmptyLine		{}
     public class EmptyPlacementSmufl	{}
@@ -112,11 +108,7 @@ namespace Transonic.Score.Symbols
     public class Identification		{}
     public class Image			{}
     public class Instrument		{}
-    public class Interchangeable	{}
     public class Inversion		{}
-    public class Key			{}
-    public class KeyAccidental		{}
-    public class KeyOctave		{}
     public class Kind			{}
     public class Level			{}
     public class LineWidth		{}
@@ -126,8 +118,6 @@ namespace Transonic.Score.Symbols
     public class LyricLanguage		{}
     public class MeasureLayout		{}
     public class MeasureNumbering	{}
-    public class MeasureRepeat		{}
-    public class MeasureStyle		{}
     public class Metronome		{}
     public class MetronomeBeam		{}
     public class MetronomeNote		{}
@@ -138,7 +128,6 @@ namespace Transonic.Score.Symbols
     public class Miscellaneous		{}
     public class MiscellaneousField	{}
     public class Mordent			{}
-    public class MultipleRest		{}
     public class NameDisplay		{}
     public class NonArpeggiate		{}
     public class Notations		{}
@@ -162,7 +151,6 @@ namespace Transonic.Score.Symbols
     public class PartGroup		{}
     public class PartList		{}
     public class PartName		{}
-    public class PartSymbol		{}
     public class Pedal			{}
     public class PedalTuning		{}
     public class PerMinute		{}
@@ -183,14 +171,11 @@ namespace Transonic.Score.Symbols
     public class ScoreInstrument	{}
     public class ScorePart		{}
     public class Segno			{}
-    public class Slash			{}
     public class Slide			{}
     public class Slur			{}
     public class Sound			{}
-    public class StaffDetails		{}
     public class StaffDivide		{}
     public class StaffLayout		{}
-    public class StaffTuning		{}
     public class Stem			{}
     public class Stick			{}
     public class StringSym			{}
@@ -206,9 +191,7 @@ namespace Transonic.Score.Symbols
     public class TextElementData	{}
     public class Tie			{}
     public class Tied			{}
-    public class Time			{}
     public class TimeModification	{}
-    public class Transpose		{}
     public class Tremolo			{}
     public class Tuplet			{}
     public class TupletDot		{}

@@ -45,11 +45,6 @@ namespace Transonic.Score
         public int number;                  //measure number 
         public int length;                  //number of beats in measure, determined by most recent key signature
 
-        public TimeSignature timeSig;
-        public KeySignature keySig;
-        public int timeNumer;
-        public int timeDenom;
-        public int key;
 
         public float staffpos;                //ofs in staff, in pixels
         public float width;                   //width of measure in pixels
@@ -67,26 +62,18 @@ namespace Transonic.Score
 
             beats = new List<Beat>();
 
-            //timeSig = null;
-            //keySig = null;
-
-            //timeNumer = numer;
-            //timeDenom = denom;
-            //key = _key;
-            //length = numer * quantization / (denom / 4);
-
-            //staffpos = 0;
-            //width = 50;
+            staffpos = 0;
+            width = 50;
         }
 
-        public void setTimeSignature(TimeSignature _timeSig) {
-            timeSig = _timeSig;
-        }
+        //public void setTimeSignature(TimeSignature _timeSig) {
+        //    timeSig = _timeSig;
+        //}
 
-        public void setKeySignature(KeySignature _keySig)
-        {
-            keySig = _keySig;
-        }
+        //public void setKeySignature(KeySignature _keySig)
+        //{
+        //    keySig = _keySig;
+        //}
 
         public void setPrint(Print print)
         {
@@ -226,31 +213,37 @@ namespace Transonic.Score
 
     public class Attributes 
     {
-        public Editorial editorial;
-        public double divisions;
-        public Key key;
-        public List<Time> times;
-        public int staves;
-        public PartSymbol partSymbol;
-        public int instrument;
-        public List<Clef> clefs;
-        public List<StaffDetails> staffdetails;
-        public List<Transpose> transposes;
-        public List<MeasureStyle> measurestyles;
+        //public Editorial editorial;
+        //public double divisions;
+        //public Key key;
+        //public List<Time> times;
+        //public int staves;
+        //public PartSymbol partSymbol;
+        //public int instrument;
+        //public List<Clef> clefs;
+        //public List<StaffDetails> staffdetails;
+        //public List<Transpose> transposes;
+        //public List<MeasureStyle> measurestyles;
+
+        public TimeSignature timeSig;
+        public KeySignature keySig;
+        public int timeNumer;
+        public int timeDenom;
+        public int key;
 
         public Attributes()
         {
-            editorial = null;
-            divisions = 1;
-            key = null;
-            times = new List<Time>();
-            staves = 1;
-            partSymbol = null;
-            instrument = 1;
-            clefs = new List<Clef>();
-            staffdetails = new List<StaffDetails>();
-            transposes = new List<Transpose>();
-            measurestyles = new List<MeasureStyle>();
+            //editorial = null;
+            //divisions = 1;
+            //key = null;
+            //times = new List<Time>();
+            //staves = 1;
+            //partSymbol = null;
+            //instrument = 1;
+            //clefs = new List<Clef>();
+            //staffdetails = new List<StaffDetails>();
+            //transposes = new List<Transpose>();
+            //measurestyles = new List<MeasureStyle>();
         }
     }
 }

@@ -24,7 +24,7 @@ using System.Text;
 
 namespace Transonic.Score.MusicXML
 {
-    class XMLWriter
+    class MusicXMLWriter
     {
     }
 }

@@ -1,6 +1,6 @@
 ﻿/* ----------------------------------------------------------------------------
 Transonic Score Library
-Copyright (C) 1997-2017  George E Greaney
+Copyright (C) 1997-2018  George E Greaney
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -30,6 +30,24 @@ namespace Transonic.Score.Symbols
 {
     public class Note : Symbol
     {
+        public enum NOTETYPE
+        {
+            Note1024,
+            Note512,
+            Note256,
+            Note128,
+            SixtyFourth,
+            ThirtySecond,
+            Sixteenth,
+            Eighth,
+            Quarter,
+            Half,
+            Whole,
+            DoubleWhole,
+            QuadWhole,
+            OctoWhole
+        }
+
         public const int quantization = 8;         //quantize notes to 1/32 note pos (quarter note / 8)
 
         public const String flat = "\u266d";
@@ -38,50 +56,27 @@ namespace Transonic.Score.Symbols
 
         //public const String quarter = "\u2669";
 
-        public int noteNumber;          //midi pitch
+        public int pitch;
+        public bool chord;
+        public double duration;
+        public NOTETYPE notetype;
+        public bool dot;
+
+        public Stem stem;
+        public Beam beam;
+
         public int ledgerLinesAbove;
         public bool ledgerLinesMiddle;
         public int ledgerLinesBelow;
-        public bool hasSharp;
+        public bool hasSharp;        
 
-        public bool chord;
-        public int step;
-        public double alter;
-        public int octave;
-        public string voice;
-
-        public Grace grace;
-        public bool cue;
-        public FullNote fullnote;
-        public Tie[] tie;
-        public double duration;
-        public Instrument instrument;
-        public EditorialVoice editorialVoice;
-        public NoteType notetype;
-        public EmptyPlacement dot;
-        public Accidental accidental;
-        public TimeModification timeModification;
-        public Stem stem;
-        public Notehead notehead;
-        public NoteheadText noteheadText;
-        public StaffX staff;
-        public Beam beam;
-        public Notations notations;
-        public Lyric lyric;
-        public Play play;
-        
-
-        public Note()
+        public Note() : base()
         {
-            cue = false;
             chord = false;
-            step = 0;
-            alter = 0.0;
-            octave = 0;
-            duration = 0;
-            voice = "";
-            notetype = null;
-            dot = null;
+            pitch = 0;
+            duration = 0.0;
+            notetype = NOTETYPE.Quarter;
+            dot = false;
         }
 
         //public Note(int _start, int _noteNum, int _dur)
@@ -97,23 +92,23 @@ namespace Transonic.Score.Symbols
         //    ledgerLinesBelow = 0;
         //}
 
-        public override void setMeasure(Measure measure)
-        {
-            base.setMeasure(measure);
+        //public override void setMeasure(Measure measure)
+        //{
+        //    base.setMeasure(measure);
 
-            //startTick -= measure.startTick;
+        //    //startTick -= measure.startTick;
 
-            ////quantize start to nearest beat
-            //double val = (double)startTick / measure.staff.division;
-            //beat = (int)((val * quantization) + 0.5f);
+        //    ////quantize start to nearest beat
+        //    //double val = (double)startTick / measure.staff.division;
+        //    //beat = (int)((val * quantization) + 0.5f);
 
-            ////quatize duration to next beat
-            //val = (double)duration / measure.staff.division;
-            //len = (int) Math.Ceiling((val * quantization * 2));
+        //    ////quatize duration to next beat
+        //    //val = (double)duration / measure.staff.division;
+        //    //len = (int) Math.Ceiling((val * quantization * 2));
 
-            //setVertPos();
-            //hasSharp = (keyOfC[step] == 1);
-        }
+        //    //setVertPos();
+        //    //hasSharp = (keyOfC[step] == 1);
+        //}
 
         int[] scaleTones = { 0, 0, 1, 1, 2, 3, 3, 4, 4, 5, 5, 6 };
         int[] keyOfC = { 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 0 };
