@@ -83,6 +83,21 @@ namespace Transonic.Score
             curPart = null;
         }
 
+        public void dump()
+        {
+            for (int i = 0; i < parts.Count; i++)
+            {
+                Console.WriteLine("part [" + (i+1) + "]");
+                parts[i].dump();
+            }
+        }
+
+        public void resize(int width, int height)
+        {
+            docWidth = width;
+            docHeight = height;
+        }
+
 //- painting ------------------------------------------------------------------
 
         public void paint(Graphics g)

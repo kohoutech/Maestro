@@ -35,27 +35,30 @@ namespace Transonic.Score.MusicXML
 
 //- root nodes ----------------------------------------------------------------
 
+        //loads MusicXML file data into a new score doc obj
         public static ScoreDoc loadFromMusicXML(ScoreSheet sheet, String filename)
         {
-            FileStream stream = new FileStream(filename, FileMode.Open);
+            FileStream stream = new FileStream(filename, FileMode.Open);            //get file stream from filename
             
             XmlReaderSettings settings = new XmlReaderSettings();
             settings.DtdProcessing = DtdProcessing.Parse;
             settings.XmlResolver = null;
-            XmlReader reader = XmlReader.Create(stream, settings);
+            XmlReader reader = XmlReader.Create(stream, settings);                  
 
             scorepartwise scorePartwise;
 
             XmlSerializer serializer = new XmlSerializer(typeof(scorepartwise));
-            scorePartwise = (scorepartwise)serializer.Deserialize(reader);
+            scorePartwise = (scorepartwise)serializer.Deserialize(reader);                  //read xml file into xml tree
             stream.Close();
 
-            ScoreDoc doc = parseScorePartwise(sheet, scorePartwise);
+            ScoreDoc doc = parseScorePartwise(sheet, scorePartwise);            //create score doc from xml tree
             doc.filename = filename;
+            //doc.dump();
 
             return doc;
         }
 
+        //a score partwise style file has a score header node followed by a list of part nodes
         public static ScoreDoc parseScorePartwise(ScoreSheet sheet, scorepartwise scorePartwise)
         {
             ScoreDoc doc = new ScoreDoc(sheet);
@@ -67,71 +70,78 @@ namespace Transonic.Score.MusicXML
             return doc;
         }
 
+        //not handled yet
         private static ScoreDoc parseScoreTimewise(ScoreSheet sheet, ScoreTimewise scoreXML)
         {
             throw new NotImplementedException();
         }
 
+        //each part node contains a list of measure node
         public static void parsePartXML(scorepartwisePart scorepart, ScoreDoc score)
         {
             Part part = new Part(score, scorepart.id);
             score.parts.Add(part);
             score.curPart = part;
 
-            Measure prevMeasure = null;
+            Measure prevMeasure = null;                                             //for linking measure objs together
             foreach (scorepartwisePartMeasure measure in scorepart.measure)
             {
                     prevMeasure = MusicXMLReader.parseMeasureXML(measure, part, prevMeasure);
             }
         }
 
+        //each measure node contains a list of music data nodes (note/direction/attributes/...)
         public static Measure parseMeasureXML(scorepartwisePartMeasure measurexml, Part part, Measure prevMeasure)
         {
             int number = Convert.ToInt32(measurexml.number);
             Measure measure = new Measure(part, number, prevMeasure);
             part.measures.Add(measure);
 
-            //music-data group
-            double beatpos = 0;
+            //music-data list
+            decimal beatpos = 0;
             Beat curBeat = measure.getBeat(beatpos);
-            double noteDuration = 0;
+            decimal chordDuration = 0;
             foreach (object item in measurexml.Items)
             {
                 if (item is note)
                 {
-
-                    Note note = parseNoteXML((note)item);
-                    if (!note.chord)
+                    Note note = parseNoteXML((note)item);           //get note obj from note node data
+                    if (note.chord)                                 //if note is part of chord
                     {
-                        beatpos += noteDuration;
-                        curBeat = measure.getBeat(beatpos);
-                        noteDuration = note.duration;
+                        beatpos -= chordDuration;                   //backup to pos of previous note
+                        Beat beat = measure.getBeat(beatpos);
+                        beat.addSymbol(note);                      //add this note to that beat
+                        beatpos += chordDuration;                   //use prev note's duration to go to next beat
                     }
-                    curBeat.addSymbol(note);
+                    else
+                    {
+                        Beat beat = measure.getBeat(beatpos);
+                        beat.addSymbol(note);                       //add note obj to cur beat
+                        beatpos += note.duration;
+                        chordDuration = note.duration;              //if this is the first note of a chord, save its duration
+                    }
                 }
-                if (item is backupXML)
+                else if (item is backup)
                 {
-                    Backup backup = parseBackupXML((backupXML)item);
-                    curBeat.addSymbol(backup);
-                    beatpos -= backup.duration;
-                    curBeat = measure.getBeat(beatpos);
+                    decimal backup = parseBackupXML((backup)item);
+                    beatpos -= backup;                    
                 }
-                if (item is forwardXML)
+                else if (item is forward)
                 {
-                    Forward forward = parseForwardXML((forwardXML)item);
-                    curBeat.addSymbol(forward);
-                    beatpos += forward.duration;
-                    curBeat = measure.getBeat(beatpos);
+                    decimal forward = parseForwardXML((forward)item);
+                    beatpos += forward;                    
                 }
-                if (item is direction)
+                else if (item is direction)
                 {
                     Direction direction = parseDirectionXML((direction)item);
-                    curBeat.addSymbol(direction);
+                    Beat beat = measure.getBeat(beatpos);
+                    beat.addSymbol(direction);
                 }
-                if (item is attributesXML)
+                else if (item is attributes)
                 {
-                    Attributes attributes = parseAttributesXML((attributesXML)item);
-                    curBeat.setAttributes(attributes);
+                    Attributes attributes = parseAttributesXML((attributes)item);
+                    Beat beat = measure.getBeat(beatpos);
+                    beat.setAttributes(attributes);
                 }
                 //case "harmony":
                 //    Harmony harmony = parseHarmonyXML(dataNode);
@@ -142,12 +152,12 @@ namespace Transonic.Score.MusicXML
                 //case "sound":
                 //    Sound sound = parseSoundXML(dataNode);
                 //    break;
-                if (item is printXML)
+                else if (item is printXML)
                 {
                     Print print = parsePrintXML((printXML)item);
                     measure.setPrint(print);
                 }
-                if (item is barlineXML)
+                else if (item is barlineXML)
                 {
                     Barline barline = parseBarlineXML((barlineXML)item);
                     measure.setBarLine(barline);
@@ -166,703 +176,37 @@ namespace Transonic.Score.MusicXML
             return measure;
         }
 
-//- complex types -------------------------------------------------------------
+//- note nodes ----------------------------------------------------------------
 
-        public static Accidental parseAccidentalXML(XmlNode node)
-        {
-            return null;
-        }
-
-        public static AccidentalMark parseAccidentalMarkXML(XmlNode node)
-        {
-            return null;
-        }
-
-        public static AccidentalText parseAccidentalTextXML(XmlNode node)
-        {
-            return null;
-        }
-
-        public static Accord parseAccordXML(XmlNode node)
-        {
-            return null;
-        }
-
-        public static AccordionRegistration parseAccordionRegistrationXML(XmlNode node)
-        {
-            return null;
-        }
-
-        public static Appearance parseAppearanceXML(XmlNode node)
-        {
-            return null;
-        }
-
-        public static Arpeggiate parseArpeggiateXML(XmlNode node)
-        {
-            return null;
-        }
-
-        public static Arrow parseArrowXML(XmlNode node)
-        {
-            return null;
-        }
-
-        public static Articulations parseArticulationsXML(XmlNode node)
-        {
-            return null;
-        }
-
-//- attribute types -----------------------------------------------------------
-
-        public static Attributes parseAttributesXML(attributesXML item)
-        {
-            Console.WriteLine("parsing attributes node");
-            Attributes attrs = new Attributes();
-
-            //XmlNodeList childnodes = node.ChildNodes;
-            //int count = (childnodes != null) ? childnodes.Count : 0;
-            //int num = 0;
-
-            //attrs.editorial = parseEditorialXML(ref num, childnodes);    
-            //if ((num < count) && childnodes[num].Name.Equals("divisions"))
-            //{
-            //    attrs.divisions = Convert.ToDouble(childnodes[num].InnerText);
-            //};
-            //if ((num < count) && childnodes[num].Name.Equals("key"))
-            //{
-            //    attrs.key = parseKeyXML(childnodes[num++]);
-            //};
-            //while ((num < count) && childnodes[num].Name.Equals("time"))
-            //{
-            //    attrs.times.Add(parseTimeXML(childnodes[num++]));
-            //};
-            //if ((num < count) && childnodes[num].Name.Equals("staves"))
-            //{
-            //    attrs.staves = Convert.ToInt32(childnodes[num].Value);
-            //};
-            //if ((num < count) && childnodes[num].Name.Equals("part-symbol"))
-            //{
-            //    attrs.partSymbol = parsePartSymbolXML(childnodes[num++]);
-            //};
-            //if ((num < count) && childnodes[num].Name.Equals("instrument"))
-            //{
-            //    attrs.instrument = Convert.ToInt32(childnodes[num].Value);
-            //};
-            //while ((num < count) && childnodes[num].Name.Equals("clef"))
-            //{
-            //    attrs.clefs.Add(parseClefXML(childnodes[num++]));
-            //};
-            //while ((num < count) && childnodes[num].Name.Equals("staff-details"))
-            //{
-            //    attrs.staffdetails.Add(parseStaffDetailsXML(childnodes[num++]));
-            //};
-            //while ((num < count) && childnodes[num].Name.Equals("transpose"))
-            //{
-            //    attrs.transposes.Add(parseTransposeXML(childnodes[num++]));
-            //};
-            //while ((num < count) && childnodes[num].Name.Equals("measure-style"))
-            //{
-            //    attrs.measurestyles.Add(parseMeasureStyleXML(childnodes[num++]));
-            //};
-            return attrs;
-        }
-
-        //public static Key parseKeyXML(XmlNode node)
-        //{
-        //    return null;
-        //}
-
-        //public static Time parseTimeXML(XmlNode node)
-        //{
-        //    return null;
-        //}
-
-        //public static PartSymbol parsePartSymbolXML(XmlNode node)
-        //{
-        //    return null;
-        //}
-
-        //public static Clef parseClefXML(XmlNode node)
-        //{
-        //    return null;
-        //}
-
-        //public static StaffDetails parseStaffDetailsXML(XmlNode node)
-        //{
-        //    return null;
-        //}
-
-        //public static Transpose parseTransposeXML(XmlNode node)
-        //{
-        //    return null;
-        //}
-
-        //public static MeasureStyle parseMeasureStyleXML(XmlNode node)
-        //{
-        //    return null;
-        //}
-
-//-----------------------------------------------------------------------------
-
-        public static Backup parseBackupXML(backupXML item)
-        {
-            Console.WriteLine("parsing backup node");
-            return null;
-        }
-
-        public static BarStyleColor parseBarStyleColorXML(XmlNode node)
-        {
-            return null;
-        }
-
-        public static Barline parseBarlineXML(barlineXML item)
-        {
-            Console.WriteLine("parsing barline node");
-            return null;
-        }
-
-        public static Barre parseBarreXML(XmlNode node)
-        {
-            return null;
-        }
-
-        public static Bass parseBassXML(XmlNode node)
-        {
-            return null;
-        }
-
-        public static BassAlter parseBassAlterXML(XmlNode node)
-        {
-            return null;
-        }
-
-        public static BassStep parseBassStepXML(XmlNode node)
-        {
-            return null;
-        }
-
-        public static Beam parseBeamXML(XmlNode node)
-        {
-            return null;
-        }
-
-        //public static void parseBeamXML(int p, XmlNodeList childnodes, Note note)
-        //{
-        //    throw new NotImplementedException();
-        //}
-
-        //public static BeatRepeat parseBeatRepeatXML(XmlNode node)
-        //{
-        //    return null;
-        //}
-
-        public static BeatUnitTied parseBeatUnitTiedXML(XmlNode node)
-        {
-            return null;
-        }
-
-        public static Beater parseBeaterXML(XmlNode node)
-        {
-            return null;
-        }
-
-        public static Bend parseBendXML(XmlNode node)
-        {
-            return null;
-        }
-
-        public static Bookmark parseBookmarkXML(XmlNode node)
-        {
-            Console.WriteLine("parsing bookmark node");
-            return null;
-        }
-
-        public static Bracket parseBracketXML(XmlNode node)
-        {
-            return null;
-        }
-
-        public static BreathMark parseBreathMarkXML(XmlNode node)
-        {
-            return null;
-        }
-
-        public static Caesura parseCaesuraXML(XmlNode node)
-        {
-            return null;
-        }
-
-        //public static Cancel parseCancelXML(XmlNode node)
-        //{
-        //    return null;
-        //}
-
-        public static Coda parseCodaXML(XmlNode node)
-        {
-            return null;
-        }
-
-        public static Credit parseCreditXML(XmlNode node)
-        {
-            return null;
-        }
-
-        public static Dashes parseDashesXML(XmlNode node)
-        {
-            return null;
-        }
-
-        public static Defaults parseDefaultsXML(XmlNode node)
-        {
-            return null;
-        }
-
-        public static Degree parseDegreeXML(XmlNode node)
-        {
-            return null;
-        }
-
-        public static DegreeAlter parseDegreeAlterXML(XmlNode node)
-        {
-            return null;
-        }
-
-        public static DegreeType parseDegreeTypeXML(XmlNode node)
-        {
-            return null;
-        }
-
-        public static DegreeValue parseDegreeValueXML(XmlNode node)
-        {
-            return null;
-        }
-
-        public static Direction parseDirectionXML(direction item)
-        {
-            Console.WriteLine("parsing direction node");            
-            return null;
-        }
-
-        public static Directiontype parseDirectionTypeXML(XmlNode node)
-        {
-            return null;
-        }
-
-        public static Distance parseDistanceXML(XmlNode node)
-        {
-            return null;
-        }
-
-        public static Dynamics parseDynamicsXML(XmlNode node)
-        {
-            return null;
-        }
-
-        public static Elision parseElisionXML(XmlNode node)
-        {
-            return null;
-        }
-
-        //public static Empty parseEmptyXML(XmlNode node)
-        //{
-        //    return null;
-        //}
-
-        public static EmptyFont parseEmptyFontXML(XmlNode node)
-        {
-            return null;
-        }
-
-        public static EmptyLine parseEmptyLineXML(XmlNode node)
-        {
-            return null;
-        }
-
-        public static EmptyPlacementSmufl parseEmptyPlacementSmuflXML(XmlNode node)
-        {
-            return null;
-        }
-
-        public static EmptyPlacement parseEmptyPlacementXML(XmlNode node)
-        {
-            return null;
-        }
-
-        public static EmptyPrintObjectStyleAlign parseEmptyPrintObjectStyleAlignXML(XmlNode node)
-        {
-            return null;
-        }
-
-        public static EmptyPrintStyleAlignId parseEmptyPrintStyleAlignIdXML(XmlNode node)
-        {
-            return null;
-        }
-
-        public static EmptyTrillSound parseEmptyTrillSoundXML(XmlNode node)
-        {
-            return null;
-        }
-
-        public static Transonic.Score.Symbols.Encoding parseEncodingXML(XmlNode node)
-        {
-            return null;
-        }
-
-        public static Ending parseEndingXML(XmlNode node)
-        {
-            return null;
-        }
-
-        public static Extend parseExtendXML(XmlNode node)
-        {
-            return null;
-        }
-
-        public static Feature parseFeatureXML(XmlNode node)
-        {
-            return null;
-        }
-
-        public static Fermata parseFermataXML(XmlNode node)
-        {
-            return null;
-        }
-
-        public static Figure parseFigureXML(XmlNode node)
-        {
-            return null;
-        }
-
-        public static FiguredBass parseFiguredBassXML(XmlNode node)
-        {
-            Console.WriteLine("parsing figured bass node");
-            return null;
-        }
-
-        public static Fingering parseFingeringXML(XmlNode node)
-        {
-            return null;
-        }
-
-        public static FirstFret parseFirstFretXML(XmlNode node)
-        {
-            return null;
-        }
-
-        public static FormattedSymbolId parseFormattedSymbolIdXML(XmlNode node)
-        {
-            return null;
-        }
-
-        public static FormattedTextId parseFormattedTextIdXML(XmlNode node)
-        {
-            return null;
-        }
-
-        public static FormattedText parseFormattedTextXML(XmlNode node)
-        {
-            return null;
-        }
-
-        public static Forward parseForwardXML(forwardXML item)
-        {
-            Console.WriteLine("parsing forward node");            
-            return null;
-        }
-
-        public static FrameNote parseFrameNoteXML(XmlNode node)
-        {
-            return null;
-        }
-
-        public static Frame parseFrameXML(XmlNode node)
-        {
-            return null;
-        }
-
-        public static Fret parseFretXML(XmlNode node)
-        {
-            return null;
-        }
-
-        public static Glass parseGlassXML(XmlNode node)
-        {
-            return null;
-        }
-
-        public static Glissando parseGlissandoXML(XmlNode node)
-        {
-            return null;
-        }
-
-        public static Glyph parseGlyphXML(XmlNode node)
-        {
-            return null;
-        }
-
-        public static Grace parseGraceXML(XmlNode node)
-        {
-            return null;
-        }
-
-        //public static void parseGraceXML(int num, XmlNodeList childnodes, Note note)
-        //{
-        //    throw new NotImplementedException();
-        //}
-
-        public static GroupBarline parseGroupBarlineXML(XmlNode node)
-        {
-            return null;
-        }
-
-        public static GroupName parseGroupNameXML(XmlNode node)
-        {
-            return null;
-        }
-
-        public static GroupSymbol parseGroupSymbolXML(XmlNode node)
-        {
-            return null;
-        }
-
-        public static Grouping parseGroupingXML(XmlNode node)
-        {
-            Console.WriteLine("parsing grouping node");
-            return null;
-        }
-
-        public static HammerOnPullOff parseHammerOnPullOffXML(XmlNode node)
-        {
-            return null;
-        }
-
-        public static Handbell parseHandbellXML(XmlNode node)
-        {
-            return null;
-        }
-
-        public static HarmonClosed parseHarmonClosedXML(XmlNode node)
-        {
-            return null;
-        }
-
-        public static HarmonMute parseHarmonMuteXML(XmlNode node)
-        {
-            return null;
-        }
-
-        public static Harmonic parseHarmonicXML(XmlNode node)
-        {
-            return null;
-        }
-
-        public static Harmony parseHarmonyXML(XmlNode node)
-        {
-            Console.WriteLine("parsing harmony node");
-            return null;
-        }
-
-        public static HarpPedals parseHarpPedalsXML(XmlNode node)
-        {
-            return null;
-        }
-
-        public static HeelToe parseHeelToeXML(XmlNode node)
-        {
-            return null;
-        }
-
-        public static Hole parseHoleXML(XmlNode node)
-        {
-            return null;
-        }
-
-        public static HoleClosed parseHoleClosedXML(XmlNode node)
-        {
-            return null;
-        }
-
-        public static HorizontalTurn parseHorizontalTurnXML(XmlNode node)
-        {
-            return null;
-        }
-
-        public static Identification parseIdentificationXML(XmlNode node)
-        {
-            return null;
-        }
-
-        public static Image parseImageXML(XmlNode node)
-        {
-            return null;
-        }
-
-        public static Instrument parseInstrumentXML(XmlNode node)
-        {
-            return null;
-        }
-
-        //public static void parseInstrumentXML(int p, XmlNodeList childnodes, Note note)
-        //{
-        //    throw new NotImplementedException();
-        //}
-
-        //public static Interchangeable parseInterchangeableXML(XmlNode node)
-        //{
-        //    return null;
-        //}
-
-        public static Inversion parseInversionXML(XmlNode node)
-        {
-            return null;
-        }
-
-        //public static KeyAccidental parseKeyAccidentalXML(XmlNode node)
-        //{
-        //    return null;
-        //}
-
-        //public static KeyOctave parseKeyOctaveXML(XmlNode node)
-        //{
-        //    return null;
-        //}
-
-        public static Kind parseKindXML(XmlNode node)
-        {
-            return null;
-        }
-
-        public static Level parseLevelXML(XmlNode node)
-        {
-            return null;
-        }
-
-        public static LineWidth parseLineWidthXML(XmlNode node)
-        {
-            return null;
-        }
-
-        public static Link parseLinkXML(XmlNode node)
-        {
-            Console.WriteLine("parsing link node");
-            return null;
-        }
-
-        public static Lyric parseLyricXML(XmlNode node)
-        {
-            return null;
-        }
-
-        //public static void parseLyricXML(int p, XmlNodeList childnodes, Note note)
-        //{
-        //    throw new NotImplementedException();
-        //}
-
-        public static LyricFont parseLyricFontXML(XmlNode node)
-        {
-            return null;
-        }
-
-        public static LyricLanguage parseLyricLanguageXML(XmlNode node)
-        {
-            return null;
-        }
-
-        public static MeasureLayout parseMeasureLayoutXML(XmlNode node)
-        {
-            return null;
-        }
-
-        public static MeasureNumbering parseMeasureNumberingXML(XmlNode node)
-        {
-            return null;
-        }
-
-        //public static MeasureRepeat parseMeasureRepeatXML(XmlNode node)
-        //{
-        //    return null;
-        //}
-
-        public static Metronome parseMetronomeXML(XmlNode node)
-        {
-            return null;
-        }
-
-        public static MetronomeBeam parseMetronomeBeamXML(XmlNode node)
-        {
-            return null;
-        }
-
-        public static MetronomeNote parseMetronomeNoteXML(XmlNode node)
-        {
-            return null;
-        }
-
-        public static MetronomeTied parseMetronomeTiedXML(XmlNode node)
-        {
-            return null;
-        }
-
-        public static MetronomeTuplet parseMetronomeTupletXML(XmlNode node)
-        {
-            return null;
-        }
-
-        public static MidiDevice parseMidiDeviceXML(XmlNode node)
-        {
-            return null;
-        }
-
-        public static MidiInstrument parseMidiInstrumentXML(XmlNode node)
-        {
-            return null;
-        }
-
-        public static Miscellaneous parseMiscellaneousXML(XmlNode node)
-        {
-            return null;
-        }
-
-        public static MiscellaneousField parseMiscellaneousFieldXML(XmlNode node)
-        {
-            return null;
-        }
-
-        public static Mordent parseMordentXML(XmlNode node)
-        {
-            return null;
-        }
-
-        //public static MultipleRest parseMultipleRestXML(XmlNode node)
-        //{
-        //    return null;
-        //}
-
-        public static NameDisplay parseNameDisplayXML(XmlNode node)
-        {
-            return null;
-        }
-
-        public static NonArpeggiate parseNonArpeggiateXML(XmlNode node)
-        {
-            return null;
-        }
-
-        public static Notations parseNotationsXML(XmlNode node)
-        {
-            return null;
-        }
-
-        //public static void parseNotationsXML(int p, XmlNodeList childnodes, Note note)
-        //{
-        //    //throw new NotImplementedException();
-        //}
-        
         public static Note parseNoteXML(note notexml)
         {
-            Console.WriteLine("parsing note node");
+            //Console.WriteLine("parsing note node");
             Note note = new Note();
+
+            for (int i = 0; i < notexml.ItemsElementName.Length; i++)
+            {
+                switch (notexml.ItemsElementName[i])
+                {
+                    case NoteChoiceType.chord:
+                        note.chord = true;
+                        break;
+
+                    case NoteChoiceType.rest:
+                        note.rest = true;
+                        break;
+
+                    case NoteChoiceType.duration:
+                        note.duration = (decimal)notexml.Items[i];
+                        break;
+
+                    case NoteChoiceType.pitch:
+                        parsePitchXML((pitch)notexml.Items[i], note);
+                        break;
+
+                    default:
+                        break;
+                }
+            }
 
             //XmlNodeList childnodes = node.ChildNodes;
             //int count = (childnodes != null) ? childnodes.Count : 0;
@@ -969,6 +313,762 @@ namespace Transonic.Score.MusicXML
 
             return note;
         }
+
+        public static Grace parseGraceXML(XmlNode node)
+        {
+            return null;
+        }
+
+        public static void parsePitchXML(pitch pitchxml, Note note)
+        {
+            int octave = Convert.ToInt32(pitchxml.octave) + 1;
+            int stepval = 0;
+            switch (pitchxml.step)
+            {
+                case step.C: stepval = 0; break;
+                case step.D: stepval = 2; break;
+                case step.E: stepval = 4; break;
+                case step.F: stepval = 5; break;
+                case step.G: stepval = 7; break;
+                case step.A: stepval = 9; break;
+                case step.B: stepval = 11; break;
+                default: break;
+            }
+            decimal alterval = 0;
+            if (pitchxml.alterSpecified)
+            {
+                alterval = pitchxml.alter;
+            }
+            note.pitch = (octave * 12) + stepval + (int)Math.Truncate(alterval);
+            note.semitones = alterval - Math.Truncate(alterval);            
+        }
+
+        public static Unpitched parseUnpitchedXML(XmlNode node)
+        {
+            return null;
+        }
+
+        public static Rest parseRestXML(XmlNode node)
+        {
+            return null;
+        }
+
+       
+//- complex types -------------------------------------------------------------
+
+        public static Accidental parseAccidentalXML(XmlNode node)
+        {
+            return null;
+        }
+
+        public static AccidentalMark parseAccidentalMarkXML(XmlNode node)
+        {
+            return null;
+        }
+
+        public static AccidentalText parseAccidentalTextXML(XmlNode node)
+        {
+            return null;
+        }
+
+        public static Accord parseAccordXML(XmlNode node)
+        {
+            return null;
+        }
+
+        public static AccordionRegistration parseAccordionRegistrationXML(XmlNode node)
+        {
+            return null;
+        }
+
+        public static Appearance parseAppearanceXML(XmlNode node)
+        {
+            return null;
+        }
+
+        public static Arpeggiate parseArpeggiateXML(XmlNode node)
+        {
+            return null;
+        }
+
+        public static Arrow parseArrowXML(XmlNode node)
+        {
+            return null;
+        }
+
+        public static Articulations parseArticulationsXML(XmlNode node)
+        {
+            return null;
+        }
+
+//- attribute nodes -----------------------------------------------------------
+
+        public static Attributes parseAttributesXML(attributes attrsxml)
+        {
+            //Console.WriteLine("parsing attributes node");
+            Attributes attrs = new Attributes();
+            attrs.divisions = attrsxml.divisions;
+            parseKeyXML(attrsxml.key[0], attrs);
+            parseTimeXML(attrsxml.time[0], attrs);
+            
+            //attrs.editorial = parseEditorialXML(ref num, childnodes);    
+            //if ((num < count) && childnodes[num].Name.Equals("staves"))
+            //{
+            //    attrs.staves = Convert.ToInt32(childnodes[num].Value);
+            //};
+            //if ((num < count) && childnodes[num].Name.Equals("part-symbol"))
+            //{
+            //    attrs.partSymbol = parsePartSymbolXML(childnodes[num++]);
+            //};
+            //if ((num < count) && childnodes[num].Name.Equals("instrument"))
+            //{
+            //    attrs.instrument = Convert.ToInt32(childnodes[num].Value);
+            //};
+            //while ((num < count) && childnodes[num].Name.Equals("clef"))
+            //{
+            //    attrs.clefs.Add(parseClefXML(childnodes[num++]));
+            //};
+            //while ((num < count) && childnodes[num].Name.Equals("staff-details"))
+            //{
+            //    attrs.staffdetails.Add(parseStaffDetailsXML(childnodes[num++]));
+            //};
+            //while ((num < count) && childnodes[num].Name.Equals("transpose"))
+            //{
+            //    attrs.transposes.Add(parseTransposeXML(childnodes[num++]));
+            //};
+            //while ((num < count) && childnodes[num].Name.Equals("measure-style"))
+            //{
+            //    attrs.measurestyles.Add(parseMeasureStyleXML(childnodes[num++]));
+            //};
+            return attrs;
+        }
+
+        public static void parseKeyXML(key keyxml, Attributes attrs)
+        {
+            for (int i = 0; i < keyxml.ItemsElementName.Length; i++)
+            {
+                switch (keyxml.ItemsElementName[i])
+                {
+                    case KeyChoiceTypes.fifths:
+                        attrs.key = Convert.ToInt32((string)keyxml.Items[i]);
+                        break;
+                    case KeyChoiceTypes.mode:
+                        switch ((string)keyxml.Items[i])
+                        {
+                            case "major" : attrs.mode = KEYMODE.Major; break;
+                            case "minor": attrs.mode = KEYMODE.Minor; break;
+                            default: break;
+                        }
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
+
+        //public static KeyAccidental parseKeyAccidentalXML(XmlNode node)
+        //{
+        //    return null;
+        //}
+
+        //public static KeyOctave parseKeyOctaveXML(XmlNode node)
+        //{
+        //    return null;
+        //}
+
+        //public static Cancel parseCancelXML(XmlNode node)
+        //{
+        //    return null;
+        //}
+
+        public static void parseTimeXML(time timexml, Attributes attrs)
+        {
+            for (int i = 0; i < timexml.ItemsElementName.Length; i++)
+            {
+                switch (timexml.ItemsElementName[i])
+                {
+                    case TimeChoiceTypes.beats:
+                        attrs.timeNumer = Convert.ToInt32((string)timexml.Items[i]);
+                        break;
+                    case TimeChoiceTypes.beattype:
+                        attrs.timeDenom = Convert.ToInt32((string)timexml.Items[i]);
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
+
+        //public static Interchangeable parseInterchangeableXML(XmlNode node)
+        //{
+        //    return null;
+        //}
+
+        //public static PartSymbol parsePartSymbolXML(XmlNode node)
+        //{
+        //    return null;
+        //}
+
+        //public static Clef parseClefXML(XmlNode node)
+        //{
+        //    return null;
+        //}
+
+        //public static StaffDetails parseStaffDetailsXML(XmlNode node)
+        //{
+        //    return null;
+        //}
+
+        //public static Staff parseStafftuningXML(XmlNode node)
+        //{
+        //    return null;
+        //}
+
+        //public static Transpose parseTransposeXML(XmlNode node)
+        //{
+        //    return null;
+        //}
+
+        //public static Slash parseSlashXML(XmlNode node)
+        //{
+        //    return null;
+        //}
+
+        //public static MeasureStyle parseMeasureStyleXML(XmlNode node)
+        //{
+        //    return null;
+        //}
+
+        //public static BeatRepeat parseBeatRepeatXML(XmlNode node)
+        //{
+        //    return null;
+        //}
+
+        //public static MeasureRepeat parseMeasureRepeatXML(XmlNode node)
+        //{
+        //    return null;
+        //}
+
+        //public static MultipleRest parseMultipleRestXML(XmlNode node)
+        //{
+        //    return null;
+        //}
+
+//-----------------------------------------------------------------------------
+
+        public static decimal parseBackupXML(backup backupxml)
+        {
+            //Console.WriteLine("parsing backup node");
+            return backupxml.duration;
+        }
+
+        public static decimal parseForwardXML(forward forwardxml)
+        {
+            //Console.WriteLine("parsing forward node");
+            return forwardxml.duration;
+        }
+
+        public static BarStyleColor parseBarStyleColorXML(XmlNode node)
+        {
+            return null;
+        }
+
+        public static Barline parseBarlineXML(barlineXML item)
+        {
+            //Console.WriteLine("parsing barline node");
+            return null;
+        }
+
+        public static Barre parseBarreXML(XmlNode node)
+        {
+            return null;
+        }
+
+        public static Bass parseBassXML(XmlNode node)
+        {
+            return null;
+        }
+
+        public static BassAlter parseBassAlterXML(XmlNode node)
+        {
+            return null;
+        }
+
+        public static BassStep parseBassStepXML(XmlNode node)
+        {
+            return null;
+        }
+
+        public static Beam parseBeamXML(XmlNode node)
+        {
+            return null;
+        }
+
+        //public static void parseBeamXML(int p, XmlNodeList childnodes, Note note)
+        //{
+        //    throw new NotImplementedException();
+        //}
+
+        public static BeatUnitTied parseBeatUnitTiedXML(XmlNode node)
+        {
+            return null;
+        }
+
+        public static Beater parseBeaterXML(XmlNode node)
+        {
+            return null;
+        }
+
+        public static Bend parseBendXML(XmlNode node)
+        {
+            return null;
+        }
+
+        public static Bookmark parseBookmarkXML(XmlNode node)
+        {
+            //Console.WriteLine("parsing bookmark node");
+            return null;
+        }
+
+        public static Bracket parseBracketXML(XmlNode node)
+        {
+            return null;
+        }
+
+        public static BreathMark parseBreathMarkXML(XmlNode node)
+        {
+            return null;
+        }
+
+        public static Caesura parseCaesuraXML(XmlNode node)
+        {
+            return null;
+        }
+
+        public static Coda parseCodaXML(XmlNode node)
+        {
+            return null;
+        }
+
+        public static Credit parseCreditXML(XmlNode node)
+        {
+            return null;
+        }
+
+        public static Dashes parseDashesXML(XmlNode node)
+        {
+            return null;
+        }
+
+        public static Defaults parseDefaultsXML(XmlNode node)
+        {
+            return null;
+        }
+
+        public static Degree parseDegreeXML(XmlNode node)
+        {
+            return null;
+        }
+
+        public static DegreeAlter parseDegreeAlterXML(XmlNode node)
+        {
+            return null;
+        }
+
+        public static DegreeType parseDegreeTypeXML(XmlNode node)
+        {
+            return null;
+        }
+
+        public static DegreeValue parseDegreeValueXML(XmlNode node)
+        {
+            return null;
+        }
+
+        public static Direction parseDirectionXML(direction item)
+        {
+            //Console.WriteLine("parsing direction node");            
+            return null;
+        }
+
+        public static Directiontype parseDirectionTypeXML(XmlNode node)
+        {
+            return null;
+        }
+
+        public static Distance parseDistanceXML(XmlNode node)
+        {
+            return null;
+        }
+
+        public static Dynamics parseDynamicsXML(XmlNode node)
+        {
+            return null;
+        }
+
+        public static Elision parseElisionXML(XmlNode node)
+        {
+            return null;
+        }
+
+        //public static Empty parseEmptyXML(XmlNode node)
+        //{
+        //    return null;
+        //}
+
+        public static EmptyFont parseEmptyFontXML(XmlNode node)
+        {
+            return null;
+        }
+
+        public static EmptyLine parseEmptyLineXML(XmlNode node)
+        {
+            return null;
+        }
+
+        public static EmptyPlacementSmufl parseEmptyPlacementSmuflXML(XmlNode node)
+        {
+            return null;
+        }
+
+        public static EmptyPlacement parseEmptyPlacementXML(XmlNode node)
+        {
+            return null;
+        }
+
+        public static EmptyPrintObjectStyleAlign parseEmptyPrintObjectStyleAlignXML(XmlNode node)
+        {
+            return null;
+        }
+
+        public static EmptyPrintStyleAlignId parseEmptyPrintStyleAlignIdXML(XmlNode node)
+        {
+            return null;
+        }
+
+        public static EmptyTrillSound parseEmptyTrillSoundXML(XmlNode node)
+        {
+            return null;
+        }
+
+        public static Transonic.Score.Symbols.Encoding parseEncodingXML(XmlNode node)
+        {
+            return null;
+        }
+
+        public static Ending parseEndingXML(XmlNode node)
+        {
+            return null;
+        }
+
+        public static Extend parseExtendXML(XmlNode node)
+        {
+            return null;
+        }
+
+        public static Feature parseFeatureXML(XmlNode node)
+        {
+            return null;
+        }
+
+        public static Fermata parseFermataXML(XmlNode node)
+        {
+            return null;
+        }
+
+        public static Figure parseFigureXML(XmlNode node)
+        {
+            return null;
+        }
+
+        public static FiguredBass parseFiguredBassXML(XmlNode node)
+        {
+            //Console.WriteLine("parsing figured bass node");
+            return null;
+        }
+
+        public static Fingering parseFingeringXML(XmlNode node)
+        {
+            return null;
+        }
+
+        public static FirstFret parseFirstFretXML(XmlNode node)
+        {
+            return null;
+        }
+
+        public static FormattedSymbolId parseFormattedSymbolIdXML(XmlNode node)
+        {
+            return null;
+        }
+
+        public static FormattedTextId parseFormattedTextIdXML(XmlNode node)
+        {
+            return null;
+        }
+
+        public static FormattedText parseFormattedTextXML(XmlNode node)
+        {
+            return null;
+        }
+
+        public static FrameNote parseFrameNoteXML(XmlNode node)
+        {
+            return null;
+        }
+
+        public static Frame parseFrameXML(XmlNode node)
+        {
+            return null;
+        }
+
+        public static Fret parseFretXML(XmlNode node)
+        {
+            return null;
+        }
+
+        public static Glass parseGlassXML(XmlNode node)
+        {
+            return null;
+        }
+
+        public static Glissando parseGlissandoXML(XmlNode node)
+        {
+            return null;
+        }
+
+        public static Glyph parseGlyphXML(XmlNode node)
+        {
+            return null;
+        }
+
+        //public static void parseGraceXML(int num, XmlNodeList childnodes, Note note)
+        //{
+        //    throw new NotImplementedException();
+        //}
+
+        public static GroupBarline parseGroupBarlineXML(XmlNode node)
+        {
+            return null;
+        }
+
+        public static GroupName parseGroupNameXML(XmlNode node)
+        {
+            return null;
+        }
+
+        public static GroupSymbol parseGroupSymbolXML(XmlNode node)
+        {
+            return null;
+        }
+
+        public static Grouping parseGroupingXML(XmlNode node)
+        {
+            //Console.WriteLine("parsing grouping node");
+            return null;
+        }
+
+        public static HammerOnPullOff parseHammerOnPullOffXML(XmlNode node)
+        {
+            return null;
+        }
+
+        public static Handbell parseHandbellXML(XmlNode node)
+        {
+            return null;
+        }
+
+        public static HarmonClosed parseHarmonClosedXML(XmlNode node)
+        {
+            return null;
+        }
+
+        public static HarmonMute parseHarmonMuteXML(XmlNode node)
+        {
+            return null;
+        }
+
+        public static Harmonic parseHarmonicXML(XmlNode node)
+        {
+            return null;
+        }
+
+        public static Harmony parseHarmonyXML(XmlNode node)
+        {
+            //Console.WriteLine("parsing harmony node");
+            return null;
+        }
+
+        public static HarpPedals parseHarpPedalsXML(XmlNode node)
+        {
+            return null;
+        }
+
+        public static HeelToe parseHeelToeXML(XmlNode node)
+        {
+            return null;
+        }
+
+        public static Hole parseHoleXML(XmlNode node)
+        {
+            return null;
+        }
+
+        public static HoleClosed parseHoleClosedXML(XmlNode node)
+        {
+            return null;
+        }
+
+        public static HorizontalTurn parseHorizontalTurnXML(XmlNode node)
+        {
+            return null;
+        }
+
+        public static Identification parseIdentificationXML(XmlNode node)
+        {
+            return null;
+        }
+
+        public static Image parseImageXML(XmlNode node)
+        {
+            return null;
+        }
+
+        public static Instrument parseInstrumentXML(XmlNode node)
+        {
+            return null;
+        }
+
+        //public static void parseInstrumentXML(int p, XmlNodeList childnodes, Note note)
+        //{
+        //    throw new NotImplementedException();
+        //}
+
+        public static Inversion parseInversionXML(XmlNode node)
+        {
+            return null;
+        }
+
+        public static Kind parseKindXML(XmlNode node)
+        {
+            return null;
+        }
+
+        public static Level parseLevelXML(XmlNode node)
+        {
+            return null;
+        }
+
+        public static LineWidth parseLineWidthXML(XmlNode node)
+        {
+            return null;
+        }
+
+        public static Link parseLinkXML(XmlNode node)
+        {
+            //Console.WriteLine("parsing link node");
+            return null;
+        }
+
+        public static Lyric parseLyricXML(XmlNode node)
+        {
+            return null;
+        }
+
+        //public static void parseLyricXML(int p, XmlNodeList childnodes, Note note)
+        //{
+        //    throw new NotImplementedException();
+        //}
+
+        public static LyricFont parseLyricFontXML(XmlNode node)
+        {
+            return null;
+        }
+
+        public static LyricLanguage parseLyricLanguageXML(XmlNode node)
+        {
+            return null;
+        }
+
+        public static MeasureLayout parseMeasureLayoutXML(XmlNode node)
+        {
+            return null;
+        }
+
+        public static MeasureNumbering parseMeasureNumberingXML(XmlNode node)
+        {
+            return null;
+        }
+
+        public static Metronome parseMetronomeXML(XmlNode node)
+        {
+            return null;
+        }
+
+        public static MetronomeBeam parseMetronomeBeamXML(XmlNode node)
+        {
+            return null;
+        }
+
+        public static MetronomeNote parseMetronomeNoteXML(XmlNode node)
+        {
+            return null;
+        }
+
+        public static MetronomeTied parseMetronomeTiedXML(XmlNode node)
+        {
+            return null;
+        }
+
+        public static MetronomeTuplet parseMetronomeTupletXML(XmlNode node)
+        {
+            return null;
+        }
+
+        public static MidiDevice parseMidiDeviceXML(XmlNode node)
+        {
+            return null;
+        }
+
+        public static MidiInstrument parseMidiInstrumentXML(XmlNode node)
+        {
+            return null;
+        }
+
+        public static Miscellaneous parseMiscellaneousXML(XmlNode node)
+        {
+            return null;
+        }
+
+        public static MiscellaneousField parseMiscellaneousFieldXML(XmlNode node)
+        {
+            return null;
+        }
+
+        public static Mordent parseMordentXML(XmlNode node)
+        {
+            return null;
+        }
+
+        public static NameDisplay parseNameDisplayXML(XmlNode node)
+        {
+            return null;
+        }
+
+        public static NonArpeggiate parseNonArpeggiateXML(XmlNode node)
+        {
+            return null;
+        }
+
+        public static Notations parseNotationsXML(XmlNode node)
+        {
+            return null;
+        }
+
+        //public static void parseNotationsXML(int p, XmlNodeList childnodes, Note note)
+        //{
+        //    //throw new NotImplementedException();
+        //}
         
         public static NoteSize parseNoteSizeXML(XmlNode node)
         {
@@ -1100,11 +1200,6 @@ namespace Transonic.Score.MusicXML
             return null;
         }
 
-        public static Pitch parsePitchXML(XmlNode node)
-        {
-            return null;
-        }
-
         //private static void parsePitchXML(XmlNode pitchNode, Note note)
         //{
         //    int num = 0;
@@ -1145,16 +1240,11 @@ namespace Transonic.Score.MusicXML
 
         public static Print parsePrintXML(printXML item)
         {
-            Console.WriteLine("parsing print node");
+            //Console.WriteLine("parsing print node");
             return null;
         }
 
         public static Repeat parseRepeatXML(XmlNode node)
-        {
-            return null;
-        }
-
-        public static Rest parseRestXML(XmlNode node)
         {
             return null;
         }
@@ -1204,11 +1294,6 @@ namespace Transonic.Score.MusicXML
             return null;
         }
 
-        //public static Slash parseSlashXML(XmlNode node)
-        //{
-        //    return null;
-        //}
-
         public static Slide parseSlideXML(XmlNode node)
         {
             return null;
@@ -1221,7 +1306,7 @@ namespace Transonic.Score.MusicXML
 
         public static Sound parseSoundXML(XmlNode node)
         {
-            Console.WriteLine("parsing sound node");
+            //Console.WriteLine("parsing sound node");
             return null;
         }
 
@@ -1231,11 +1316,6 @@ namespace Transonic.Score.MusicXML
         }
 
         public static StaffLayout parseStaffLayoutXML(XmlNode node)
-        {
-            return null;
-        }
-
-        public static Staff parseStafftuningXML(XmlNode node)
         {
             return null;
         }
@@ -1366,11 +1446,6 @@ namespace Transonic.Score.MusicXML
         }
 
         public static TypedText parseTypedTextXML(XmlNode node)
-        {
-            return null;
-        }
-
-        public static Unpitched parseUnpitchedXML(XmlNode node)
         {
             return null;
         }

@@ -44,6 +44,11 @@ namespace Transonic.Score.Symbols
             ypos = 0.0;
         }
 
+        public virtual void setBeat(Beat _beat)
+        {
+            beat = _beat;
+        }
+
         public virtual void dump()
         {
         }

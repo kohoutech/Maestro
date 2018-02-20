@@ -33,38 +33,41 @@ namespace Transonic.Score
         public ScoreDoc score;
         public Part part;
 
+        public float spacing;
+        public float top;
+        public float left;
+        public float right;
+        public float height;
+
         public Staff(Part _part)
         {
             part = _part;
             score = part.score;
+
+            spacing = 10;
+            top = 50;
+            left = 0;
+            right = 200;
+            height = 50;
         }
 
 //- display -------------------------------------------------------------------
 
-        public void drawStaff(Graphics g, ref float ypos)
+        public void drawStaff(Graphics g, float ypos)
         {
             for (int i = 0; i < 5; i++)
             {
-                g.DrawLine(Pens.Black, 0.0f, ypos, score.docWidth, ypos);
-                ypos += score.staffSpacing;
+                g.DrawLine(Pens.Black, left, ypos, right, ypos);
+                ypos += spacing;
             }
         }
 
         public void paint(Graphics g)
         {
-            float ypos = score.staffMargin;
-            drawStaff(g, ref ypos);
-            ypos += score.staffHeight;
-            drawStaff(g, ref ypos);
-
-            //int i = leftMeasureNum;
-            //int xpos = 0;
-            //while ((i < measures.Count) && (xpos < sheet.Width))
-            //{
-            //    Measure measure = measures[i++];
-            //    measure.paint(g, xpos, staffMargin);
-            //    xpos += measure.width;
-            //}
+            float ypos = top;
+            drawStaff(g, ypos);                 //treble clef
+            ypos = top + (4 * spacing) + height;
+            drawStaff(g, ypos);                 //bass clef
         }
     }
 }

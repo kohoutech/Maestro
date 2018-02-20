@@ -132,7 +132,7 @@
             // 
             // maestroStatus
             // 
-            this.maestroStatus.Location = new System.Drawing.Point(0, 379);
+            this.maestroStatus.Location = new System.Drawing.Point(0, 399);
             this.maestroStatus.Name = "maestroStatus";
             this.maestroStatus.Size = new System.Drawing.Size(664, 22);
             this.maestroStatus.TabIndex = 5;
@@ -150,7 +150,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(664, 401);
+            this.ClientSize = new System.Drawing.Size(664, 421);
             this.Controls.Add(this.maestroStatus);
             this.Controls.Add(this.maestroMenu);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));

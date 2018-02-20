@@ -23,10 +23,8 @@ using System.Linq;
 using System.Text;
 using System.Drawing;
 using System.Drawing.Drawing2D;
-using System.Xml;
 
 using Transonic.Score.Symbols;
-using Transonic.Score.MusicXML;
 
 namespace Transonic.Score
 {
@@ -83,11 +81,36 @@ namespace Transonic.Score
         {
         }
 
+        public void dump()
+        {
+            Console.WriteLine("measure number " + number);
+            for (int i = 0; i < beats.Count; i++)
+            {
+                beats[i].dump();
+            }
+        }
+
+
 //- beats -------------------------------------------------------------------
 
-        public Beat getBeat(double beatPos)
+        public Beat getBeat(decimal beatPos)
         {
-            return null;
+            Beat result = null;
+            foreach (Beat beat in beats)
+            {
+                if (Math.Abs(beat.beatpos - beatPos) < Beat.BEATQUANT)
+                {
+                    result = beat;
+                    break;
+                }
+            }
+            if (result == null)
+            {
+                result = new Beat(this, beatPos);
+                beats.Add(result);
+                beats.Sort((a, b) => a.beatpos.CompareTo(b.beatpos)); 
+            }
+            return result;
         }
 
 //- layout -------------------------------------------------------------------
@@ -211,39 +234,40 @@ namespace Transonic.Score
 
 //- measure attributes --------------------------------------------------------
 
+    public enum KEYMODE
+    {
+        Major, 
+        Minor, 
+        Dorian, 
+        Phrygian, 
+        Lydian, 
+        Mixolydian, 
+        Aeolian, 
+        Ionian, 
+        Locrian, 
+        None
+    }
+
     public class Attributes 
     {
-        //public Editorial editorial;
-        //public double divisions;
-        //public Key key;
-        //public List<Time> times;
-        //public int staves;
-        //public PartSymbol partSymbol;
-        //public int instrument;
-        //public List<Clef> clefs;
-        //public List<StaffDetails> staffdetails;
-        //public List<Transpose> transposes;
-        //public List<MeasureStyle> measurestyles;
-
-        public TimeSignature timeSig;
-        public KeySignature keySig;
+        public decimal divisions;
         public int timeNumer;
         public int timeDenom;
         public int key;
+        public KEYMODE mode;
+
+        public TimeSignature timeSig;
+        public KeySignature keySig;
 
         public Attributes()
         {
-            //editorial = null;
-            //divisions = 1;
-            //key = null;
-            //times = new List<Time>();
-            //staves = 1;
-            //partSymbol = null;
-            //instrument = 1;
-            //clefs = new List<Clef>();
-            //staffdetails = new List<StaffDetails>();
-            //transposes = new List<Transpose>();
-            //measurestyles = new List<MeasureStyle>();
+            timeNumer = 4;
+            timeDenom = 4;
+            key = 0;
+            mode = KEYMODE.Major;
+
+            timeSig = null;
+            keySig = null;
         }
     }
 }

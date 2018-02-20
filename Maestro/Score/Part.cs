@@ -43,11 +43,26 @@ namespace Transonic.Score
             id = _id;
 
             staves = new List<Staff>();
-            staves.Add(new Staff(this));        //temporary?
+
+            Staff staff = new Staff(this);
+            staff.spacing = score.staffSpacing;
+            staff.top = score.staffMargin;
+            staff.left = 0;
+            staff.right = score.docWidth;
+            staff.height = score.staffHeight;
+            staves.Add(staff);
 
             measures = new List<Measure>();
         }
 
+        public void dump()
+        {
+            Console.WriteLine(id);
+            for (int i = 0; i < measures.Count; i++)
+            {
+                measures[i].dump();
+            }
+        }
 
 //- painting ------------------------------------------------------------------
 

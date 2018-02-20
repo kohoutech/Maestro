@@ -57,8 +57,10 @@ namespace Transonic.Score.Symbols
         //public const String quarter = "\u2669";
 
         public int pitch;
+        public decimal semitones;
         public bool chord;
-        public double duration;
+        public bool rest;
+        public decimal duration;
         public NOTETYPE notetype;
         public bool dot;
 
@@ -73,10 +75,27 @@ namespace Transonic.Score.Symbols
         public Note() : base()
         {
             chord = false;
+            rest = false;
             pitch = 0;
-            duration = 0.0;
+            semitones = 0;
+            duration = 0;
             notetype = NOTETYPE.Quarter;
             dot = false;
+        }
+
+        string[] noteletters = { "C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B" };
+
+        public override void dump()        
+        {
+            if (!rest)
+            {
+                String pitchstr = noteletters[(pitch % 12)] + ((pitch / 12) - 1).ToString();
+                Console.WriteLine("note pitch = " + pitchstr + " duration = " + duration);
+            }
+            else
+            {
+                Console.WriteLine("rest : duration = " + duration);
+            }
         }
 
         //public Note(int _start, int _noteNum, int _dur)
@@ -190,3 +209,5 @@ namespace Transonic.Score.Symbols
 
      }
 }
+
+//Console.WriteLine("there's no sun in the shadow of the wizard");

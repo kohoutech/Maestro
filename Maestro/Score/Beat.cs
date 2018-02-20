@@ -30,11 +30,12 @@ namespace Transonic.Score
 {
     public class Beat
     {
+        public const decimal BEATQUANT = 1.0E-6M;
 
         public Measure measure;
-        public float beat;
+        public decimal beatpos;
         public List<Symbol> symbols;
-        public float xpos;
+        public double xpos;
 
         //public static int a = 6;
         //public static int b = 6;
@@ -44,10 +45,10 @@ namespace Transonic.Score
         //public int width;
         //public bool hasSharp;
 
-        public Beat(Measure _measure, int _beat)
+        public Beat(Measure _measure, decimal _beatpos)
         {
             measure = _measure;
-            beat = _beat;
+            beatpos = _beatpos;
             symbols = new List<Symbol>();
             xpos = 0;
 
@@ -56,9 +57,23 @@ namespace Transonic.Score
             //hasSharp = false;
         }
 
+        public void dump()
+        {
+            Console.WriteLine("beat pos: " + beatpos);
+            for (int i = 0; i < symbols.Count; i++)
+            {
+                symbols[i].dump();
+            }
+        }
+
         public void addSymbol(Symbol sym)
         {
-            symbols.Add(sym);
+            if (sym != null)
+            {
+                symbols.Add(sym);
+                sym.setBeat(this);
+            }
+
             //if (sym is Note)
             //{
             //    Note note = (Note)sym;
@@ -96,13 +111,13 @@ namespace Transonic.Score
 
 //-----------------------------------------------------------------------------
 
-    public class Backup : Symbol 
-    {
-        public double duration;
-    }
+    //public class Backup : Symbol 
+    //{
+    //    public decimal duration;
+    //}
 
-    public class Forward : Symbol 
-    {
-        public double duration;
-    }
+    //public class Forward : Symbol 
+    //{
+    //    public decimal duration;
+    //}
 }
