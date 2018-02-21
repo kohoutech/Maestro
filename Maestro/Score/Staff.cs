@@ -36,25 +36,42 @@ namespace Transonic.Score
         public float spacing;
         public float top;
         public float left;
-        public float right;
+        public float bottom;
+        public float width;
         public float height;
 
-        public Staff(Part _part)
+        public Staff(Part _part, float _spacing)
         {
             part = _part;
             score = part.score;
 
-            spacing = 10;
-            top = 50;
+            spacing = _spacing;
+            top = 0;
             left = 0;
-            right = 200;
+            width = 200;
             height = 50;
+            bottom = top + (spacing * 8) + height;
+        }        
+
+        public void setPos(float xpos, float ypos)
+        {
+            left = xpos;
+            top = ypos;
+            bottom = top + (spacing * 8) + height;
+        }
+
+        public void setSize(float _width, float _height)
+        {
+            height = _height;
+            width = _width;
+            bottom = top + (spacing * 8) + height;
         }
 
 //- display -------------------------------------------------------------------
 
         public void drawStaff(Graphics g, float ypos)
         {
+            float right = left + width;
             for (int i = 0; i < 5; i++)
             {
                 g.DrawLine(Pens.Black, left, ypos, right, ypos);

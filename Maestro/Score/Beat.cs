@@ -35,14 +35,15 @@ namespace Transonic.Score
         public Measure measure;
         public decimal beatpos;
         public List<Symbol> symbols;
-        public double xpos;
 
         //public static int a = 6;
         //public static int b = 6;
         //public static int c = 14;
         //public int tick;
         //public int sympos;
-        //public int width;
+
+        public float xpos;
+        public float width;
         //public bool hasSharp;
 
         public Beat(Measure _measure, decimal _beatpos)
@@ -85,6 +86,11 @@ namespace Transonic.Score
         {
         }
 
+        public void layoutSymbols()
+        {
+            throw new NotImplementedException();
+        }
+
         public void setPos(float _pos)
         {
             xpos = _pos;
@@ -108,16 +114,4 @@ namespace Transonic.Score
             }
         }
     }
-
-//-----------------------------------------------------------------------------
-
-    //public class Backup : Symbol 
-    //{
-    //    public decimal duration;
-    //}
-
-    //public class Forward : Symbol 
-    //{
-    //    public decimal duration;
-    //}
 }

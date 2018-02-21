@@ -48,6 +48,8 @@ namespace Transonic.Score
         public List<Part> parts;
         public Part curPart;
 
+        public int curMeasure;
+
         public float docWidth;
         public float docHeight;
 
@@ -71,8 +73,8 @@ namespace Transonic.Score
             //credits = new List<Credit>();
             //partList = null;
 
-            docWidth = 400;
-            docHeight = 200;
+            docHeight = sheet.Height;
+            docWidth = sheet.Width;
 
             //globals
             staffMargin = 50;
@@ -81,6 +83,7 @@ namespace Transonic.Score
 
             parts = new List<Part>();
             curPart = null;
+            curMeasure = 0;
         }
 
         public void dump()
@@ -96,6 +99,10 @@ namespace Transonic.Score
         {
             docWidth = width;
             docHeight = height;
+            if (curPart != null)
+            {
+                curPart.resize(width, height);
+            }
         }
 
 //- painting ------------------------------------------------------------------

@@ -35,6 +35,7 @@ namespace Transonic.Score
         public const int quantization = 8;         //quantize rests to 1/32 note pos (quarter note / 8)
 
         public Part part;
+        public Staff staff;
         public Measure prevMeasure;
         public Measure nextMeasure;
 
@@ -52,11 +53,11 @@ namespace Transonic.Score
             part = _part;
             number = _number;
             prevMeasure = prev;
-            nextMeasure = null;
             if (prevMeasure != null)
             {
                 prevMeasure.nextMeasure = this;
             }
+            nextMeasure = null;
 
             beats = new List<Beat>();
 
@@ -155,51 +156,34 @@ namespace Transonic.Score
         //    }
         //}
 
-        //public void groupSymbols()
-        //{
-        //    int beat = 0;
-        //    BeatGroup group = new BeatGroup(this, beat);
-        //    beats.Add(group);
-        //    foreach (Symbol sym in symbols)
-        //    {
-        //        if (sym.beat > beat)
-        //        {
-        //            beat = sym.beat;
-        //            group = new BeatGroup(this, beat);
-        //            beats.Add(group);
-        //        }
-        //        group.addSymbol(sym);
-        //    }
-        //}
 
-        //public void layoutSymbols(Measure prev)
-        //{
+        public void layoutBeats()
+        {
         //    insertRests();
         //    //BarLine barline = new BarLine();
         //    //barline.start = timeNumer;
         //    //barline.startTick = staff.division * timeNumer;
         //    //symbols.Add(barline);
 
-        //    groupSymbols();
-        //    int symPos = 0;
-        //    foreach (BeatGroup beat in beats)
-        //    {
-        //        beat.setPos(symPos);
-        //        symPos += beat.width;
-        //    }
+            float symPos = 0;
+            foreach (Beat beat in beats)
+            {
+                beat.layoutSymbols();
+                beat.setPos(symPos);
+                symPos += beat.width;
+            }
 
-        //    //link to other measures
-        //    prevMeasure = prev;
-        //    if (prev != null)
-        //    {
-        //        prev.nextMeasure = this;
-        //    }
 
         //    //set measure pos and width
         //    staffpos = (prev != null) ? prev.staffpos + prev.width : 0;
         //    width = symPos;
         //    if (width < minWidth) width = minWidth;
-        //}
+        }
+
+        public void setPos(float xpos, float ypos)
+        {
+        }
+
 
         ////translate tick to pixels for this measure
         //public int getBeatPos(int tick)
@@ -214,11 +198,11 @@ namespace Transonic.Score
 
 //- display -------------------------------------------------------------------
  
-        public void paint(Graphics g)
+        public void paint(Graphics g, float xpos)
         {            
 
-            ////measure num
-            //g.DrawString(number.ToString(), SystemFonts.DefaultFont, Brushes.Black, left, top - 14);
+            //measure num
+            g.DrawString(number.ToString(), SystemFonts.DefaultFont, Brushes.Black, xpos, staff.top - 14);
 
             ////symbols
             //for (int i = 0; i < beats.Count; i++)
@@ -226,8 +210,8 @@ namespace Transonic.Score
             //    beats[i].paint(g, left, top);
             //}
 
-            ////barline
-            //g.DrawLine(Pens.Black, left + width, top, left + width, top + Staff.grandHeight);
+            //barline
+            g.DrawLine(Pens.Black, xpos + width, staff.top, xpos + width, staff.bottom);
         }
 
     }

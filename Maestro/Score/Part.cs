@@ -44,12 +44,10 @@ namespace Transonic.Score
 
             staves = new List<Staff>();
 
-            Staff staff = new Staff(this);
-            staff.spacing = score.staffSpacing;
-            staff.top = score.staffMargin;
-            staff.left = 0;
-            staff.right = score.docWidth;
-            staff.height = score.staffHeight;
+            Staff staff = new Staff(this, score.staffSpacing);
+            staff.setPos(0, score.staffMargin);
+            staff.setSize(score.docWidth, score.staffHeight);
+            
             staves.Add(staff);
 
             measures = new List<Measure>();
@@ -64,6 +62,14 @@ namespace Transonic.Score
             }
         }
 
+        public void resize(int width, int height)
+        {
+            foreach (Staff staff in staves)
+            {
+                staff.setSize(width, score.staffHeight);
+            }
+        }
+
 //- painting ------------------------------------------------------------------
 
         public void paint(Graphics g)
@@ -72,9 +78,13 @@ namespace Transonic.Score
             {
                 staff.paint(g);
             }
-            foreach (Measure measure in measures)
+
+            float xpos = 0;
+            for (int i = score.curMeasure; xpos < score.docWidth; i++)
             {
-                measure.paint(g);
+                Measure measure = measures[i];
+                measure.paint(g, xpos);
+                xpos += measure.width;
             }
         }
     }

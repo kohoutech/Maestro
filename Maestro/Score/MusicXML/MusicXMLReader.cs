@@ -95,6 +95,7 @@ namespace Transonic.Score.MusicXML
         {
             int number = Convert.ToInt32(measurexml.number);
             Measure measure = new Measure(part, number, prevMeasure);
+            measure.staff = part.staves[0];
             part.measures.Add(measure);
 
             //music-data list

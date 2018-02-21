@@ -56,8 +56,7 @@ namespace Transonic.Score
         public  void setScore(ScoreDoc _score)
         {
             score = _score;
-            score.docWidth = this.Width;
-            score.docHeight = this.Height;
+            score.resize(this.Width, this.Height);
             Invalidate();
         }
 
@@ -66,12 +65,10 @@ namespace Transonic.Score
             base.OnResize(e);
             if (score != null)
             {
-                score.docWidth = this.Width;
-                score.docHeight = this.Height;
+                score.resize(this.Width, this.Height);
             }
-            //Invalidate();
+            Invalidate();
         }
-
 
 //- painting ------------------------------------------------------------------
 
