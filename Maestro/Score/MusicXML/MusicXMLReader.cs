@@ -88,6 +88,7 @@ namespace Transonic.Score.MusicXML
             {
                     prevMeasure = MusicXMLReader.parseMeasureXML(measure, part, prevMeasure);
             }
+            part.layoutMeasures();
         }
 
         //each measure node contains a list of music data nodes (note/direction/attributes/...)
@@ -174,6 +175,7 @@ namespace Transonic.Score.MusicXML
                 //    break;
             }
 
+            measure.layoutBeats();
             return measure;
         }
 
@@ -320,28 +322,28 @@ namespace Transonic.Score.MusicXML
             return null;
         }
 
+        static int[] StepToPitch = { 0, 2, 4, 5, 7, 9, 11 };
+
         public static void parsePitchXML(pitch pitchxml, Note note)
         {
-            int octave = Convert.ToInt32(pitchxml.octave) + 1;
-            int stepval = 0;
+            note.octave = Convert.ToInt32(pitchxml.octave) + 1;
             switch (pitchxml.step)
             {
-                case step.C: stepval = 0; break;
-                case step.D: stepval = 2; break;
-                case step.E: stepval = 4; break;
-                case step.F: stepval = 5; break;
-                case step.G: stepval = 7; break;
-                case step.A: stepval = 9; break;
-                case step.B: stepval = 11; break;
+                case step.C: note.step = 0; break;
+                case step.D: note.step = 1; break;
+                case step.E: note.step = 2; break;
+                case step.F: note.step = 3; break;
+                case step.G: note.step = 4; break;
+                case step.A: note.step = 5; break;
+                case step.B: note.step = 6; break;
                 default: break;
             }
-            decimal alterval = 0;
             if (pitchxml.alterSpecified)
             {
-                alterval = pitchxml.alter;
+                note.alter = (int)Math.Truncate(pitchxml.alter);
+                note.semitones = note.alter - Math.Truncate(pitchxml.alter);
             }
-            note.pitch = (octave * 12) + stepval + (int)Math.Truncate(alterval);
-            note.semitones = alterval - Math.Truncate(alterval);            
+            note.notenum = (note.octave * 12) + StepToPitch[note.step] + note.alter;            
         }
 
         public static Unpitched parseUnpitchedXML(XmlNode node)

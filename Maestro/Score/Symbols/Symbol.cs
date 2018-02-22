@@ -33,20 +33,33 @@ namespace Transonic.Score.Symbols
         public Beat beat;
         public Staff staff;
 
-        public double xpos;                
-        public double ypos;                
+        public float left;
+        public float top;
+        public float xpos;                
+        public float ypos;                
 
         public Symbol()
         {
             beat = null;
             staff = null;
-            xpos = 0.0;
-            ypos = 0.0;
+            left = 0;
+            top = 0;
+            xpos = 0;
+            ypos = 0;
         }
 
         public virtual void setBeat(Beat _beat)
         {
             beat = _beat;
+            staff = beat.measure.staff;
+        }
+
+        public virtual void layout()
+        {
+        }
+
+        public virtual void setPos(float xpos, float ypos)
+        {
         }
 
         public virtual void dump()

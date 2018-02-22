@@ -42,6 +42,8 @@ namespace Transonic.Score
         //public int tick;
         //public int sympos;
 
+        public float left;
+        //public float top;
         public float xpos;
         public float width;
         //public bool hasSharp;
@@ -88,17 +90,20 @@ namespace Transonic.Score
 
         public void layoutSymbols()
         {
-            throw new NotImplementedException();
+            foreach (Symbol sym in symbols)
+            {
+                sym.layout();
+            }
         }
 
         public void setPos(float _pos)
         {
             xpos = _pos;
             //sympos = hasSharp ? a + b : a;
-            //foreach (Symbol sym in symbols)
-            //{
-            //    sym.xpos = sympos;
-            //}
+            foreach (Symbol sym in symbols)
+            {
+                sym.setPos(xpos, measure.staff.top);
+            }
             //width = sympos + c;
             //sympos += xpos;
         }

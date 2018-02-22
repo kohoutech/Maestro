@@ -70,6 +70,16 @@ namespace Transonic.Score
             }
         }
 
+        internal void layoutMeasures()
+        {
+            float staffpos = 0;
+            foreach (Measure measure in measures)
+            {
+                measure.setPos(staffpos);
+                staffpos += measure.width;
+            }
+        }
+
 //- painting ------------------------------------------------------------------
 
         public void paint(Graphics g)

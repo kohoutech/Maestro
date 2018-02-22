@@ -56,7 +56,10 @@ namespace Transonic.Score.Symbols
 
         //public const String quarter = "\u2669";
 
-        public int pitch;
+        public int notenum;
+        public int octave;
+        public int step;
+        public int alter;
         public decimal semitones;
         public bool chord;
         public bool rest;
@@ -76,7 +79,10 @@ namespace Transonic.Score.Symbols
         {
             chord = false;
             rest = false;
-            pitch = 0;
+            notenum = 0;
+            octave = 0;
+            step = 0;
+            alter = 0;
             semitones = 0;
             duration = 0;
             notetype = NOTETYPE.Quarter;
@@ -89,7 +95,7 @@ namespace Transonic.Score.Symbols
         {
             if (!rest)
             {
-                String pitchstr = noteletters[(pitch % 12)] + ((pitch / 12) - 1).ToString();
+                String pitchstr = noteletters[(notenum % 12)] + ((notenum / 12) - 1).ToString();
                 Console.WriteLine("note pitch = " + pitchstr + " duration = " + duration);
             }
             else
@@ -111,56 +117,35 @@ namespace Transonic.Score.Symbols
         //    ledgerLinesBelow = 0;
         //}
 
-        //public override void setMeasure(Measure measure)
-        //{
-        //    base.setMeasure(measure);
-
-        //    //startTick -= measure.startTick;
-
-        //    ////quantize start to nearest beat
-        //    //double val = (double)startTick / measure.staff.division;
-        //    //beat = (int)((val * quantization) + 0.5f);
-
-        //    ////quatize duration to next beat
-        //    //val = (double)duration / measure.staff.division;
-        //    //len = (int) Math.Ceiling((val * quantization * 2));
-
-        //    //setVertPos();
-        //    //hasSharp = (keyOfC[step] == 1);
-        //}
-
-        int[] scaleTones = { 0, 0, 1, 1, 2, 3, 3, 4, 4, 5, 5, 6 };
-        int[] keyOfC = { 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 0 };
+        //int[] scaleTones = { 0, 0, 1, 1, 2, 3, 3, 4, 4, 5, 5, 6 };
+        //int[] keyOfC = { 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 0 };
 
         //set verical note pos relative to top of staff
         //notes from middle C and higher belong to the treble clef, notes below middle C belong to bass clef
-        public void setVertPos()
-        { 
-            //int halfStep = Staff.lineSpacing / 2;
+        public override void layout()
+        {
+            left = beat.left;
+            float halfStep = staff.spacing / 2;
 
-            ////treble clef
-            //if (noteNumber >= 60)
-            //{
-            //    int cpos = Staff.lineSpacing * 5;        //pos of middle C
-            //    ypos = cpos - (((octave - 5) * halfStep * 7) + (scaleTones[step] * halfStep));
-            //    if (ypos < 0)
-            //    {
-            //        ledgerLinesAbove = ypos / Staff.lineSpacing;
-            //    }
-            //    ledgerLinesMiddle |= (noteNumber == 60 | noteNumber == 61);
+            //treble clef
+            if (notenum >= 60)
+            {
+                float cpos = staff.spacing * 5;                             //pos of middle C = 60
+                ypos = (staff.top - cpos) - ((octave - 5) * halfStep * 7) - (step * halfStep);
+            }
 
-            //}
+            //bass clef
+            else
+            {
+                float cpos = staff.bottom + (staff.spacing * 12 + halfStep);    //pos of MIDI C = 0
+                ypos = cpos - ((octave * halfStep * 7) + (step * halfStep));
+            }
+        }
 
-            ////bass clef
-            //else
-            //{
-            //    int cpos = Staff.grandHeight + Staff.lineSpacing * 12 + halfStep;    //pos of MIDI C = 0
-            //    ypos = cpos - ((octave * halfStep * 7) + (scaleTones[step] * halfStep));
-            //    if (ypos > Staff.grandHeight)
-            //    {
-            //        ledgerLinesBelow = (ypos - Staff.grandHeight) / Staff.lineSpacing;
-            //    }
-            //}
+        public override void setPos(float _xpos, float _ypos)
+        {
+            xpos = left + _xpos;
+            ypos = top + _ypos;
         }
 
 //- display -------------------------------------------------------------------
@@ -202,7 +187,7 @@ namespace Transonic.Score.Symbols
 
             //}
 
-            //g.FillEllipse(Brushes.Red, xorg, top - 4, 8, 8);
+            g.FillEllipse(Brushes.Red, xpos - 4, ypos - 4, 8, 8);
             //g.DrawLine(Pens.Red, xorg + 8, top, xorg + 8, top - Staff.lineSpacing * 3);
 
         }

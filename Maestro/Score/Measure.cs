@@ -42,15 +42,17 @@ namespace Transonic.Score
         List<Beat> beats;        
 
         public int number;                  //measure number 
-        public int length;                  //number of beats in measure, determined by most recent key signature
+        public decimal length;                  //number of beats in measure, determined by most recent key signature
 
 
         public float staffpos;                //ofs in staff, in pixels
         public float width;                   //width of measure in pixels
+        public float xpos;
 
         public Measure(Part _part, int _number, Measure prev)
         {
             part = _part;
+            staff = null;
             number = _number;
             prevMeasure = prev;
             if (prevMeasure != null)
@@ -60,6 +62,7 @@ namespace Transonic.Score
             nextMeasure = null;
 
             beats = new List<Beat>();
+            length = 0;
 
             staffpos = 0;
             width = 50;
@@ -109,7 +112,8 @@ namespace Transonic.Score
             {
                 result = new Beat(this, beatPos);
                 beats.Add(result);
-                beats.Sort((a, b) => a.beatpos.CompareTo(b.beatpos)); 
+                beats.Sort((a, b) => a.beatpos.CompareTo(b.beatpos));
+                length = beats[beats.Count - 1].beatpos;
             }
             return result;
         }
@@ -169,19 +173,24 @@ namespace Transonic.Score
             foreach (Beat beat in beats)
             {
                 beat.layoutSymbols();
-                beat.setPos(symPos);
-                symPos += beat.width;
+                //symPos += beat.width;
+                symPos += 20;
             }
 
 
-        //    //set measure pos and width
+            //set measure pos and width
         //    staffpos = (prev != null) ? prev.staffpos + prev.width : 0;
-        //    width = symPos;
-        //    if (width < minWidth) width = minWidth;
+            width = symPos;
+            if (width < minWidth) width = minWidth;
         }
 
-        public void setPos(float xpos, float ypos)
+        public void setPos(float _xpos)
         {
+            xpos = staffpos + _xpos;
+            foreach (Beat beat in beats)
+            {
+                beat.setPos(_xpos);
+            }
         }
 
 
@@ -204,11 +213,11 @@ namespace Transonic.Score
             //measure num
             g.DrawString(number.ToString(), SystemFonts.DefaultFont, Brushes.Black, xpos, staff.top - 14);
 
-            ////symbols
-            //for (int i = 0; i < beats.Count; i++)
-            //{
-            //    beats[i].paint(g, left, top);
-            //}
+            //beats
+            for (int i = 0; i < beats.Count; i++)
+            {
+                beats[i].paint(g);
+            }
 
             //barline
             g.DrawLine(Pens.Black, xpos + width, staff.top, xpos + width, staff.bottom);
