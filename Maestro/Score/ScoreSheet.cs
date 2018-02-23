@@ -30,6 +30,7 @@ namespace Transonic.Score
     public class ScoreSheet : UserControl
     {
         IScoreWindow window;
+        private HScrollBar horzScroll;
         ScoreDoc score;
 
         public ScoreSheet(IScoreWindow _window)
@@ -41,11 +42,23 @@ namespace Transonic.Score
 
         private void InitializeComponent()
         {
+            this.horzScroll = new System.Windows.Forms.HScrollBar();
             this.SuspendLayout();
+            // 
+            // horzScroll
+            // 
+            this.horzScroll.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.horzScroll.Location = new System.Drawing.Point(0, 195);
+            this.horzScroll.Name = "horzScroll";
+            this.horzScroll.Size = new System.Drawing.Size(650, 17);
+            this.horzScroll.TabIndex = 0;
+            this.horzScroll.Scroll += new System.Windows.Forms.ScrollEventHandler(this.horzScroll_Scroll);
             // 
             // ScoreSheet
             // 
-            this.BackColor = Color.FromArgb(255, 255, 150);
+            this.AutoScroll = true;
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(150)))));
+            this.Controls.Add(this.horzScroll);
             this.DoubleBuffered = true;
             this.Name = "ScoreSheet";
             this.Size = new System.Drawing.Size(650, 212);
@@ -56,7 +69,9 @@ namespace Transonic.Score
         public  void setScore(ScoreDoc _score)
         {
             score = _score;
+            score.sheet = this;
             score.resize(this.Width, this.Height);
+            horzScroll.Maximum = (int)score.curPart.staves[0].width;
             Invalidate();
         }
 
@@ -70,6 +85,12 @@ namespace Transonic.Score
             Invalidate();
         }
 
+        private void horzScroll_Scroll(object sender, ScrollEventArgs e)
+        {
+
+        }
+
+
 //- painting ------------------------------------------------------------------
 
         protected override void OnPaint(PaintEventArgs e)
@@ -81,9 +102,8 @@ namespace Transonic.Score
             if (score != null)
             {
                 score.paint(g);
-            }
+            }            
         }
-
     }
 
 //-----------------------------------------------------------------------------

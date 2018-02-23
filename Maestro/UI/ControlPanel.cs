@@ -1,6 +1,6 @@
 ﻿/* ----------------------------------------------------------------------------
 Maestro : a music notation editor
-Copyright (C) 1996-2017  George E Greaney
+Copyright (C) 1996-2018  George E Greaney
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License

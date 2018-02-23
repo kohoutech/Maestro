@@ -58,8 +58,10 @@ namespace Transonic.Score.Symbols
         {
         }
 
-        public virtual void setPos(float xpos, float ypos)
+        public virtual void setPos(float _xpos, float _ypos)
         {
+            xpos = left + _xpos;
+            ypos = top + _ypos;
         }
 
         public virtual void dump()

@@ -33,8 +33,7 @@ namespace Transonic.Score
     {
         public ScoreDoc score;
         public List<Staff> staves;
-        public List<Measure> measures;
-
+        
         public String id;
 
         public Part(ScoreDoc _score, String _id)
@@ -45,39 +44,40 @@ namespace Transonic.Score
             staves = new List<Staff>();
 
             Staff staff = new Staff(this, score.staffSpacing);
-            staff.setPos(0, score.staffMargin);
-            staff.setSize(score.docWidth, score.staffHeight);
+            //staff.setSize(score.docWidth, score.staffHeight);
             
-            staves.Add(staff);
-
-            measures = new List<Measure>();
+            staves.Add(staff);            
         }
 
         public void dump()
         {
             Console.WriteLine(id);
-            for (int i = 0; i < measures.Count; i++)
+            for (int i = 0; i < staves.Count; i++)
             {
-                measures[i].dump();
+                staves[i].dump();
             }
         }
 
-        public void resize(int width, int height)
+        //public void resize(int width, int height)
+        //{
+        //    foreach (Staff staff in staves)
+        //    {
+        //        staff.setSize(width, score.staffHeight);
+        //    }
+        //}
+
+        public void layoutStaves()
         {
             foreach (Staff staff in staves)
             {
-                staff.setSize(width, score.staffHeight);
+                staff.layoutMeasures();
             }
         }
 
-        internal void layoutMeasures()
+        public void setPos()
         {
-            float staffpos = 0;
-            foreach (Measure measure in measures)
-            {
-                measure.setPos(staffpos);
-                staffpos += measure.width;
-            }
+            staves[0].setPos(20, score.staffMargin);            //hardwired for now
+            //measure.setPos(staffpos);
         }
 
 //- painting ------------------------------------------------------------------
@@ -87,14 +87,6 @@ namespace Transonic.Score
             foreach (Staff staff in staves)
             {
                 staff.paint(g);
-            }
-
-            float xpos = 0;
-            for (int i = score.curMeasure; xpos < score.docWidth; i++)
-            {
-                Measure measure = measures[i];
-                measure.paint(g, xpos);
-                xpos += measure.width;
             }
         }
     }

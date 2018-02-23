@@ -42,11 +42,11 @@ namespace Transonic.Score
         List<Beat> beats;        
 
         public int number;                  //measure number 
-        public decimal length;                  //number of beats in measure, determined by most recent key signature
+        public decimal length;              //number of beats in measure, determined by most recent key signature
 
 
-        public float staffpos;                //ofs in staff, in pixels
-        public float width;                   //width of measure in pixels
+        public float staffpos;                //ofs in staff in measure, in pixels
+        public float width;                   //width of measure, sum of all beat widths, in pixels
         public float xpos;
 
         public Measure(Part _part, int _number, Measure prev)
@@ -65,7 +65,7 @@ namespace Transonic.Score
             length = 0;
 
             staffpos = 0;
-            width = 50;
+            width = 0;
         }
 
         //public void setTimeSignature(TimeSignature _timeSig) {
@@ -160,7 +160,7 @@ namespace Transonic.Score
         //    }
         //}
 
-
+        //layout beats inside measure - determine measure's width
         public void layoutBeats()
         {
         //    insertRests();
@@ -169,18 +169,15 @@ namespace Transonic.Score
         //    //barline.startTick = staff.division * timeNumer;
         //    //symbols.Add(barline);
 
-            float symPos = 0;
+            float beatPos = 20;             //hardwired offset of first beat in measure, will change
             foreach (Beat beat in beats)
             {
+                beat.measpos = beatPos;
                 beat.layoutSymbols();
-                //symPos += beat.width;
-                symPos += 20;
+                beatPos += beat.width;                
             }
 
-
-            //set measure pos and width
-        //    staffpos = (prev != null) ? prev.staffpos + prev.width : 0;
-            width = symPos;
+            width = beatPos;
             if (width < minWidth) width = minWidth;
         }
 
@@ -189,7 +186,7 @@ namespace Transonic.Score
             xpos = staffpos + _xpos;
             foreach (Beat beat in beats)
             {
-                beat.setPos(_xpos);
+                beat.setPos(xpos);
             }
         }
 
@@ -207,7 +204,7 @@ namespace Transonic.Score
 
 //- display -------------------------------------------------------------------
  
-        public void paint(Graphics g, float xpos)
+        public void paint(Graphics g)
         {            
 
             //measure num

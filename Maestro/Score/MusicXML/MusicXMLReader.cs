@@ -36,7 +36,7 @@ namespace Transonic.Score.MusicXML
 //- root nodes ----------------------------------------------------------------
 
         //loads MusicXML file data into a new score doc obj
-        public static ScoreDoc loadFromMusicXML(ScoreSheet sheet, String filename)
+        public static ScoreDoc loadFromMusicXML(String filename)
         {
             FileStream stream = new FileStream(filename, FileMode.Open);            //get file stream from filename
             
@@ -51,7 +51,7 @@ namespace Transonic.Score.MusicXML
             scorePartwise = (scorepartwise)serializer.Deserialize(reader);                  //read xml file into xml tree
             stream.Close();
 
-            ScoreDoc doc = parseScorePartwise(sheet, scorePartwise);            //create score doc from xml tree
+            ScoreDoc doc = parseScorePartwise(scorePartwise);            //create score doc from xml tree
             doc.filename = filename;
             //doc.dump();
 
@@ -59,9 +59,9 @@ namespace Transonic.Score.MusicXML
         }
 
         //a score partwise style file has a score header node followed by a list of part nodes
-        public static ScoreDoc parseScorePartwise(ScoreSheet sheet, scorepartwise scorePartwise)
+        public static ScoreDoc parseScorePartwise(scorepartwise scorePartwise)
         {
-            ScoreDoc doc = new ScoreDoc(sheet);
+            ScoreDoc doc = new ScoreDoc();
             parseScoreHeaderXML(scorePartwise, doc);
             foreach (scorepartwisePart scorepart in scorePartwise.part)
             {
@@ -88,7 +88,8 @@ namespace Transonic.Score.MusicXML
             {
                     prevMeasure = MusicXMLReader.parseMeasureXML(measure, part, prevMeasure);
             }
-            part.layoutMeasures();
+            part.layoutStaves();      //which lays out beats, which lays out symbols
+            part.setPos();
         }
 
         //each measure node contains a list of music data nodes (note/direction/attributes/...)
@@ -96,8 +97,9 @@ namespace Transonic.Score.MusicXML
         {
             int number = Convert.ToInt32(measurexml.number);
             Measure measure = new Measure(part, number, prevMeasure);
-            measure.staff = part.staves[0];
-            part.measures.Add(measure);
+            Staff staff = part.staves[0];                                 //temporary assign to one and only staff
+            measure.staff = staff;
+            staff.measures.Add(measure);
 
             //music-data list
             decimal beatpos = 0;
@@ -175,7 +177,6 @@ namespace Transonic.Score.MusicXML
                 //    break;
             }
 
-            measure.layoutBeats();
             return measure;
         }
 

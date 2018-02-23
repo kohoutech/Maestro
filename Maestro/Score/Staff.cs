@@ -30,42 +30,74 @@ namespace Transonic.Score
 {
     public class Staff
     {
+        public static int minWidth = 48;
+        
         public ScoreDoc score;
         public Part part;
+
+        public List<Measure> measures;
 
         public float spacing;
         public float top;
         public float left;
         public float bottom;
         public float width;
-        public float height;
+        public float separation;
 
         public Staff(Part _part, float _spacing)
         {
             part = _part;
             score = part.score;
 
+            measures = new List<Measure>();
+
             spacing = _spacing;
             top = 0;
             left = 0;
-            width = 200;
-            height = 50;
-            bottom = top + (spacing * 8) + height;
-        }        
+            width = 0;
+            separation = spacing * 4;
+            bottom = top + (spacing * 8) + separation;
+        }
+
+        public void dump()
+        {
+            for (int i = 0; i < measures.Count; i++)
+            {
+                measures[i].dump();
+            }
+        }
+
+        public void layoutMeasures()
+        {
+            float staffpos = 0;
+            foreach (Measure measure in measures)
+            {
+                measure.staffpos = staffpos;
+                measure.layoutBeats();
+                staffpos += measure.width;
+            }
+            width = staffpos;
+            if (width < minWidth) width = minWidth;
+        }
 
         public void setPos(float xpos, float ypos)
         {
             left = xpos;
             top = ypos;
-            bottom = top + (spacing * 8) + height;
+            bottom = top + (spacing * 8) + separation;
+
+            foreach (Measure measure in measures)
+            {
+                measure.setPos(left);
+            }
         }
 
-        public void setSize(float _width, float _height)
-        {
-            height = _height;
-            width = _width;
-            bottom = top + (spacing * 8) + height;
-        }
+        //public void setSize(float _width, float _height)
+        //{
+        //    separation = _height;
+        //    width = _width;
+        //    bottom = top + (spacing * 8) + separation;
+        //}
 
 //- display -------------------------------------------------------------------
 
@@ -81,10 +113,23 @@ namespace Transonic.Score
 
         public void paint(Graphics g)
         {
+            //staves
             float ypos = top;
-            drawStaff(g, ypos);                 //treble clef
-            ypos = top + (4 * spacing) + height;
-            drawStaff(g, ypos);                 //bass clef
+            drawStaff(g, ypos);                                 //treble clef
+            ypos = top + (4 * spacing) + separation;
+            drawStaff(g, ypos);                                 //bass clef
+
+            //left barline
+            g.DrawLine(Pens.Black, left, top, left, bottom);
+
+            //measures
+            float xpos = 0;
+            for (int i = 0; i < measures.Count; i++)
+            {
+                Measure measure = measures[i];
+                measure.paint(g);
+                xpos += measure.width;
+            }
         }
     }
 }

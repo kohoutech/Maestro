@@ -72,8 +72,7 @@ namespace Transonic.Score.Symbols
 
         public int ledgerLinesAbove;
         public bool ledgerLinesMiddle;
-        public int ledgerLinesBelow;
-        public bool hasSharp;        
+        public int ledgerLinesBelow;        
 
         public Note() : base()
         {
@@ -124,28 +123,23 @@ namespace Transonic.Score.Symbols
         //notes from middle C and higher belong to the treble clef, notes below middle C belong to bass clef
         public override void layout()
         {
-            left = beat.left;
+            left = 0;
             float halfStep = staff.spacing / 2;
 
             //treble clef
             if (notenum >= 60)
             {
                 float cpos = staff.spacing * 5;                             //pos of middle C = 60
-                ypos = (staff.top - cpos) - ((octave - 5) * halfStep * 7) - (step * halfStep);
+                top = (cpos) - ((octave - 5) * halfStep * 7) - (step * halfStep);
             }
 
             //bass clef
             else
             {
-                float cpos = staff.bottom + (staff.spacing * 12 + halfStep);    //pos of MIDI C = 0
-                ypos = cpos - ((octave * halfStep * 7) + (step * halfStep));
+                float bottom = staff.spacing * 8 + staff.separation;
+                float cpos = bottom + (staff.spacing * 12 + halfStep);    //pos of MIDI C = 0
+                top = cpos - (octave * halfStep * 7) - (step * halfStep);
             }
-        }
-
-        public override void setPos(float _xpos, float _ypos)
-        {
-            xpos = left + _xpos;
-            ypos = top + _ypos;
         }
 
 //- display -------------------------------------------------------------------
@@ -180,12 +174,15 @@ namespace Transonic.Score.Symbols
 
             //top += ypos;
 
-            //if (hasSharp)
-            //{
-            //    Font sharpfont = new Font("Arial", 14);
-            //    g.DrawString(sharp, sharpfont, Brushes.Red, xorg - 12, top - 12);
-
-            //}
+            switch (alter)
+            {
+                case 1 :
+                Font sharpfont = new Font("Arial", 14);
+                g.DrawString(sharp, sharpfont, Brushes.Red, xpos - 14, ypos - 12);
+                    break;
+                default :
+                    break;
+            }
 
             g.FillEllipse(Brushes.Red, xpos - 4, ypos - 4, 8, 8);
             //g.DrawLine(Pens.Red, xorg + 8, top, xorg + 8, top - Staff.lineSpacing * 3);

@@ -50,8 +50,8 @@ namespace Transonic.Score
 
         public int curMeasure;
 
-        public float docWidth;
-        public float docHeight;
+        //public float docWidth;
+        //public float docHeight;
 
         //global settings
         public float staffMargin;
@@ -60,10 +60,8 @@ namespace Transonic.Score
 
 //- cons ----------------------------------------------------------------------
 
-        public ScoreDoc(ScoreSheet _sheet)
+        public ScoreDoc()
         {
-            sheet = _sheet;
-
             //scoreheader
             //work = null;
             //movementNumber = null;
@@ -73,8 +71,8 @@ namespace Transonic.Score
             //credits = new List<Credit>();
             //partList = null;
 
-            docHeight = sheet.Height;
-            docWidth = sheet.Width;
+            //docHeight = sheet.Height;
+            //docWidth = sheet.Width;
 
             //globals
             staffMargin = 50;
@@ -97,12 +95,12 @@ namespace Transonic.Score
 
         public void resize(int width, int height)
         {
-            docWidth = width;
-            docHeight = height;
-            if (curPart != null)
-            {
-                curPart.resize(width, height);
-            }
+            //docWidth = width;
+            //docHeight = height;
+            //if (curPart != null)
+            //{
+            //    curPart.resize(width, height);
+            //}
         }
 
 //- painting ------------------------------------------------------------------

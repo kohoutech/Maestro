@@ -82,7 +82,7 @@ namespace Maestro
             //score sheet
             scoreSheet = new ScoreSheet(this);
             scoreSheet.Location = new Point(0, controlPanel.Bottom);
-            scoreSheet.Size = new Size(this.Width, keyboard.Top - controlPanel.Bottom);
+            scoreSheet.Size = new Size(this.ClientSize.Width, keyboard.Top - controlPanel.Bottom);
             //scoreSheet.Dock = DockStyle.Fill;
             this.Controls.Add(scoreSheet);            
         }
@@ -102,7 +102,7 @@ namespace Maestro
             if (scoreSheet != null)
             {
                 scoreSheet.Location = new Point(0, controlPanel.Bottom);
-                scoreSheet.Size = new Size(this.Width, keyboard.Top - controlPanel.Bottom);
+                scoreSheet.Size = new Size(this.ClientSize.Width, keyboard.Top - controlPanel.Bottom);
             }
         }
 
@@ -164,7 +164,7 @@ namespace Maestro
 
         public void openScore(String filename)
         {
-            currentScore = MusicXMLReader.loadFromMusicXML(scoreSheet, filename);
+            currentScore = MusicXMLReader.loadFromMusicXML(filename);
             scoreSheet.setScore(currentScore);
             this.Text = "Maestro [" + filename + "]";
             //currentSeq.setMidiSystem(midiSystem);

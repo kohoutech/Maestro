@@ -33,7 +33,7 @@ namespace Transonic.Score
         public const decimal BEATQUANT = 1.0E-6M;
 
         public Measure measure;
-        public decimal beatpos;
+        public decimal beatpos;                     //beat's loc in measure in duration (ie on the 2nd beat of the measure)
         public List<Symbol> symbols;
 
         //public static int a = 6;
@@ -42,7 +42,7 @@ namespace Transonic.Score
         //public int tick;
         //public int sympos;
 
-        public float left;
+        public float measpos;                       //beat's pos in measure in pixels
         //public float top;
         public float xpos;
         public float width;
@@ -52,8 +52,10 @@ namespace Transonic.Score
         {
             measure = _measure;
             beatpos = _beatpos;
-            symbols = new List<Symbol>();
+            width = 20;                     //hardwired for now
             xpos = 0;
+
+            symbols = new List<Symbol>();
 
             //tick = (beat * measure.staff.division) / Measure.quantization;
             //width = a + c;
@@ -88,6 +90,7 @@ namespace Transonic.Score
         {
         }
 
+        //layout symbols pos inside beat box - determines beat's width + if staff needs to add leger lines for this beat 
         public void layoutSymbols()
         {
             foreach (Symbol sym in symbols)
@@ -96,16 +99,14 @@ namespace Transonic.Score
             }
         }
 
+        //sets beat actual pos on score sheet
         public void setPos(float _pos)
         {
-            xpos = _pos;
-            //sympos = hasSharp ? a + b : a;
+            xpos = measpos + _pos;
             foreach (Symbol sym in symbols)
             {
                 sym.setPos(xpos, measure.staff.top);
-            }
-            //width = sympos + c;
-            //sympos += xpos;
+            }            
         }
 
         public void paint(Graphics g)
