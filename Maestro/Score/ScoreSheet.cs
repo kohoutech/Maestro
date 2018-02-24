@@ -71,7 +71,7 @@ namespace Transonic.Score
             score = _score;
             score.sheet = this;
             score.resize(this.Width, this.Height);
-            horzScroll.Maximum = (int)score.curPart.staves[0].width;
+            horzScroll.Maximum = (int)score.curPart.staves[0].width - this.Width + 50;
             Invalidate();
         }
 
@@ -81,13 +81,14 @@ namespace Transonic.Score
             if (score != null)
             {
                 score.resize(this.Width, this.Height);
+                horzScroll.Maximum = (int)score.curPart.staves[0].width - this.Width + 50;
             }
             Invalidate();
         }
 
         private void horzScroll_Scroll(object sender, ScrollEventArgs e)
         {
-
+            Invalidate();
         }
 
 
@@ -97,12 +98,15 @@ namespace Transonic.Score
         {
             base.OnPaint(e);
             Graphics g = e.Graphics;
+            g.TranslateTransform(-horzScroll.Value, 0);
+
             g.SmoothingMode = SmoothingMode.AntiAlias;
 
             if (score != null)
             {
                 score.paint(g);
-            }            
+            }
+            g.ResetTransform();
         }
     }
 

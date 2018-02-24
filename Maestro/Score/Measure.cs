@@ -34,10 +34,13 @@ namespace Transonic.Score
         public static int minWidth = 48;
         public const int quantization = 8;         //quantize rests to 1/32 note pos (quarter note / 8)
 
-        public Part part;
         public Staff staff;
         public Measure prevMeasure;
         public Measure nextMeasure;
+
+        public Attributes attr;             //the time & key sigs for this measure, may have been defined in a prev measure
+        public TimeSignature timeSig;       //if this is set, we draw a time sig at the draw of this measure
+        public KeySignature keySig;         //same with key sig
 
         List<Beat> beats;        
 
@@ -49,17 +52,24 @@ namespace Transonic.Score
         public float width;                   //width of measure, sum of all beat widths, in pixels
         public float xpos;
 
-        public Measure(Part _part, int _number, Measure prev)
+        public Measure(int _number, Measure prev)
         {
-            part = _part;
             staff = null;
             number = _number;
             prevMeasure = prev;
             if (prevMeasure != null)
             {
                 prevMeasure.nextMeasure = this;
+                attr = prevMeasure.attr;            //use prev measure's attr, unless replaced in this measure
+            }
+            else
+            {
+                attr = new Attributes();            //default time/key sig is this first measure, may be replaced below
             }
             nextMeasure = null;
+
+            timeSig = null;
+            keySig = null;
 
             beats = new List<Beat>();
             length = 0;
@@ -68,14 +78,15 @@ namespace Transonic.Score
             width = 0;
         }
 
-        //public void setTimeSignature(TimeSignature _timeSig) {
-        //    timeSig = _timeSig;
-        //}
-
-        //public void setKeySignature(KeySignature _keySig)
-        //{
-        //    keySig = _keySig;
-        //}
+        public void setAttributes(Attributes attr)
+        {
+            if (attr.beatpos == 0)
+            {
+                this.attr = attr;
+                timeSig = new TimeSignature(this, attr.timeNumer, attr.timeDenom);
+                keySig = new KeySignature(this, attr.key);
+            }
+        }
 
         public void setPrint(Print print)
         {
@@ -246,20 +257,82 @@ namespace Transonic.Score
         public int key;
         public KEYMODE mode;
 
-        public TimeSignature timeSig;
-        public KeySignature keySig;
+        public decimal beatpos;
 
         public Attributes()
         {
             timeNumer = 4;
             timeDenom = 4;
             key = 0;
-            mode = KEYMODE.Major;
+            mode = KEYMODE.Major;       //def time sig = 4/4, key sig = C major
 
-            timeSig = null;
-            keySig = null;
+            beatpos = 0;
         }
     }
+
+//-----------------------------------------------------------------------------
+
+    public class TimeSignature
+    {
+        public Measure measure;
+        public int numer;
+        public int denom;
+
+        public TimeSignature(Measure _meas, int _numer, int _denom)
+        {
+            measure = _meas;
+            numer = _numer;
+            denom = _denom;
+        }
+    }
+
+//-----------------------------------------------------------------------------
+
+    public class KeySignature
+    {
+        public Measure measure;
+        public int key;
+
+        public float measpos;                       //beat's pos in measure in pixels
+        public float xpos;
+        public float width;
+
+        public KeySignature(Measure _meas, int _key)
+        {
+            measure = _meas;
+            key = _key;
+            xpos = 0;
+            width = 0;
+        }
+
+        public void setPos(float _pos)
+        {
+            xpos = measpos + _pos;
+        }
+
+        public void paint(Graphics g)
+        {
+            float ypos = measure.staff.top;
+            Font keyfont = new Font("Arial", 14);
+            if (key > 0)
+            {
+                for (int i = 0; i > key; i++)
+                {
+                    g.DrawString("\u266f", keyfont, Brushes.Red, xpos - 14, ypos - 12);
+                }
+            }
+            else
+            {
+                int count = -key;
+                for (int i = 0; i > count; i++)
+                {
+                    g.DrawString("\u266d", keyfont, Brushes.Red, xpos - 14, ypos - 12);
+                }
+            }
+        }
+    }
+
+
 }
 
 //Console.WriteLine("there's no sun in the shadow of the wizard");

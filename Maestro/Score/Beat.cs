@@ -86,10 +86,6 @@ namespace Transonic.Score
             //}
         }
 
-        public void setAttributes(Attributes attr)
-        {
-        }
-
         //layout symbols pos inside beat box - determines beat's width + if staff needs to add leger lines for this beat 
         public void layoutSymbols()
         {

@@ -96,7 +96,7 @@ namespace Transonic.Score.MusicXML
         public static Measure parseMeasureXML(scorepartwisePartMeasure measurexml, Part part, Measure prevMeasure)
         {
             int number = Convert.ToInt32(measurexml.number);
-            Measure measure = new Measure(part, number, prevMeasure);
+            Measure measure = new Measure(number, prevMeasure);
             Staff staff = part.staves[0];                                 //temporary assign to one and only staff
             measure.staff = staff;
             staff.measures.Add(measure);
@@ -144,8 +144,8 @@ namespace Transonic.Score.MusicXML
                 else if (item is attributes)
                 {
                     Attributes attributes = parseAttributesXML((attributes)item);
-                    Beat beat = measure.getBeat(beatpos);
-                    beat.setAttributes(attributes);
+                    attributes.beatpos = beatpos;
+                    measure.setAttributes(attributes);
                 }
                 //case "harmony":
                 //    Harmony harmony = parseHarmonyXML(dataNode);

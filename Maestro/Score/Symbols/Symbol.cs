@@ -71,24 +71,17 @@ namespace Transonic.Score.Symbols
         public virtual void paint(Graphics g)
         {
         }
-    }
 
-//-----------------------------------------------------------------------------
+//- common symbols ------------------------------------------------------------
 
-    public class TimeSignature : Symbol
-    {
-        public TimeSignature()            
-        {
-        }
-    }
+        //public static void drawSharp(Graphics g, float xpos, float ypos)
+        //{
+        //}
 
-//-----------------------------------------------------------------------------
+        //public static void drawFlat(Graphics g, float xpos, float ypos)
+        //{
+        //}
 
-    public class KeySignature : Symbol
-    {
-        public KeySignature()
-        {
-        }
     }
 
 //-----------------------------------------------------------------------------
