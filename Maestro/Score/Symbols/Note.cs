@@ -32,7 +32,7 @@ namespace Transonic.Score.Symbols
     {
         public enum NOTETYPE
         {
-            Note1024,
+            Note1024 = 0,
             Note512,
             Note256,
             Note128,
@@ -48,6 +48,15 @@ namespace Transonic.Score.Symbols
             OctoWhole
         }
 
+        public enum NOTESIZE
+        {
+            Full = 0,
+            Cue,
+            Gracecue,
+            Large
+        }
+
+
         public const int quantization = 8;         //quantize notes to 1/32 note pos (quarter note / 8)
 
         public const String flat = "\u266d";
@@ -60,12 +69,17 @@ namespace Transonic.Score.Symbols
         public int octave;
         public int step;
         public int alter;
+        public bool hasAccidental;
+        public int accidental;
         public decimal semitones;
         public bool chord;
+        public bool cue;
         public bool rest;
         public decimal duration;
         public NOTETYPE notetype;
+        public NOTESIZE notesize;
         public bool dot;
+        public int staffnum;
 
         public Stem stem;
         public Beam beam;
@@ -77,15 +91,20 @@ namespace Transonic.Score.Symbols
         public Note() : base()
         {
             chord = false;
+            cue = false;
             rest = false;
             notenum = 0;
             octave = 0;
             step = 0;
             alter = 0;
+            hasAccidental = false;
+            accidental = 0;
             semitones = 0;
             duration = 0;
             notetype = NOTETYPE.Quarter;
+            notesize = NOTESIZE.Full;
             dot = false;
+            staffnum = 1;
         }
 
         string[] noteletters = { "C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B" };
@@ -119,6 +138,21 @@ namespace Transonic.Score.Symbols
         //int[] scaleTones = { 0, 0, 1, 1, 2, 3, 3, 4, 4, 5, 5, 6 };
         //int[] keyOfC = { 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 0 };
 
+        int[,] circleOfFifths = {{-1, -1, -1, 0, -1, -1, -1},         //Gb
+                                 {0, -1, -1, 0, -1, -1, -1},         //Db
+                                 {0, -1, -1, 0, 0, -1, -1},         //Ab
+                                 {0, 0, -1, 0, 0, -1, -1},         //Eb
+                                 {0, 0, -1, 0, 0, 0, -1},         //Bb
+                                 {0, 0, 0, 0, 0, 0, -1},         //F
+                                 {0, 0, 0, 0, 0, 0, 0},         //C
+                                 {0, 0, 0, 1, 0, 0, 0},         //G
+                                 {1, 0, 0, 1, 0, 0, 0},         //D
+                                 {1, 0, 0, 1, 1, 0, 0},         //A
+                                 {1, 1, 0, 1, 1, 0, 0},         //E
+                                 {1, 1, 0, 1, 1, 1, 0},         //B
+                                 {1, 1, 1, 1, 1, 1, 0}          //F#                                
+                                };
+
         //set verical note pos relative to top of staff
         //notes from middle C and higher belong to the treble clef, notes below middle C belong to bass clef
         public override void layout()
@@ -139,6 +173,13 @@ namespace Transonic.Score.Symbols
                 float bottom = staff.spacing * 8 + staff.separation;
                 float cpos = bottom + (staff.spacing * 12 + halfStep);    //pos of MIDI C = 0
                 top = cpos - (octave * halfStep * 7) - (step * halfStep);
+            }
+
+            int scalealter = circleOfFifths[(beat.measure.attr.key + 6),step];
+            if (scalealter != alter)
+            {
+                hasAccidental = true;
+                accidental = alter;
             }
         }
 
@@ -174,17 +215,35 @@ namespace Transonic.Score.Symbols
 
             //top += ypos;
 
-            switch (alter)
+            if (hasAccidental)
             {
-                case 1 :
-                Font sharpfont = new Font("Arial", 14);
-                g.DrawString(sharp, sharpfont, Brushes.Red, xpos - 14, ypos - 12);
-                    break;
-                default :
-                    break;
+                Font symfont = new Font("Arial", 14);
+                switch (accidental)
+                {
+                    case 0:
+                        g.DrawString(natural, symfont, Brushes.Red, xpos - 14, ypos - 12);
+                        break;
+                    case 1:
+                        g.DrawString(sharp, symfont, Brushes.Red, xpos - 14, ypos - 12);
+                        break;
+                    case -1:
+                        g.DrawString(flat, symfont, Brushes.Red, xpos - 14, ypos - 12);
+                        break;
+                    default:
+                        break;
+                }
+                symfont.Dispose();
             }
 
-            g.FillEllipse(Brushes.Red, xpos - 4, ypos - 4, 8, 8);
+            if (notetype.CompareTo(NOTETYPE.Half) < 0)
+            {
+                g.FillEllipse(Brushes.Red, xpos - 4, ypos - 4, 8, 8);
+            }
+            else
+            {
+                g.DrawEllipse(Pens.Red, xpos - 4, ypos - 4, 8, 8);
+                g.DrawEllipse(Pens.Red, xpos - 3, ypos - 3, 6, 6);
+            }
             //g.DrawLine(Pens.Red, xorg + 8, top, xorg + 8, top - Staff.lineSpacing * 3);
 
         }

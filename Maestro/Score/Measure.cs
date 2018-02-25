@@ -180,7 +180,13 @@ namespace Transonic.Score
         //    //barline.startTick = staff.division * timeNumer;
         //    //symbols.Add(barline);
 
-            float beatPos = 20;             //hardwired offset of first beat in measure, will change
+            float beatPos = 0;             //hardwired offset of first beat in measure, will change
+            if (keySig != null)
+            {
+                keySig.layout(beatPos);
+                beatPos += keySig.width;
+            }
+            beatPos += 20;
             foreach (Beat beat in beats)
             {
                 beat.measpos = beatPos;
@@ -195,6 +201,10 @@ namespace Transonic.Score
         public void setPos(float _xpos)
         {
             xpos = staffpos + _xpos;
+            if (keySig != null)
+            {
+                keySig.setPos(xpos);                
+            }
             foreach (Beat beat in beats)
             {
                 beat.setPos(xpos);
@@ -220,6 +230,11 @@ namespace Transonic.Score
 
             //measure num
             g.DrawString(number.ToString(), SystemFonts.DefaultFont, Brushes.Black, xpos, staff.top - 14);
+
+            if (keySig != null)
+            {
+                keySig.paint(g);                
+            }
 
             //beats
             for (int i = 0; i < beats.Count; i++)
@@ -305,30 +320,45 @@ namespace Transonic.Score
             width = 0;
         }
 
+        public void layout(float _pos)
+        {
+            measpos = _pos;
+            width = measure.staff.spacing * (key);
+        }
+
         public void setPos(float _pos)
         {
             xpos = measpos + _pos;
         }
 
+        float[] sharpYPos = { 0.0f, 1.5f, -0.5f, 1.0f, 2.5f, 0.5f };
+        float[] flatYPos = { 2.0f, 0.5f, 2.5f, 1.0f, 3.0f, 1.5f };
+
         public void paint(Graphics g)
         {
             float ypos = measure.staff.top;
+            Staff staff = measure.staff;
             Font keyfont = new Font("Arial", 14);
             if (key > 0)
             {
-                for (int i = 0; i > key; i++)
+                float x = xpos;
+                for (int i = 0; i < key; i++)
                 {
-                    g.DrawString("\u266f", keyfont, Brushes.Red, xpos - 14, ypos - 12);
+                    g.DrawString("\u266f", keyfont, Brushes.Black, x, staff.top + (sharpYPos[i] * staff.spacing) - 12);
+                    x += staff.spacing;
                 }
             }
             else
             {
                 int count = -key;
-                for (int i = 0; i > count; i++)
+                float x = xpos;
+                for (int i = 0; i < count; i++)
                 {
-                    g.DrawString("\u266d", keyfont, Brushes.Red, xpos - 14, ypos - 12);
+                    g.DrawString("\u266d", keyfont, Brushes.Green, x, staff.top + (sharpYPos[i] * staff.spacing) - 12);
+                    x += staff.spacing;
                 }
             }
+            keyfont.Dispose();
         }
     }
 

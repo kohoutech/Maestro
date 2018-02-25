@@ -82,7 +82,7 @@ namespace Transonic.Score.MusicXML
 
         [System.Xml.Serialization.XmlElementAttribute("attributes", typeof(attributes))]
         [System.Xml.Serialization.XmlElementAttribute("backup", typeof(backup))]
-        [System.Xml.Serialization.XmlElementAttribute("barline", typeof(barlineXML))]
+        [System.Xml.Serialization.XmlElementAttribute("barline", typeof(barline))]
         [System.Xml.Serialization.XmlElementAttribute("bookmark", typeof(bookmark))]
         [System.Xml.Serialization.XmlElementAttribute("direction", typeof(direction))]
         [System.Xml.Serialization.XmlElementAttribute("figured-bass", typeof(figuredbass))]
@@ -91,7 +91,7 @@ namespace Transonic.Score.MusicXML
         [System.Xml.Serialization.XmlElementAttribute("harmony", typeof(harmony))]
         [System.Xml.Serialization.XmlElementAttribute("link", typeof(link))]
         [System.Xml.Serialization.XmlElementAttribute("note", typeof(note))]
-        [System.Xml.Serialization.XmlElementAttribute("print", typeof(printXML))]
+        [System.Xml.Serialization.XmlElementAttribute("print", typeof(print))]
         [System.Xml.Serialization.XmlElementAttribute("sound", typeof(sound))]
         public object[] Items;
 
@@ -174,7 +174,7 @@ namespace Transonic.Score.MusicXML
     [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true, Namespace = "http://www.w3.org/1999/xlink")]
     public enum opusType
     {
-        simple,
+        simple
     }
 
     [System.SerializableAttribute()]
@@ -266,9 +266,9 @@ namespace Transonic.Score.MusicXML
     public enum ItemsChoiceType
     {
         encoder,
-        [System.Xml.Serialization.XmlEnumAttribute("encoding-date")]
+            [System.Xml.Serialization.XmlEnumAttribute("encoding-date")]
         encodingdate,
-        [System.Xml.Serialization.XmlEnumAttribute("encoding-description")]
+            [System.Xml.Serialization.XmlEnumAttribute("encoding-description")]
         encodingdescription,
         software,
         supports,
@@ -399,7 +399,7 @@ namespace Transonic.Score.MusicXML
     {
         cue,
         grace,
-        [System.Xml.Serialization.XmlEnumAttribute("grace-cue")] 
+            [System.Xml.Serialization.XmlEnumAttribute("grace-cue")] 
         gracecue,
         large
     }
@@ -647,39 +647,27 @@ namespace Transonic.Score.MusicXML
     [System.Xml.Serialization.XmlTypeAttribute(TypeName = "part-group")]
     public class partgroup
     {
-
         [System.Xml.Serialization.XmlElementAttribute("group-name")]
         public groupname groupname;
-
         [System.Xml.Serialization.XmlElementAttribute("group-name-display")]
         public namedisplay groupnamedisplay;
-
         [System.Xml.Serialization.XmlElementAttribute("group-abbreviation")]
         public groupname groupabbreviation;
-
         [System.Xml.Serialization.XmlElementAttribute("group-abbreviation-display")]
         public namedisplay groupabbreviationdisplay;
-
         [System.Xml.Serialization.XmlElementAttribute("group-symbol")]
         public groupsymbol groupsymbol;
-
         [System.Xml.Serialization.XmlElementAttribute("group-barline")]
         public groupbarline groupbarline;
-
         [System.Xml.Serialization.XmlElementAttribute("group-time")]
         public empty grouptime;
-
         public formattedtext footnote;
-
         public level level;
-
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public startstop type;
-
         [System.Xml.Serialization.XmlAttributeAttribute(DataType = "token")]
         [System.ComponentModel.DefaultValueAttribute("1")]
         public string number;
-
         public partgroup()
         {
             this.number = "1";
@@ -723,26 +711,28 @@ namespace Transonic.Score.MusicXML
         public NoteChoiceType[] ItemsElementName;
 
         public instrument instrument;
-        public formattedtext footnote;
+        
+        public formattedtext footnote;          //editorial-voice
         public level level;
         public string voice;
+
         public notetype type;
-        [System.Xml.Serialization.XmlElementAttribute("dot")]
+            [System.Xml.Serialization.XmlElementAttribute("dot")]
         public emptyplacement[] dot;
         public accidental accidental;
-        [System.Xml.Serialization.XmlElementAttribute("time-modification")]
+            [System.Xml.Serialization.XmlElementAttribute("time-modification")]
         public timemodification timemodification;
         public stem stem;
         public notehead notehead;
-        [System.Xml.Serialization.XmlElementAttribute("notehead-text")]
+            [System.Xml.Serialization.XmlElementAttribute("notehead-text")]
         public noteheadtext noteheadtext;
-        [System.Xml.Serialization.XmlElementAttribute(DataType = "positiveInteger")]
+            [System.Xml.Serialization.XmlElementAttribute(DataType = "positiveInteger")]
         public string staff;
-        [System.Xml.Serialization.XmlElementAttribute("beam")]
+            [System.Xml.Serialization.XmlElementAttribute("beam")]
         public beam[] beam;
-        [System.Xml.Serialization.XmlElementAttribute("notations")]
+            [System.Xml.Serialization.XmlElementAttribute("notations")]
         public notations[] notations;
-        [System.Xml.Serialization.XmlElementAttribute("lyric")]
+            [System.Xml.Serialization.XmlElementAttribute("lyric")]
         public lyric[] lyric;
         public play play;
 
@@ -843,88 +833,305 @@ namespace Transonic.Score.MusicXML
     [System.SerializableAttribute()]
     public class unpitched
     {
-
-        [System.Xml.Serialization.XmlElementAttribute("display-step")]
+            [System.Xml.Serialization.XmlElementAttribute("display-step")]
         public step displaystep;
-
-        [System.Xml.Serialization.XmlElementAttribute("display-octave", DataType = "integer")]
+            [System.Xml.Serialization.XmlElementAttribute("display-octave", DataType = "integer")]
         public string displayoctave;
     }
 
     [System.SerializableAttribute()]
     public class rest
     {
-
-        [System.Xml.Serialization.XmlElementAttribute("display-step")]
+            [System.Xml.Serialization.XmlElementAttribute("display-step")]
         public step displaystep;
-
-        [System.Xml.Serialization.XmlElementAttribute("display-octave", DataType = "integer")]
+            [System.Xml.Serialization.XmlElementAttribute("display-octave", DataType = "integer")]
         public string displayoctave;
-
-        [System.Xml.Serialization.XmlAttributeAttribute()]
+            [System.Xml.Serialization.XmlAttributeAttribute()]
         public yesno measure;
-
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
+            [System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool measureSpecified;
     }
 
     [System.SerializableAttribute()]
     public class grace
     {
-
         [System.Xml.Serialization.XmlAttributeAttribute("steal-time-previous")]
         public decimal stealtimeprevious;
-
         [System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool stealtimepreviousSpecified;
-
         [System.Xml.Serialization.XmlAttributeAttribute("steal-time-following")]
         public decimal stealtimefollowing;
-
         [System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool stealtimefollowingSpecified;
-
         [System.Xml.Serialization.XmlAttributeAttribute("make-time")]
         public decimal maketime;
-
         [System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool maketimeSpecified;
-
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public yesno slash;
-
         [System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool slashSpecified;
     }
 
     [System.SerializableAttribute()]
-    public class elision
+    public class tie
     {
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public startstop type;
+        [System.Xml.Serialization.XmlAttributeAttribute("time-only", DataType = "token")]
+        public string timeonly;
+    }
 
-        [System.Xml.Serialization.XmlAttributeAttribute("font-family", DataType = "token")]
-        public string fontfamily;
+    [System.SerializableAttribute()]
+    public class instrument
+    {
+        [System.Xml.Serialization.XmlAttributeAttribute(DataType = "IDREF")]
+        public string id;
+    }
 
-        [System.Xml.Serialization.XmlAttributeAttribute("font-style")]
-        public fontstyle fontstyle;
-
+    [System.SerializableAttribute()]
+    [System.Xml.Serialization.XmlTypeAttribute(TypeName = "note-type")]
+    public class notetype
+    {
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public symbolsize size;
         [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool fontstyleSpecified;
+        public bool sizeSpecified;
+        [System.Xml.Serialization.XmlTextAttribute()]
+        public notetypevalue Value;
+    }
 
-        [System.Xml.Serialization.XmlAttributeAttribute("font-size")]
-        public string fontsize;
-
-        [System.Xml.Serialization.XmlAttributeAttribute("font-weight")]
-        public fontweight fontweight;
-
+    [System.SerializableAttribute()]
+    public class accidental
+    {
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public yesno cautionary;
         [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool fontweightSpecified;
-
-        [System.Xml.Serialization.XmlAttributeAttribute(DataType = "token")]
-        public string color;
-
+        public bool cautionarySpecified;
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public yesno editorial;
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool editorialSpecified;
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public yesno parentheses;
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool parenthesesSpecified;
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public yesno bracket;
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool bracketSpecified;
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public symbolsize size;
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool sizeSpecified;
         [System.Xml.Serialization.XmlAttributeAttribute(DataType = "NMTOKEN")]
         public string smufl;
+        [System.Xml.Serialization.XmlTextAttribute()]
+        public accidentalvalue Value;
+    }
 
+    [System.SerializableAttribute()]
+    public class stem
+    {
+        [System.Xml.Serialization.XmlAttributeAttribute("default-x")]
+        public decimal defaultx;
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool defaultxSpecified;
+        [System.Xml.Serialization.XmlAttributeAttribute("default-y")]
+        public decimal defaulty;
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool defaultySpecified;
+        [System.Xml.Serialization.XmlAttributeAttribute("relative-x")]
+        public decimal relativex;
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool relativexSpecified;
+        [System.Xml.Serialization.XmlAttributeAttribute("relative-y")]
+        public decimal relativey;
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool relativeySpecified;
+        [System.Xml.Serialization.XmlAttributeAttribute(DataType = "token")]
+        public string color;
+        [System.Xml.Serialization.XmlTextAttribute()]
+        public stemvalue Value;
+    }
+
+    [System.SerializableAttribute()]
+    [System.Xml.Serialization.XmlTypeAttribute(TypeName = "stem-value")]
+    public enum stemvalue
+    {
+        down,
+        up,
+        @double,
+        none
+    }
+
+    [System.SerializableAttribute()]
+    public class notehead
+    {
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public yesno filled;
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool filledSpecified;
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public yesno parentheses;
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool parenthesesSpecified;
+        [System.Xml.Serialization.XmlAttributeAttribute("font-family", DataType = "token")]
+        public string fontfamily;
+        [System.Xml.Serialization.XmlAttributeAttribute("font-style")]
+        public fontstyle fontstyle;
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool fontstyleSpecified;
+        [System.Xml.Serialization.XmlAttributeAttribute("font-size")]
+        public string fontsize;
+        [System.Xml.Serialization.XmlAttributeAttribute("font-weight")]
+        public fontweight fontweight;
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool fontweightSpecified;
+        [System.Xml.Serialization.XmlAttributeAttribute(DataType = "token")]
+        public string color;
+        [System.Xml.Serialization.XmlAttributeAttribute(DataType = "NMTOKEN")]
+        public string smufl;
+        [System.Xml.Serialization.XmlTextAttribute()]
+        public noteheadvalue Value;
+    }
+
+    [System.SerializableAttribute()]
+    [System.Xml.Serialization.XmlTypeAttribute(TypeName = "notehead-value")]
+    public enum noteheadvalue
+    {
+        slash,
+        triangle,
+        diamond,
+        square,
+        cross,
+        x,
+        [System.Xml.Serialization.XmlEnumAttribute("circle-x")]
+        circlex,
+        [System.Xml.Serialization.XmlEnumAttribute("inverted triangle")]
+        invertedtriangle,
+        [System.Xml.Serialization.XmlEnumAttribute("arrow down")]
+        arrowdown,
+        [System.Xml.Serialization.XmlEnumAttribute("arrow up")]
+        arrowup,
+        circled,
+        slashed,
+        [System.Xml.Serialization.XmlEnumAttribute("back slashed")]
+        backslashed,
+        normal,
+        cluster,
+        [System.Xml.Serialization.XmlEnumAttribute("circle dot")]
+        circledot,
+        [System.Xml.Serialization.XmlEnumAttribute("left triangle")]
+        lefttriangle,
+        rectangle,
+        none,
+        @do,
+        re,
+        mi,
+        fa,
+        [System.Xml.Serialization.XmlEnumAttribute("fa up")]
+        faup,
+        so,
+        la,
+        ti,
+        other
+    }
+
+    [System.SerializableAttribute()]
+    [System.Xml.Serialization.XmlTypeAttribute(TypeName = "notehead-text")]
+    public class noteheadtext
+    {
+        [System.Xml.Serialization.XmlElementAttribute("accidental-text", typeof(accidentaltext))]
+        [System.Xml.Serialization.XmlElementAttribute("display-text", typeof(formattedtext))]
+        public object[] Items;
+    }
+
+    [System.SerializableAttribute()]
+    public class beam
+    {
+        [System.Xml.Serialization.XmlAttributeAttribute(DataType = "positiveInteger")]
+        [System.ComponentModel.DefaultValueAttribute("1")]
+        public string number;
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public yesno repeater;
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool repeaterSpecified;
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public fan fan;
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool fanSpecified;
+        [System.Xml.Serialization.XmlAttributeAttribute(DataType = "token")]
+        public string color;
+        [System.Xml.Serialization.XmlAttributeAttribute(DataType = "ID")]
+        public string id;
+        [System.Xml.Serialization.XmlTextAttribute()]
+        public beamvalue Value;
+        public beam()
+        {
+            this.number = "1";
+        }
+    }
+
+    [System.SerializableAttribute()]
+    public enum fan
+    {
+        accel,
+        rit,
+        none
+    }
+
+    [System.SerializableAttribute()]
+    public class notations
+    {
+        //elems
+        public formattedtext footnote;      //editorial subgroup
+        public level level;
+
+        [System.Xml.Serialization.XmlElementAttribute("accidental-mark", typeof(accidentalmark))]
+        [System.Xml.Serialization.XmlElementAttribute("arpeggiate", typeof(arpeggiate))]
+        [System.Xml.Serialization.XmlElementAttribute("articulations", typeof(articulations))]
+        [System.Xml.Serialization.XmlElementAttribute("dynamics", typeof(dynamics))]
+        [System.Xml.Serialization.XmlElementAttribute("fermata", typeof(fermata))]
+        [System.Xml.Serialization.XmlElementAttribute("glissando", typeof(glissando))]
+        [System.Xml.Serialization.XmlElementAttribute("non-arpeggiate", typeof(nonarpeggiate))]
+        [System.Xml.Serialization.XmlElementAttribute("ornaments", typeof(ornaments))]
+        [System.Xml.Serialization.XmlElementAttribute("other-notation", typeof(othernotation))]
+        [System.Xml.Serialization.XmlElementAttribute("slide", typeof(slide))]
+        [System.Xml.Serialization.XmlElementAttribute("slur", typeof(slur))]
+        [System.Xml.Serialization.XmlElementAttribute("technical", typeof(technical))]
+        [System.Xml.Serialization.XmlElementAttribute("tied", typeof(tied))]
+        [System.Xml.Serialization.XmlElementAttribute("tuplet", typeof(tuplet))]
+        public object[] Items;
+
+        //attrs
+        [System.Xml.Serialization.XmlAttributeAttribute("print-object")]
+        public yesno printobject;
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool printobjectSpecified;
+        [System.Xml.Serialization.XmlAttributeAttribute(DataType = "ID")]
+        public string id;
+    }
+
+    [System.SerializableAttribute()]
+    public class elision
+    {
+        [System.Xml.Serialization.XmlAttributeAttribute("font-family", DataType = "token")]
+        public string fontfamily;
+        [System.Xml.Serialization.XmlAttributeAttribute("font-style")]
+        public fontstyle fontstyle;
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool fontstyleSpecified;
+        [System.Xml.Serialization.XmlAttributeAttribute("font-size")]
+        public string fontsize;
+        [System.Xml.Serialization.XmlAttributeAttribute("font-weight")]
+        public fontweight fontweight;
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool fontweightSpecified;
+        [System.Xml.Serialization.XmlAttributeAttribute(DataType = "token")]
+        public string color;
+        [System.Xml.Serialization.XmlAttributeAttribute(DataType = "NMTOKEN")]
+        public string smufl;
         [System.Xml.Serialization.XmlTextAttribute()]
         public string Value;
     }
@@ -933,55 +1140,38 @@ namespace Transonic.Score.MusicXML
     [System.Xml.Serialization.XmlTypeAttribute(TypeName = "text-element-data")]
     public class textelementdata
     {
-
         [System.Xml.Serialization.XmlAttributeAttribute("font-family", DataType = "token")]
         public string fontfamily;
-
         [System.Xml.Serialization.XmlAttributeAttribute("font-style")]
         public fontstyle fontstyle;
-
         [System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool fontstyleSpecified;
-
         [System.Xml.Serialization.XmlAttributeAttribute("font-size")]
         public string fontsize;
-
         [System.Xml.Serialization.XmlAttributeAttribute("font-weight")]
         public fontweight fontweight;
-
         [System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool fontweightSpecified;
-
         [System.Xml.Serialization.XmlAttributeAttribute(DataType = "token")]
         public string color;
-
         [System.Xml.Serialization.XmlAttributeAttribute(DataType = "nonNegativeInteger")]
         public string underline;
-
         [System.Xml.Serialization.XmlAttributeAttribute(DataType = "nonNegativeInteger")]
         public string overline;
-
         [System.Xml.Serialization.XmlAttributeAttribute("line-through", DataType = "nonNegativeInteger")]
         public string linethrough;
-
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public decimal rotation;
-
         [System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool rotationSpecified;
-
         [System.Xml.Serialization.XmlAttributeAttribute("letter-spacing")]
         public string letterspacing;
-
         [System.Xml.Serialization.XmlAttributeAttribute(Form = System.Xml.Schema.XmlSchemaForm.Qualified, Namespace = "http://www.w3.org/XML/1998/namespace")]
         public string lang;
-
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public textdirection dir;
-
         [System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool dirSpecified;
-
         [System.Xml.Serialization.XmlTextAttribute()]
         public string Value;
     }
@@ -999,7 +1189,6 @@ namespace Transonic.Score.MusicXML
     [System.SerializableAttribute()]
     public class lyric
     {
-
         [System.Xml.Serialization.XmlElementAttribute("elision", typeof(elision))]
         [System.Xml.Serialization.XmlElementAttribute("extend", typeof(extend))]
         [System.Xml.Serialization.XmlElementAttribute("humming", typeof(empty))]
@@ -1008,75 +1197,51 @@ namespace Transonic.Score.MusicXML
         [System.Xml.Serialization.XmlElementAttribute("text", typeof(textelementdata))]
         [System.Xml.Serialization.XmlChoiceIdentifierAttribute("ItemsElementName")]
         public object[] Items;
-
         [System.Xml.Serialization.XmlElementAttribute("ItemsElementName")]
         [System.Xml.Serialization.XmlIgnoreAttribute()]
         public ItemsChoiceType6[] ItemsElementName;
-
         [System.Xml.Serialization.XmlElementAttribute("end-line")]
         public empty endline;
-
         [System.Xml.Serialization.XmlElementAttribute("end-paragraph")]
         public empty endparagraph;
-
         public formattedtext footnote;
-
         public level level;
-
         [System.Xml.Serialization.XmlAttributeAttribute(DataType = "NMTOKEN")]
         public string number;
-
         [System.Xml.Serialization.XmlAttributeAttribute(DataType = "token")]
         public string name;
-
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public leftcenterright justify;
-
         [System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool justifySpecified;
-
         [System.Xml.Serialization.XmlAttributeAttribute("default-x")]
         public decimal defaultx;
-
         [System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool defaultxSpecified;
-
         [System.Xml.Serialization.XmlAttributeAttribute("default-y")]
         public decimal defaulty;
-
         [System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool defaultySpecified;
-
         [System.Xml.Serialization.XmlAttributeAttribute("relative-x")]
         public decimal relativex;
-
         [System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool relativexSpecified;
-
         [System.Xml.Serialization.XmlAttributeAttribute("relative-y")]
         public decimal relativey;
-
         [System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool relativeySpecified;
-
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public abovebelow placement;
-
         [System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool placementSpecified;
-
         [System.Xml.Serialization.XmlAttributeAttribute(DataType = "token")]
         public string color;
-
         [System.Xml.Serialization.XmlAttributeAttribute("print-object")]
         public yesno printobject;
-
         [System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool printobjectSpecified;
-
         [System.Xml.Serialization.XmlAttributeAttribute("time-only", DataType = "token")]
         public string timeonly;
-
         [System.Xml.Serialization.XmlAttributeAttribute(DataType = "ID")]
         public string id;
     }
@@ -1278,8 +1443,8 @@ namespace Transonic.Score.MusicXML
         @short,
         curved,
         single,
-        [System.Xml.Serialization.XmlEnumAttribute("")]
-        Item,
+            [System.Xml.Serialization.XmlEnumAttribute("")]
+        Item
     }
 
     [System.SerializableAttribute()]
@@ -1300,7 +1465,7 @@ namespace Transonic.Score.MusicXML
     [System.Xml.Serialization.XmlTypeAttribute(TypeName = "breath-mark-value")]
     public enum breathmarkvalue
     {
-        [System.Xml.Serialization.XmlEnumAttribute("")]
+            [System.Xml.Serialization.XmlEnumAttribute("")]
         Item,
         comma,
         tick,
@@ -1462,46 +1627,28 @@ namespace Transonic.Score.MusicXML
     [System.Xml.Serialization.XmlTypeAttribute(IncludeInSchema = false)]
     public enum ItemsChoiceType4
     {
-
         accent,
-
         [System.Xml.Serialization.XmlEnumAttribute("breath-mark")]
         breathmark,
-
         caesura,
-
         [System.Xml.Serialization.XmlEnumAttribute("detached-legato")]
         detachedlegato,
-
         doit,
-
         falloff,
-
         [System.Xml.Serialization.XmlEnumAttribute("other-articulation")]
         otherarticulation,
-
         plop,
-
         scoop,
-
         [System.Xml.Serialization.XmlEnumAttribute("soft-accent")]
         softaccent,
-
         spiccato,
-
         staccatissimo,
-
         staccato,
-
         stress,
-
         [System.Xml.Serialization.XmlEnumAttribute("strong-accent")]
         strongaccent,
-
         tenuto,
-
-        unstress,
-    }
+        unstress,    }
 
     [System.SerializableAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(TypeName = "harmon-closed")]
@@ -1522,26 +1669,19 @@ namespace Transonic.Score.MusicXML
     [System.Xml.Serialization.XmlTypeAttribute(TypeName = "harmon-closed-location")]
     public enum harmonclosedlocation
     {
-
         right,
-
         bottom,
-
         left,
-
-        top,
+        top
     }
 
     [System.SerializableAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(TypeName = "harmon-closed-value")]
     public enum harmonclosedvalue
     {
-
         yes,
-
         no,
-
-        half,
+        half
     }
 
     [System.SerializableAttribute()]
@@ -1577,42 +1717,29 @@ namespace Transonic.Score.MusicXML
     [System.Xml.Serialization.XmlTypeAttribute(TypeName = "handbell-value")]
     public enum handbellvalue
     {
-
         belltree,
-
         damp,
-
         echo,
-
         gyro,
-
         [System.Xml.Serialization.XmlEnumAttribute("hand martellato")]
         handmartellato,
-
         [System.Xml.Serialization.XmlEnumAttribute("mallet lift")]
         malletlift,
-
         [System.Xml.Serialization.XmlEnumAttribute("mallet table")]
         mallettable,
-
         martellato,
-
         [System.Xml.Serialization.XmlEnumAttribute("martellato lift")]
         martellatolift,
-
         [System.Xml.Serialization.XmlEnumAttribute("muted martellato")]
         mutedmartellato,
-
         [System.Xml.Serialization.XmlEnumAttribute("pluck lift")]
         plucklift,
-
         swing,
     }
 
     [System.SerializableAttribute()]
     public class arrow
     {
-
         [System.Xml.Serialization.XmlElementAttribute("arrow-direction", typeof(arrowdirection))]
         [System.Xml.Serialization.XmlElementAttribute("arrow-style", typeof(arrowstyle))]
         [System.Xml.Serialization.XmlElementAttribute("arrowhead", typeof(empty))]
@@ -1633,35 +1760,22 @@ namespace Transonic.Score.MusicXML
     [System.Xml.Serialization.XmlTypeAttribute(TypeName = "arrow-direction")]
     public enum arrowdirection
     {
-
         left,
-
         up,
-
         right,
-
         down,
-
         northwest,
-
         northeast,
-
         southeast,
-
         southwest,
-
         [System.Xml.Serialization.XmlEnumAttribute("left right")]
         leftright,
-
         [System.Xml.Serialization.XmlEnumAttribute("up down")]
         updown,
-
         [System.Xml.Serialization.XmlEnumAttribute("northwest southeast")]
         northwestsoutheast,
-
         [System.Xml.Serialization.XmlEnumAttribute("northeast southwest")]
         northeastsouthwest,
-
         other,
     }
 
@@ -1669,19 +1783,12 @@ namespace Transonic.Score.MusicXML
     [System.Xml.Serialization.XmlTypeAttribute(TypeName = "arrow-style")]
     public enum arrowstyle
     {
-
         single,
-
         @double,
-
         filled,
-
         hollow,
-
         paired,
-
         combined,
-
         other,
     }
 
@@ -1689,9 +1796,7 @@ namespace Transonic.Score.MusicXML
     [System.Xml.Serialization.XmlTypeAttribute(TypeName = "circular-arrow")]
     public enum circulararrow
     {
-
         clockwise,
-
         anticlockwise,
     }
 
@@ -1824,10 +1929,8 @@ namespace Transonic.Score.MusicXML
     [System.Xml.Serialization.XmlTypeAttribute(IncludeInSchema = false)]
     public enum ItemChoiceType1
     {
-
         [System.Xml.Serialization.XmlEnumAttribute("pre-bend")]
         prebend,
-
         release,
     }
 
@@ -1983,22 +2086,15 @@ namespace Transonic.Score.MusicXML
     [System.Xml.Serialization.XmlTypeAttribute(IncludeInSchema = false)]
     public enum ItemsChoiceType3
     {
-
         arrow,
-
         bend,
-
         [System.Xml.Serialization.XmlEnumAttribute("brass-bend")]
         brassbend,
-
         [System.Xml.Serialization.XmlEnumAttribute("double-tongue")]
         doubletongue,
-
         [System.Xml.Serialization.XmlEnumAttribute("down-bow")]
         downbow,
-
         fingering,
-
         fingernails,
         flip,
         fret,
@@ -2032,7 +2128,7 @@ namespace Transonic.Score.MusicXML
         toe,
         [System.Xml.Serialization.XmlEnumAttribute("triple-tongue")]
         tripletongue,
-        [System.Xml.Serialization.XmlEnumAttribute("up-bow")]
+            [System.Xml.Serialization.XmlEnumAttribute("up-bow")]
         upbow
     }
 
@@ -2040,37 +2136,26 @@ namespace Transonic.Score.MusicXML
     [System.Xml.Serialization.XmlTypeAttribute(TypeName = "accidental-mark")]
     public class accidentalmark
     {
-
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public yesno parentheses;
-
         [System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool parenthesesSpecified;
-
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public yesno bracket;
-
         [System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool bracketSpecified;
-
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public symbolsize size;
-
         [System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool sizeSpecified;
-
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public abovebelow placement;
-
         [System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool placementSpecified;
-
         [System.Xml.Serialization.XmlAttributeAttribute(DataType = "NMTOKEN")]
         public string smufl;
-
         [System.Xml.Serialization.XmlAttributeAttribute(DataType = "ID")]
         public string id;
-
         [System.Xml.Serialization.XmlTextAttribute()]
         public accidentalvalue Value;
     }
@@ -2180,103 +2265,79 @@ namespace Transonic.Score.MusicXML
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public abovebelow placement;
 
-        /// <remarks/>
         [System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool placementSpecified;
 
-        /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute("start-note")]
         public startnote startnote;
 
-        /// <remarks/>
         [System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool startnoteSpecified;
 
-        /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute("trill-step")]
         public trillstep trillstep;
 
-        /// <remarks/>
         [System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool trillstepSpecified;
 
-        /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute("two-note-turn")]
         public twonoteturn twonoteturn;
 
-        /// <remarks/>
         [System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool twonoteturnSpecified;
 
-        /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public yesno accelerate;
 
-        /// <remarks/>
         [System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool accelerateSpecified;
 
-        /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public decimal beats;
 
-        /// <remarks/>
         [System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool beatsSpecified;
 
-        /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute("second-beat")]
         public decimal secondbeat;
 
-        /// <remarks/>
         [System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool secondbeatSpecified;
 
-        /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute("last-beat")]
         public decimal lastbeat;
 
-        /// <remarks/>
         [System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool lastbeatSpecified;
     }
 
-    /// <remarks/>
     [System.SerializableAttribute()]
     public class mordent : emptytrillsound
     {
 
-        /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public yesno @long;
 
-        /// <remarks/>
         [System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool longSpecified;
 
-        /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public abovebelow approach;
 
-        /// <remarks/>
         [System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool approachSpecified;
 
-        /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public abovebelow departure;
 
-        /// <remarks/>
         [System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool departureSpecified;
     }
 
-    /// <remarks/>
     [System.SerializableAttribute()]
     public class ornaments
     {
 
-        /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute("delayed-inverted-turn", typeof(horizontalturn))]
         [System.Xml.Serialization.XmlElementAttribute("delayed-turn", typeof(horizontalturn))]
         [System.Xml.Serialization.XmlElementAttribute("haydn", typeof(emptytrillsound))]
@@ -2295,156 +2356,103 @@ namespace Transonic.Score.MusicXML
         [System.Xml.Serialization.XmlChoiceIdentifierAttribute("ItemsElementName")]
         public object[] Items;
 
-        /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute("ItemsElementName")]
         [System.Xml.Serialization.XmlIgnoreAttribute()]
         public ItemsChoiceType2[] ItemsElementName;
 
-        /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute("accidental-mark")]
         public accidentalmark[] accidentalmark;
 
-        /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute(DataType = "ID")]
         public string id;
     }
 
-    /// <remarks/>
     [System.SerializableAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(IncludeInSchema = false)]
     public enum ItemsChoiceType2
     {
-
-        /// <remarks/>
         [System.Xml.Serialization.XmlEnumAttribute("delayed-inverted-turn")]
         delayedinvertedturn,
-
-        /// <remarks/>
         [System.Xml.Serialization.XmlEnumAttribute("delayed-turn")]
         delayedturn,
-
-        /// <remarks/>
         haydn,
-
-        /// <remarks/>
         [System.Xml.Serialization.XmlEnumAttribute("inverted-mordent")]
         invertedmordent,
-
-        /// <remarks/>
         [System.Xml.Serialization.XmlEnumAttribute("inverted-turn")]
         invertedturn,
-
-        /// <remarks/>
         [System.Xml.Serialization.XmlEnumAttribute("inverted-vertical-turn")]
         invertedverticalturn,
-
-        /// <remarks/>
         mordent,
-
-        /// <remarks/>
         [System.Xml.Serialization.XmlEnumAttribute("other-ornament")]
         otherornament,
-
-        /// <remarks/>
         schleifer,
-
-        /// <remarks/>
         shake,
-
-        /// <remarks/>
         tremolo,
-
-        /// <remarks/>
         [System.Xml.Serialization.XmlEnumAttribute("trill-mark")]
         trillmark,
-
-        /// <remarks/>
         turn,
-
-        /// <remarks/>
         [System.Xml.Serialization.XmlEnumAttribute("vertical-turn")]
         verticalturn,
-
-        /// <remarks/>
         [System.Xml.Serialization.XmlEnumAttribute("wavy-line")]
         wavyline,
     }
 
-    /// <remarks/>
     [System.SerializableAttribute()]
     public class slide
     {
 
-        /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public startstop type;
 
-        /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute(DataType = "positiveInteger")]
         [System.ComponentModel.DefaultValueAttribute("1")]
         public string number;
 
-        /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute("line-type")]
         public linetype linetype;
 
-        /// <remarks/>
         [System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool linetypeSpecified;
 
-        /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute("dash-length")]
         public decimal dashlength;
 
-        /// <remarks/>
         [System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool dashlengthSpecified;
 
-        /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute("space-length")]
         public decimal spacelength;
 
-        /// <remarks/>
         [System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool spacelengthSpecified;
 
-        /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public yesno accelerate;
 
-        /// <remarks/>
         [System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool accelerateSpecified;
 
-        /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public decimal beats;
 
-        /// <remarks/>
         [System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool beatsSpecified;
 
-        /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute("first-beat")]
         public decimal firstbeat;
 
-        /// <remarks/>
         [System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool firstbeatSpecified;
 
-        /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute("last-beat")]
         public decimal lastbeat;
 
-        /// <remarks/>
         [System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool lastbeatSpecified;
 
-        /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute(DataType = "ID")]
         public string id;
 
-        /// <remarks/>
         [System.Xml.Serialization.XmlTextAttribute()]
         public string Value;
 
@@ -2454,49 +2462,38 @@ namespace Transonic.Score.MusicXML
         }
     }
 
-    /// <remarks/>
     [System.SerializableAttribute()]
     public class glissando
     {
 
-        /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public startstop type;
 
-        /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute(DataType = "positiveInteger")]
         [System.ComponentModel.DefaultValueAttribute("1")]
         public string number;
 
-        /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute("line-type")]
         public linetype linetype;
 
-        /// <remarks/>
         [System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool linetypeSpecified;
 
-        /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute("dash-length")]
         public decimal dashlength;
 
-        /// <remarks/>
         [System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool dashlengthSpecified;
 
-        /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute("space-length")]
         public decimal spacelength;
 
-        /// <remarks/>
         [System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool spacelengthSpecified;
 
-        /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute(DataType = "ID")]
         public string id;
 
-        /// <remarks/>
         [System.Xml.Serialization.XmlTextAttribute()]
         public string Value;
 
@@ -2506,197 +2503,131 @@ namespace Transonic.Score.MusicXML
         }
     }
 
-    /// <remarks/>
     [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(TypeName = "tuplet-dot")]
-    public class tupletdot
+    public class tuplet
     {
-
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute("font-family", DataType = "token")]
-        public string fontfamily;
-
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute("font-style")]
-        public fontstyle fontstyle;
-
-        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute("tuplet-actual")]
+        public tupletportion tupletactual;
+        [System.Xml.Serialization.XmlElementAttribute("tuplet-normal")]
+        public tupletportion tupletnormal;
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public startstop type;
+        [System.Xml.Serialization.XmlAttributeAttribute(DataType = "positiveInteger")]
+        public string number;
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public yesno bracket;
         [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool fontstyleSpecified;
-
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute("font-size")]
-        public string fontsize;
-
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute("font-weight")]
-        public fontweight fontweight;
-
-        /// <remarks/>
+        public bool bracketSpecified;
+        [System.Xml.Serialization.XmlAttributeAttribute("show-number")]
+        public showtuplet shownumber;
         [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool fontweightSpecified;
-
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute(DataType = "token")]
-        public string color;
-    }
-
-    /// <remarks/>
-    [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(TypeName = "tuplet-type")]
-    public class tuplettype
-    {
-
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute("font-family", DataType = "token")]
-        public string fontfamily;
-
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute("font-style")]
-        public fontstyle fontstyle;
-
-        /// <remarks/>
+        public bool shownumberSpecified;
+        [System.Xml.Serialization.XmlAttributeAttribute("show-type")]
+        public showtuplet showtype;
         [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool fontstyleSpecified;
-
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute("font-size")]
-        public string fontsize;
-
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute("font-weight")]
-        public fontweight fontweight;
-
-        /// <remarks/>
+        public bool showtypeSpecified;
+        [System.Xml.Serialization.XmlAttributeAttribute("line-shape")]
+        public lineshape lineshape;
         [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool fontweightSpecified;
-
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute(DataType = "token")]
-        public string color;
-
-        /// <remarks/>
-        [System.Xml.Serialization.XmlTextAttribute()]
-        public notetypevalue Value;
-    }
-
-    [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(TypeName = "tuplet-number")]
-    public class tupletnumber
-    {
-
-        [System.Xml.Serialization.XmlAttributeAttribute("font-family", DataType = "token")]
-        public string fontfamily;
-
-        [System.Xml.Serialization.XmlAttributeAttribute("font-style")]
-        public fontstyle fontstyle;
-
+        public bool lineshapeSpecified;
+        [System.Xml.Serialization.XmlAttributeAttribute("default-x")]
+        public decimal defaultx;
         [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool fontstyleSpecified;
-
-        [System.Xml.Serialization.XmlAttributeAttribute("font-size")]
-        public string fontsize;
-
-        [System.Xml.Serialization.XmlAttributeAttribute("font-weight")]
-        public fontweight fontweight;
-
+        public bool defaultxSpecified;
+        [System.Xml.Serialization.XmlAttributeAttribute("default-y")]
+        public decimal defaulty;
         [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool fontweightSpecified;
-
-        [System.Xml.Serialization.XmlAttributeAttribute(DataType = "token")]
-        public string color;
-
-        [System.Xml.Serialization.XmlTextAttribute(DataType = "nonNegativeInteger")]
-        public string Value;
+        public bool defaultySpecified;
+        [System.Xml.Serialization.XmlAttributeAttribute("relative-x")]
+        public decimal relativex;
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool relativexSpecified;
+        [System.Xml.Serialization.XmlAttributeAttribute("relative-y")]
+        public decimal relativey;
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool relativeySpecified;
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public abovebelow placement;
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool placementSpecified;
+        [System.Xml.Serialization.XmlAttributeAttribute(DataType = "ID")]
+        public string id;
     }
 
     [System.SerializableAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(TypeName = "tuplet-portion")]
     public class tupletportion
     {
-
         [System.Xml.Serialization.XmlElementAttribute("tuplet-number")]
         public tupletnumber tupletnumber;
-
         [System.Xml.Serialization.XmlElementAttribute("tuplet-type")]
         public tuplettype tuplettype;
-
         [System.Xml.Serialization.XmlElementAttribute("tuplet-dot")]
         public tupletdot[] tupletdot;
     }
 
     [System.SerializableAttribute()]
-    public class tuplet
+    [System.Xml.Serialization.XmlTypeAttribute(TypeName = "tuplet-number")]
+    public class tupletnumber
     {
-
-        [System.Xml.Serialization.XmlElementAttribute("tuplet-actual")]
-        public tupletportion tupletactual;
-
-        [System.Xml.Serialization.XmlElementAttribute("tuplet-normal")]
-        public tupletportion tupletnormal;
-
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        public startstop type;
-
-        [System.Xml.Serialization.XmlAttributeAttribute(DataType = "positiveInteger")]
-        public string number;
-
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        public yesno bracket;
-
+        [System.Xml.Serialization.XmlAttributeAttribute("font-family", DataType = "token")]
+        public string fontfamily;
+        [System.Xml.Serialization.XmlAttributeAttribute("font-style")]
+        public fontstyle fontstyle;
         [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool bracketSpecified;
-
-        [System.Xml.Serialization.XmlAttributeAttribute("show-number")]
-        public showtuplet shownumber;
-
+        public bool fontstyleSpecified;
+        [System.Xml.Serialization.XmlAttributeAttribute("font-size")]
+        public string fontsize;
+        [System.Xml.Serialization.XmlAttributeAttribute("font-weight")]
+        public fontweight fontweight;
         [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool shownumberSpecified;
+        public bool fontweightSpecified;
+        [System.Xml.Serialization.XmlAttributeAttribute(DataType = "token")]
+        public string color;
+        [System.Xml.Serialization.XmlTextAttribute(DataType = "nonNegativeInteger")]
+        public string Value;
+    }
 
-        [System.Xml.Serialization.XmlAttributeAttribute("show-type")]
-        public showtuplet showtype;
-
+    [System.SerializableAttribute()]
+    [System.Xml.Serialization.XmlTypeAttribute(TypeName = "tuplet-type")]
+    public class tuplettype
+    {
+        [System.Xml.Serialization.XmlAttributeAttribute("font-family", DataType = "token")]
+        public string fontfamily;
+        [System.Xml.Serialization.XmlAttributeAttribute("font-style")]
+        public fontstyle fontstyle;
         [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool showtypeSpecified;
-
-        [System.Xml.Serialization.XmlAttributeAttribute("line-shape")]
-        public lineshape lineshape;
-
+        public bool fontstyleSpecified;
+        [System.Xml.Serialization.XmlAttributeAttribute("font-size")]
+        public string fontsize;
+        [System.Xml.Serialization.XmlAttributeAttribute("font-weight")]
+        public fontweight fontweight;
         [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool lineshapeSpecified;
+        public bool fontweightSpecified;
+        [System.Xml.Serialization.XmlAttributeAttribute(DataType = "token")]
+        public string color;
+        [System.Xml.Serialization.XmlTextAttribute()]
+        public notetypevalue Value;
+    }
 
-        [System.Xml.Serialization.XmlAttributeAttribute("default-x")]
-        public decimal defaultx;
-
+    [System.SerializableAttribute()]
+    [System.Xml.Serialization.XmlTypeAttribute(TypeName = "tuplet-dot")]
+    public class tupletdot
+    {
+        [System.Xml.Serialization.XmlAttributeAttribute("font-family", DataType = "token")]
+        public string fontfamily;
+        [System.Xml.Serialization.XmlAttributeAttribute("font-style")]
+        public fontstyle fontstyle;
         [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool defaultxSpecified;
-
-        [System.Xml.Serialization.XmlAttributeAttribute("default-y")]
-        public decimal defaulty;
-
+        public bool fontstyleSpecified;
+        [System.Xml.Serialization.XmlAttributeAttribute("font-size")]
+        public string fontsize;
+        [System.Xml.Serialization.XmlAttributeAttribute("font-weight")]
+        public fontweight fontweight;
         [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool defaultySpecified;
-
-        [System.Xml.Serialization.XmlAttributeAttribute("relative-x")]
-        public decimal relativex;
-
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool relativexSpecified;
-
-        [System.Xml.Serialization.XmlAttributeAttribute("relative-y")]
-        public decimal relativey;
-
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool relativeySpecified;
-
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        public abovebelow placement;
-
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool placementSpecified;
-
-        [System.Xml.Serialization.XmlAttributeAttribute(DataType = "ID")]
-        public string id;
+        public bool fontweightSpecified;
+        [System.Xml.Serialization.XmlAttributeAttribute(DataType = "token")]
+        public string color;
     }
 
     [System.SerializableAttribute()]
@@ -2816,28 +2747,20 @@ namespace Transonic.Score.MusicXML
     [System.Xml.Serialization.XmlTypeAttribute(TypeName = "over-under")]
     public enum overunder
     {
-
-        /// <remarks/>
         over,
-
-        /// <remarks/>
         under,
     }
 
-    /// <remarks/>
     [System.SerializableAttribute()]
     public class tied
     {
 
-        /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public tiedtype type;
 
-        /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute(DataType = "positiveInteger")]
         public string number;
 
-        /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute("line-type")]
         public linetype linetype;
 
@@ -2939,429 +2862,11 @@ namespace Transonic.Score.MusicXML
     [System.Xml.Serialization.XmlTypeAttribute(TypeName = "tied-type")]
     public enum tiedtype
     {
-
         start,
-
         stop,
-
         @continue,
-
         [System.Xml.Serialization.XmlEnumAttribute("let-ring")]
         letring,
-    }
-
-    [System.SerializableAttribute()]
-    public class notations
-    {
-
-        public formattedtext footnote;
-
-        public level level;
-
-        [System.Xml.Serialization.XmlElementAttribute("accidental-mark", typeof(accidentalmark))]
-        [System.Xml.Serialization.XmlElementAttribute("arpeggiate", typeof(arpeggiate))]
-        [System.Xml.Serialization.XmlElementAttribute("articulations", typeof(articulations))]
-        [System.Xml.Serialization.XmlElementAttribute("dynamics", typeof(dynamics))]
-        [System.Xml.Serialization.XmlElementAttribute("fermata", typeof(fermata))]
-        [System.Xml.Serialization.XmlElementAttribute("glissando", typeof(glissando))]
-        [System.Xml.Serialization.XmlElementAttribute("non-arpeggiate", typeof(nonarpeggiate))]
-        [System.Xml.Serialization.XmlElementAttribute("ornaments", typeof(ornaments))]
-        [System.Xml.Serialization.XmlElementAttribute("other-notation", typeof(othernotation))]
-        [System.Xml.Serialization.XmlElementAttribute("slide", typeof(slide))]
-        [System.Xml.Serialization.XmlElementAttribute("slur", typeof(slur))]
-        [System.Xml.Serialization.XmlElementAttribute("technical", typeof(technical))]
-        [System.Xml.Serialization.XmlElementAttribute("tied", typeof(tied))]
-        [System.Xml.Serialization.XmlElementAttribute("tuplet", typeof(tuplet))]
-        public object[] Items;
-
-        [System.Xml.Serialization.XmlAttributeAttribute("print-object")]
-        public yesno printobject;
-
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool printobjectSpecified;
-
-        [System.Xml.Serialization.XmlAttributeAttribute(DataType = "ID")]
-        public string id;
-    }
-
-    [System.SerializableAttribute()]
-    public class beam
-    {
-
-        [System.Xml.Serialization.XmlAttributeAttribute(DataType = "positiveInteger")]
-        [System.ComponentModel.DefaultValueAttribute("1")]
-        public string number;
-
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        public yesno repeater;
-
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool repeaterSpecified;
-
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        public fan fan;
-
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool fanSpecified;
-
-        [System.Xml.Serialization.XmlAttributeAttribute(DataType = "token")]
-        public string color;
-
-        [System.Xml.Serialization.XmlAttributeAttribute(DataType = "ID")]
-        public string id;
-
-        [System.Xml.Serialization.XmlTextAttribute()]
-        public beamvalue Value;
-
-        public beam()
-        {
-            this.number = "1";
-        }
-    }
-
-    [System.SerializableAttribute()]
-    public enum fan
-    {
-
-        /// <remarks/>
-        accel,
-
-        /// <remarks/>
-        rit,
-
-        /// <remarks/>
-        none,
-    }
-
-    /// <remarks/>
-    [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(TypeName = "notehead-text")]
-    public class noteheadtext
-    {
-
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("accidental-text", typeof(accidentaltext))]
-        [System.Xml.Serialization.XmlElementAttribute("display-text", typeof(formattedtext))]
-        public object[] Items;
-    }
-
-    /// <remarks/>
-    [System.SerializableAttribute()]
-    public class notehead
-    {
-
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        public yesno filled;
-
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool filledSpecified;
-
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        public yesno parentheses;
-
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool parenthesesSpecified;
-
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute("font-family", DataType = "token")]
-        public string fontfamily;
-
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute("font-style")]
-        public fontstyle fontstyle;
-
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool fontstyleSpecified;
-
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute("font-size")]
-        public string fontsize;
-
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute("font-weight")]
-        public fontweight fontweight;
-
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool fontweightSpecified;
-
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute(DataType = "token")]
-        public string color;
-
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute(DataType = "NMTOKEN")]
-        public string smufl;
-
-        /// <remarks/>
-        [System.Xml.Serialization.XmlTextAttribute()]
-        public noteheadvalue Value;
-    }
-
-    /// <remarks/>
-    [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(TypeName = "notehead-value")]
-    public enum noteheadvalue
-    {
-
-        /// <remarks/>
-        slash,
-
-        /// <remarks/>
-        triangle,
-
-        /// <remarks/>
-        diamond,
-
-        /// <remarks/>
-        square,
-
-        /// <remarks/>
-        cross,
-
-        /// <remarks/>
-        x,
-
-        /// <remarks/>
-        [System.Xml.Serialization.XmlEnumAttribute("circle-x")]
-        circlex,
-
-        /// <remarks/>
-        [System.Xml.Serialization.XmlEnumAttribute("inverted triangle")]
-        invertedtriangle,
-
-        /// <remarks/>
-        [System.Xml.Serialization.XmlEnumAttribute("arrow down")]
-        arrowdown,
-
-        /// <remarks/>
-        [System.Xml.Serialization.XmlEnumAttribute("arrow up")]
-        arrowup,
-
-        /// <remarks/>
-        circled,
-
-        /// <remarks/>
-        slashed,
-
-        /// <remarks/>
-        [System.Xml.Serialization.XmlEnumAttribute("back slashed")]
-        backslashed,
-
-        /// <remarks/>
-        normal,
-
-        /// <remarks/>
-        cluster,
-
-        /// <remarks/>
-        [System.Xml.Serialization.XmlEnumAttribute("circle dot")]
-        circledot,
-
-        /// <remarks/>
-        [System.Xml.Serialization.XmlEnumAttribute("left triangle")]
-        lefttriangle,
-
-        /// <remarks/>
-        rectangle,
-
-        /// <remarks/>
-        none,
-
-        /// <remarks/>
-        @do,
-
-        /// <remarks/>
-        re,
-
-        /// <remarks/>
-        mi,
-
-        /// <remarks/>
-        fa,
-
-        /// <remarks/>
-        [System.Xml.Serialization.XmlEnumAttribute("fa up")]
-        faup,
-
-        /// <remarks/>
-        so,
-
-        /// <remarks/>
-        la,
-
-        /// <remarks/>
-        ti,
-
-        /// <remarks/>
-        other,
-    }
-
-    /// <remarks/>
-    [System.SerializableAttribute()]
-    public class stem
-    {
-
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute("default-x")]
-        public decimal defaultx;
-
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool defaultxSpecified;
-
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute("default-y")]
-        public decimal defaulty;
-
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool defaultySpecified;
-
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute("relative-x")]
-        public decimal relativex;
-
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool relativexSpecified;
-
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute("relative-y")]
-        public decimal relativey;
-
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool relativeySpecified;
-
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute(DataType = "token")]
-        public string color;
-
-        /// <remarks/>
-        [System.Xml.Serialization.XmlTextAttribute()]
-        public stemvalue Value;
-    }
-
-    /// <remarks/>
-    [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(TypeName = "stem-value")]
-    public enum stemvalue
-    {
-
-        /// <remarks/>
-        down,
-
-        /// <remarks/>
-        up,
-
-        /// <remarks/>
-        @double,
-
-        /// <remarks/>
-        none,
-    }
-
-    /// <remarks/>
-    [System.SerializableAttribute()]
-    public class accidental
-    {
-
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        public yesno cautionary;
-
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool cautionarySpecified;
-
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        public yesno editorial;
-
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool editorialSpecified;
-
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        public yesno parentheses;
-
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool parenthesesSpecified;
-
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        public yesno bracket;
-
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool bracketSpecified;
-
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        public symbolsize size;
-
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool sizeSpecified;
-
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute(DataType = "NMTOKEN")]
-        public string smufl;
-
-        /// <remarks/>
-        [System.Xml.Serialization.XmlTextAttribute()]
-        public accidentalvalue Value;
-    }
-
-    /// <remarks/>
-    [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(TypeName = "note-type")]
-    public class notetype
-    {
-
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        public symbolsize size;
-
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool sizeSpecified;
-
-        /// <remarks/>
-        [System.Xml.Serialization.XmlTextAttribute()]
-        public notetypevalue Value;
-    }
-
-    /// <remarks/>
-    [System.SerializableAttribute()]
-    public class instrument
-    {
-
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute(DataType = "IDREF")]
-        public string id;
-    }
-
-    /// <remarks/>
-    [System.SerializableAttribute()]
-    public class tie
-    {
-
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        public startstop type;
-
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute("time-only", DataType = "token")]
-        public string timeonly;
     }
 
 //- direction classes ---------------------------------------------------------
@@ -3422,13 +2927,10 @@ namespace Transonic.Score.MusicXML
     [System.Xml.Serialization.XmlTypeAttribute(TypeName = "staff-divide-symbol")]
     public enum staffdividesymbol
     {
-
         down,
-
         up,
-
         [System.Xml.Serialization.XmlEnumAttribute("up-down")]
-        updown,
+        updown
     }
 
     [System.SerializableAttribute()]
@@ -3484,7 +2986,7 @@ namespace Transonic.Score.MusicXML
     {
         [System.Xml.Serialization.XmlEnumAttribute("bass drum")]
         bassdrum,
-        [System.Xml.Serialization.XmlEnumAttribute("double bass drum")]
+            [System.Xml.Serialization.XmlEnumAttribute("double bass drum")]
         doublebassdrum,
         glockenspiel,
         gum,
@@ -3511,22 +3013,14 @@ namespace Transonic.Score.MusicXML
     [System.Xml.Serialization.XmlTypeAttribute(TypeName = "tip-direction")]
     public enum tipdirection
     {
-
         up,
-
         down,
-
         left,
-
         right,
-
         northwest,
-
         northeast,
-
         southeast,
-
-        southwest,
+        southwest
     }
 
     [System.SerializableAttribute()]
@@ -3547,58 +3041,38 @@ namespace Transonic.Score.MusicXML
     [System.Xml.Serialization.XmlTypeAttribute(TypeName = "beater-value")]
     public enum beatervalue
     {
-
         bow,
-
         [System.Xml.Serialization.XmlEnumAttribute("chime hammer")]
         chimehammer,
-
         coin,
-
         [System.Xml.Serialization.XmlEnumAttribute("drum stick")]
         drumstick,
-
         finger,
-
         fingernail,
-
         fist,
-
         [System.Xml.Serialization.XmlEnumAttribute("guiro scraper")]
         guiroscraper,
-
         hammer,
-
         hand,
-
         [System.Xml.Serialization.XmlEnumAttribute("jazz stick")]
         jazzstick,
-
         [System.Xml.Serialization.XmlEnumAttribute("knitting needle")]
         knittingneedle,
-
         [System.Xml.Serialization.XmlEnumAttribute("metal hammer")]
         metalhammer,
-
         [System.Xml.Serialization.XmlEnumAttribute("slide brush on gong")]
         slidebrushongong,
-
         [System.Xml.Serialization.XmlEnumAttribute("snare stick")]
         snarestick,
-
         [System.Xml.Serialization.XmlEnumAttribute("spoon mallet")]
         spoonmallet,
-
         superball,
-
         [System.Xml.Serialization.XmlEnumAttribute("triangle beater")]
         trianglebeater,
-
         [System.Xml.Serialization.XmlEnumAttribute("triangle beater plain")]
         trianglebeaterplain,
-
         [System.Xml.Serialization.XmlEnumAttribute("wire brush")]
-        wirebrush,
+        wirebrush
     }
 
     [System.SerializableAttribute()]
@@ -3616,30 +3090,19 @@ namespace Transonic.Score.MusicXML
     [System.Xml.Serialization.XmlTypeAttribute(TypeName = "pitched-value")]
     public enum pitchedvalue
     {
-
         celesta,
-
         chimes,
-
         glockenspiel,
-
         lithophone,
-
         mallet,
-
         marimba,
-
         [System.Xml.Serialization.XmlEnumAttribute("steel drums")]
         steeldrums,
-
         tubaphone,
-
         [System.Xml.Serialization.XmlEnumAttribute("tubular chimes")]
         tubularchimes,
-
         vibraphone,
-
-        xylophone,
+        xylophone
     }
 
     [System.SerializableAttribute()]
@@ -3657,15 +3120,12 @@ namespace Transonic.Score.MusicXML
     [System.Xml.Serialization.XmlTypeAttribute(TypeName = "glass-value")]
     public enum glassvalue
     {
-
-        [System.Xml.Serialization.XmlEnumAttribute("glass harmonica")]
+            [System.Xml.Serialization.XmlEnumAttribute("glass harmonica")]
         glassharmonica,
-
-        [System.Xml.Serialization.XmlEnumAttribute("glass harp")]
+            [System.Xml.Serialization.XmlEnumAttribute("glass harp")]
         glassharp,
-
-        [System.Xml.Serialization.XmlEnumAttribute("wind chimes")]
-        windchimes,
+            [System.Xml.Serialization.XmlEnumAttribute("wind chimes")]
+        windchimes
     }
 
     [System.SerializableAttribute()]
@@ -3698,94 +3158,63 @@ namespace Transonic.Score.MusicXML
     [System.SerializableAttribute()]
     public enum effect
     {
-
         anvil,
-
         [System.Xml.Serialization.XmlEnumAttribute("auto horn")]
         autohorn,
-
         [System.Xml.Serialization.XmlEnumAttribute("bird whistle")]
         birdwhistle,
-
         cannon,
-
         [System.Xml.Serialization.XmlEnumAttribute("duck call")]
         duckcall,
-
         [System.Xml.Serialization.XmlEnumAttribute("gun shot")]
         gunshot,
-
         [System.Xml.Serialization.XmlEnumAttribute("klaxon horn")]
         klaxonhorn,
-
         [System.Xml.Serialization.XmlEnumAttribute("lions roar")]
         lionsroar,
-
         [System.Xml.Serialization.XmlEnumAttribute("lotus flute")]
         lotusflute,
-
         megaphone,
-
         [System.Xml.Serialization.XmlEnumAttribute("police whistle")]
         policewhistle,
-
         siren,
-
         [System.Xml.Serialization.XmlEnumAttribute("slide whistle")]
         slidewhistle,
-
         [System.Xml.Serialization.XmlEnumAttribute("thunder sheet")]
         thundersheet,
-
         [System.Xml.Serialization.XmlEnumAttribute("wind machine")]
         windmachine,
-
         [System.Xml.Serialization.XmlEnumAttribute("wind whistle")]
-        windwhistle,
+        windwhistle
     }
 
     [System.SerializableAttribute()]
     public enum membrane
     {
-
         [System.Xml.Serialization.XmlEnumAttribute("bass drum")]
         bassdrum,
-
         [System.Xml.Serialization.XmlEnumAttribute("bass drum on side")]
         bassdrumonside,
-
         bongos,
-
         [System.Xml.Serialization.XmlEnumAttribute("Chinese tomtom")]
         Chinesetomtom,
-
         [System.Xml.Serialization.XmlEnumAttribute("conga drum")]
         congadrum,
-
         cuica,
-
         [System.Xml.Serialization.XmlEnumAttribute("goblet drum")]
         gobletdrum,
-
         [System.Xml.Serialization.XmlEnumAttribute("Indo-American tomtom")]
         IndoAmericantomtom,
-
         [System.Xml.Serialization.XmlEnumAttribute("Japanese tomtom")]
         Japanesetomtom,
-
         [System.Xml.Serialization.XmlEnumAttribute("military drum")]
         militarydrum,
-
         [System.Xml.Serialization.XmlEnumAttribute("snare drum")]
         snaredrum,
-
         [System.Xml.Serialization.XmlEnumAttribute("snare drum snares off")]
         snaredrumsnaresoff,
-
         tabla,
-
         tambourine,
-
         [System.Xml.Serialization.XmlEnumAttribute("tenor drum")]
         tenordrum,
         timbales,
@@ -3805,7 +3234,7 @@ namespace Transonic.Score.MusicXML
         [System.Xml.Serialization.XmlEnumAttribute("brake drum")]
         brakedrum,
         cencerro,
-        [System.Xml.Serialization.XmlEnumAttribute("chain rattle")]
+            [System.Xml.Serialization.XmlEnumAttribute("chain rattle")]
         chainrattle,
         [System.Xml.Serialization.XmlEnumAttribute("Chinese cymbal")]
         Chinesecymbal,
@@ -3846,7 +3275,7 @@ namespace Transonic.Score.MusicXML
         [System.Xml.Serialization.XmlEnumAttribute("tam tam with beater")]
         tamtamwithbeater,
         triangle,
-        [System.Xml.Serialization.XmlEnumAttribute("Vietnamese hat")]
+            [System.Xml.Serialization.XmlEnumAttribute("Vietnamese hat")]
         Vietnamesehat
     }
 
@@ -3866,42 +3295,29 @@ namespace Transonic.Score.MusicXML
     [System.Xml.Serialization.XmlTypeAttribute(TypeName = "stick-location")]
     public enum sticklocation
     {
-
         center,
-
         rim,
-
         [System.Xml.Serialization.XmlEnumAttribute("cymbal bell")]
         cymbalbell,
-
         [System.Xml.Serialization.XmlEnumAttribute("cymbal edge")]
-        cymbaledge,
+        cymbaledge
     }
 
     [System.SerializableAttribute()]
     public enum wood
     {
-
         [System.Xml.Serialization.XmlEnumAttribute("bamboo scraper")]
         bambooscraper,
-
         [System.Xml.Serialization.XmlEnumAttribute("board clapper")]
         boardclapper,
-
         cabasa,
-
         castanets,
-
         [System.Xml.Serialization.XmlEnumAttribute("castanets with handle")]
         castanetswithhandle,
-
         claves,
-
         [System.Xml.Serialization.XmlEnumAttribute("football rattle")]
         footballrattle,
-
         guiro,
-
         [System.Xml.Serialization.XmlEnumAttribute("log drum")]
         logdrum,
         maraca,
@@ -3965,14 +3381,10 @@ namespace Transonic.Score.MusicXML
     [System.Xml.Serialization.XmlTypeAttribute(TypeName = "principal-voice-symbol")]
     public enum principalvoicesymbol
     {
-
         Hauptstimme,
-
         Nebenstimme,
-
         plain,
-
-        none,
+        none
     }
 
     [System.SerializableAttribute()]
@@ -4136,18 +3548,13 @@ namespace Transonic.Score.MusicXML
     [System.Xml.Serialization.XmlTypeAttribute(TypeName = "beam-value")]
     public enum beamvalue
     {
-
         begin,
-
         @continue,
-
         end,
-
         [System.Xml.Serialization.XmlEnumAttribute("forward hook")]
         forwardhook,
-
         [System.Xml.Serialization.XmlEnumAttribute("backward hook")]
-        backwardhook,
+        backwardhook
     }
 
     [System.SerializableAttribute()]
@@ -4297,27 +3704,20 @@ namespace Transonic.Score.MusicXML
     [System.Xml.Serialization.XmlTypeAttribute(IncludeInSchema = false)]
     public enum ItemsChoiceType7
     {
-
         [System.Xml.Serialization.XmlEnumAttribute("beat-unit")]
         beatunit,
-
         [System.Xml.Serialization.XmlEnumAttribute("beat-unit-dot")]
         beatunitdot,
-
         [System.Xml.Serialization.XmlEnumAttribute("beat-unit-tied")]
         beatunittied,
-
         [System.Xml.Serialization.XmlEnumAttribute("metronome-arrows")]
         metronomearrows,
-
         [System.Xml.Serialization.XmlEnumAttribute("metronome-note")]
         metronomenote,
-
         [System.Xml.Serialization.XmlEnumAttribute("metronome-relation")]
         metronomerelation,
-
         [System.Xml.Serialization.XmlEnumAttribute("per-minute")]
-        perminute,
+        perminute
     }
 
     [System.SerializableAttribute()]
@@ -4435,30 +3835,21 @@ namespace Transonic.Score.MusicXML
     [System.Xml.Serialization.XmlTypeAttribute(TypeName = "line-end")]
     public enum lineend
     {
-
         up,
-
         down,
-
         both,
-
         arrow,
-
-        none,
+        none
     }
 
     [System.SerializableAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(TypeName = "line-type")]
     public enum linetype
     {
-
         solid,
-
         dashed,
-
         dotted,
-
-        wavy,
+        wavy
     }
 
     [System.SerializableAttribute()]
@@ -4589,14 +3980,10 @@ namespace Transonic.Score.MusicXML
     [System.Xml.Serialization.XmlTypeAttribute(TypeName = "wedge-type")]
     public enum wedgetype
     {
-
         crescendo,
-
         diminuendo,
-
         stop,
-
-        @continue,
+        @continue
     }
 
     [System.SerializableAttribute()]
@@ -4706,61 +4093,34 @@ namespace Transonic.Score.MusicXML
     [System.Xml.Serialization.XmlTypeAttribute(IncludeInSchema = false)]
     public enum ItemsChoiceType5
     {
-
         f,
-
         ff,
-
         fff,
-
         ffff,
-
         fffff,
-
         ffffff,
-
         fp,
-
         fz,
-
         mf,
-
         mp,
-
         n,
-
-        [System.Xml.Serialization.XmlEnumAttribute("other-dynamics")]
+            [System.Xml.Serialization.XmlEnumAttribute("other-dynamics")]
         otherdynamics,
-
         p,
-
         pf,
-
         pp,
-
         ppp,
-
         pppp,
-
         ppppp,
-
         pppppp,
-
         rf,
-
         rfz,
-
         sf,
-
         sffz,
-
         sfp,
-
         sfpp,
-
         sfz,
-
-        sfzp,
+        sfzp
     }
 
     [System.SerializableAttribute()]
@@ -4823,7 +4183,7 @@ namespace Transonic.Score.MusicXML
     [System.Xml.Serialization.XmlTypeAttribute(IncludeInSchema = false)]
     public enum ItemsChoiceType8
     {
-        [System.Xml.Serialization.XmlEnumAttribute("accordion-registration")]
+            [System.Xml.Serialization.XmlEnumAttribute("accordion-registration")]
         accordionregistration,
         bracket,
         coda,
@@ -4939,9 +4299,9 @@ namespace Transonic.Score.MusicXML
         fifths,
         [System.Xml.Serialization.XmlEnumAttribute("key-accidental")]
         keyaccidental,
-        [System.Xml.Serialization.XmlEnumAttribute("key-alter")]
+            [System.Xml.Serialization.XmlEnumAttribute("key-alter")]
         keyalter,
-        [System.Xml.Serialization.XmlEnumAttribute("key-step")]
+            [System.Xml.Serialization.XmlEnumAttribute("key-step")]
         keystep,
         mode,
     }
@@ -5391,959 +4751,69 @@ namespace Transonic.Score.MusicXML
         public string Value;
     }
 
-//-----------------------------------------------------------------------------
+//- harmony classes --------------------------------------------------
 
     [System.SerializableAttribute()]
-    public class feature
+    public class harmony
     {
-
-        [System.Xml.Serialization.XmlAttributeAttribute(DataType = "token")]
-        public string type;
-
-        [System.Xml.Serialization.XmlTextAttribute()]
-        public string Value;
-    }
-
-    [System.SerializableAttribute()]
-    public class grouping
-    {
-
-        [System.Xml.Serialization.XmlElementAttribute("feature")]
-        public feature[] feature;
-
+        [System.Xml.Serialization.XmlElementAttribute("function", typeof(styletext))]
+        [System.Xml.Serialization.XmlElementAttribute("root", typeof(root))]
+        public object[] Items;
+        [System.Xml.Serialization.XmlElementAttribute("kind")]
+        public kind[] kind;
+        [System.Xml.Serialization.XmlElementAttribute("inversion")]
+        public inversion[] inversion;
+        [System.Xml.Serialization.XmlElementAttribute("bass")]
+        public bass[] bass;
+        [System.Xml.Serialization.XmlElementAttribute("degree")]
+        public degree[] degree;
+        public frame frame;
+        public offset offset;
+        public formattedtext footnote;
+        public level level;
+        [System.Xml.Serialization.XmlElementAttribute(DataType = "positiveInteger")]
+        public string staff;
         [System.Xml.Serialization.XmlAttributeAttribute()]
-        public startstopsingle type;
-
-        [System.Xml.Serialization.XmlAttributeAttribute(DataType = "token")]
-        [System.ComponentModel.DefaultValueAttribute("1")]
-        public string number;
-
-        [System.Xml.Serialization.XmlAttributeAttribute("member-of", DataType = "token")]
-        public string memberof;
-
-        [System.Xml.Serialization.XmlAttributeAttribute(DataType = "ID")]
-        public string id;
-
-        public grouping()
-        {
-            this.number = "1";
-        }
-    }
-
-    [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(TypeName = "start-stop-single")]
-    public enum startstopsingle
-    {
-        start,
-        stop,
-        single,
-    }
-
-    [System.SerializableAttribute()]
-    public class repeat
-    {
-
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        public backwardforward direction;
-
-        [System.Xml.Serialization.XmlAttributeAttribute(DataType = "nonNegativeInteger")]
-        public string times;
-
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        public winged winged;
-
+        public harmonytype type;
         [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool wingedSpecified;
-    }
-
-    [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(TypeName = "backward-forward")]
-    public enum backwardforward
-    {
-        backward,
-        forward,
-    }
-
-    [System.SerializableAttribute()]
-    public enum winged
-    {
-        none,
-        straight,
-        curved,
-
-        [System.Xml.Serialization.XmlEnumAttribute("double-straight")]
-        doublestraight,
-
-        [System.Xml.Serialization.XmlEnumAttribute("double-curved")]
-        doublecurved,
-    }
-
-    [System.SerializableAttribute()]
-    public class ending
-    {
-
-        [System.Xml.Serialization.XmlAttributeAttribute(DataType = "token")]
-        public string number;
-
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        public startstopdiscontinue type;
-
+        public bool typeSpecified;
         [System.Xml.Serialization.XmlAttributeAttribute("print-object")]
         public yesno printobject;
-
         [System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool printobjectSpecified;
-
-        [System.Xml.Serialization.XmlAttributeAttribute("end-length")]
-        public decimal endlength;
-
+        [System.Xml.Serialization.XmlAttributeAttribute("print-frame")]
+        public yesno printframe;
         [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool endlengthSpecified;
-
-        [System.Xml.Serialization.XmlAttributeAttribute("text-x")]
-        public decimal textx;
-
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool textxSpecified;
-
-        [System.Xml.Serialization.XmlAttributeAttribute("text-y")]
-        public decimal texty;
-
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool textySpecified;
-
-        [System.Xml.Serialization.XmlTextAttribute()]
-        public string Value;
-    }
-
-    [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(TypeName = "start-stop-discontinue")]
-    public enum startstopdiscontinue
-    {
-        start,
-        stop,
-        discontinue,
-    }
-
-    [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(TypeName = "yes-no")]
-    public enum yesno
-    {
-        yes,
-        no,
-    }
-
-    [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(TypeName = "bar-style-color")]
-    public class barstylecolor
-    {
-
-        [System.Xml.Serialization.XmlAttributeAttribute(DataType = "token")]
-        public string color;
-
-        [System.Xml.Serialization.XmlTextAttribute()]
-        public barstyle Value;
-    }
-
-    [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(TypeName = "bar-style")]
-    public enum barstyle
-    {
-        regular,
-        dotted,
-        dashed,
-        heavy,
-
-        [System.Xml.Serialization.XmlEnumAttribute("light-light")]
-        lightlight,
-
-        [System.Xml.Serialization.XmlEnumAttribute("light-heavy")]
-        lightheavy,
-
-        [System.Xml.Serialization.XmlEnumAttribute("heavy-light")]
-        heavylight,
-
-        [System.Xml.Serialization.XmlEnumAttribute("heavy-heavy")]
-        heavyheavy,
-
-        tick,
-        @short,
-        none,
-    }
-
-    [System.SerializableAttribute()]
-    public class barlineXML
-    {
-
-        [System.Xml.Serialization.XmlElementAttribute("bar-style")]
-        public barstylecolor barstyle;
-
-        public formattedtext footnote;
-
-        public level level;
-
-        [System.Xml.Serialization.XmlElementAttribute("wavy-line")]
-        public wavyline wavyline;
-
-        public segno segno;
-
-        public coda coda;
-
-        [System.Xml.Serialization.XmlElementAttribute("fermata")]
-        public fermata[] fermata;
-
-        public ending ending;
-
-        public repeat repeat;
-
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        [System.ComponentModel.DefaultValueAttribute(rightleftmiddle.right)]
-        public rightleftmiddle location;
-
-        [System.Xml.Serialization.XmlAttributeAttribute("segno", DataType = "token")]
-        public string segno1;
-
-        [System.Xml.Serialization.XmlAttributeAttribute("coda", DataType = "token")]
-        public string coda1;
-
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        public decimal divisions;
-
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool divisionsSpecified;
-
-        [System.Xml.Serialization.XmlAttributeAttribute(DataType = "ID")]
-        public string id;
-
-        public barlineXML()
-        {
-            this.location = rightleftmiddle.right;
-        }
-    }
-
-    [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(TypeName = "formatted-text")]
-    public class formattedtext
-    {
-
-        [System.Xml.Serialization.XmlAttributeAttribute(Form = System.Xml.Schema.XmlSchemaForm.Qualified, Namespace = "http://www.w3.org/XML/1998/namespace")]
-        public string lang;
-
-        [System.Xml.Serialization.XmlAttributeAttribute(Form = System.Xml.Schema.XmlSchemaForm.Qualified, Namespace = "http://www.w3.org/XML/1998/namespace")]
-        public string space;
-
-        [System.Xml.Serialization.XmlTextAttribute()]
-        public string Value;
-    }
-
-    [System.SerializableAttribute()]
-    public class level
-    {
-
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        public yesno reference;
-
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool referenceSpecified;
-
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        public yesno parentheses;
-
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool parenthesesSpecified;
-
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        public yesno bracket;
-
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool bracketSpecified;
-
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        public symbolsize size;
-
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool sizeSpecified;
-
-        [System.Xml.Serialization.XmlTextAttribute()]
-        public string Value;
-    }
-
-    [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(TypeName = "symbol-size")]
-    public enum symbolsize
-    {
-        full,
-        cue,
-
-        [System.Xml.Serialization.XmlEnumAttribute("grace-cue")]
-        gracecue,
-        large,
-    }
-
-    [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(TypeName = "wavy-line")]
-    public class wavyline
-    {
-
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        public startstopcontinue type;
-
-        [System.Xml.Serialization.XmlAttributeAttribute(DataType = "positiveInteger")]
-        public string number;
-
-        [System.Xml.Serialization.XmlAttributeAttribute("default-x")]
-        public decimal defaultx;
-
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool defaultxSpecified;
-
-        [System.Xml.Serialization.XmlAttributeAttribute("default-y")]
-        public decimal defaulty;
-
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool defaultySpecified;
-
-        [System.Xml.Serialization.XmlAttributeAttribute("relative-x")]
-        public decimal relativex;
-
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool relativexSpecified;
-
-        [System.Xml.Serialization.XmlAttributeAttribute("relative-y")]
-        public decimal relativey;
-
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool relativeySpecified;
-
+        public bool printframeSpecified;
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public abovebelow placement;
-
         [System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool placementSpecified;
-
-        [System.Xml.Serialization.XmlAttributeAttribute(DataType = "token")]
-        public string color;
-
-        [System.Xml.Serialization.XmlAttributeAttribute("start-note")]
-        public startnote startnote;
-
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool startnoteSpecified;
-
-        [System.Xml.Serialization.XmlAttributeAttribute("trill-step")]
-        public trillstep trillstep;
-
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool trillstepSpecified;
-
-        [System.Xml.Serialization.XmlAttributeAttribute("two-note-turn")]
-        public twonoteturn twonoteturn;
-
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool twonoteturnSpecified;
-
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        public yesno accelerate;
-
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool accelerateSpecified;
-
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        public decimal beats;
-
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool beatsSpecified;
-
-        [System.Xml.Serialization.XmlAttributeAttribute("second-beat")]
-        public decimal secondbeat;
-
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool secondbeatSpecified;
-
-        [System.Xml.Serialization.XmlAttributeAttribute("last-beat")]
-        public decimal lastbeat;
-
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool lastbeatSpecified;
-    }
-
-    [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(TypeName = "start-stop-continue")]
-    public enum startstopcontinue
-    {   start,
-        stop,
-        @continue,
-    }
-
-    [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(TypeName = "above-below")]
-    public enum abovebelow
-    {
-        above,
-        below,
-    }
-
-    [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(TypeName = "start-note")]
-    public enum startnote
-    {
-        upper,
-        main,
-        below,
-    }
-
-    [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(TypeName = "trill-step")]
-    public enum trillstep
-    {
-        whole,
-        half,
-        unison,
-    }
-
-    [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(TypeName = "two-note-turn")]
-    public enum twonoteturn
-    {
-        whole,
-        half,
-        none,
-    }
-
-    [System.SerializableAttribute()]
-    public class segno
-    {
-
         [System.Xml.Serialization.XmlAttributeAttribute(DataType = "ID")]
         public string id;
-
-        [System.Xml.Serialization.XmlAttributeAttribute(DataType = "NMTOKEN")]
-        public string smufl;
     }
 
     [System.SerializableAttribute()]
-    public class coda
-    {
-
-        [System.Xml.Serialization.XmlAttributeAttribute(DataType = "ID")]
-        public string id;
-
-        [System.Xml.Serialization.XmlAttributeAttribute(DataType = "NMTOKEN")]
-        public string smufl;
-    }
-
-    [System.SerializableAttribute()]
-    public class fermata
+    public class offset
     {
 
         [System.Xml.Serialization.XmlAttributeAttribute()]
-        public uprightinverted type;
+        public yesno sound;
 
         [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool typeSpecified;
-
-        [System.Xml.Serialization.XmlAttributeAttribute(DataType = "ID")]
-        public string id;
+        public bool soundSpecified;
 
         [System.Xml.Serialization.XmlTextAttribute()]
-        public fermatashape Value;
+        public decimal Value;
     }
 
     [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(TypeName = "upright-inverted")]
-    public enum uprightinverted
+    [System.Xml.Serialization.XmlTypeAttribute(TypeName = "harmony-type")]
+    public enum harmonytype
     {
-        upright,
-        inverted,
-    }
-
-    [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(TypeName = "fermata-shape")]
-    public enum fermatashape
-    {
-        normal,
-        angled,
-        square,
-
-        [System.Xml.Serialization.XmlEnumAttribute("double-angled")]
-        doubleangled,
-
-        [System.Xml.Serialization.XmlEnumAttribute("double-square")]
-        doublesquare,
-
-        [System.Xml.Serialization.XmlEnumAttribute("double-dot")]
-        doubledot,
-
-        [System.Xml.Serialization.XmlEnumAttribute("half-curve")]
-        halfcurve,
-
-        curlew,
-
-        [System.Xml.Serialization.XmlEnumAttribute("")]
-        Item,
-    }
-
-    [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(TypeName = "right-left-middle")]
-    public enum rightleftmiddle
-    {
-        right,
-        left,
-        middle
-    }
-
-    [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(TypeName = "measure-numbering")]
-    public class measurenumbering
-    {
-
-        [System.Xml.Serialization.XmlTextAttribute()]
-        public measurenumberingvalue Value;
-    }
-
-    [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(TypeName = "measure-numbering-value")]
-    public enum measurenumberingvalue
-    {
-        none,
-        measure,
-        system
-    }
-
-    [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(TypeName = "measure-layout")]
-    public class measurelayout
-    {
-
-        [System.Xml.Serialization.XmlElementAttribute("measure-distance")]
-        public decimal measuredistance;
-
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool measuredistanceSpecified;
-    }
-
-    [System.SerializableAttribute()]
-    public class printXML
-    {
-
-        [System.Xml.Serialization.XmlElementAttribute("page-layout")]
-        public pagelayout pagelayout;
-
-        [System.Xml.Serialization.XmlElementAttribute("system-layout")]
-        public systemlayout systemlayout;
-
-        [System.Xml.Serialization.XmlElementAttribute("staff-layout")]
-        public stafflayout[] stafflayout;
-
-        [System.Xml.Serialization.XmlElementAttribute("measure-layout")]
-        public measurelayout measurelayout;
-
-        [System.Xml.Serialization.XmlElementAttribute("measure-numbering")]
-        public measurenumbering measurenumbering;
-
-        [System.Xml.Serialization.XmlElementAttribute("part-name-display")]
-        public namedisplay partnamedisplay;
-
-        [System.Xml.Serialization.XmlElementAttribute("part-abbreviation-display")]
-        public namedisplay partabbreviationdisplay;
-
-        [System.Xml.Serialization.XmlAttributeAttribute("staff-spacing")]
-        public decimal staffspacing;
-
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool staffspacingSpecified;
-
-        [System.Xml.Serialization.XmlAttributeAttribute("new-system")]
-        public yesno newsystem;
-
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool newsystemSpecified;
-
-        [System.Xml.Serialization.XmlAttributeAttribute("new-page")]
-        public yesno newpage;
-
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool newpageSpecified;
-
-        [System.Xml.Serialization.XmlAttributeAttribute("blank-page", DataType = "positiveInteger")]
-        public string blankpage;
-
-        [System.Xml.Serialization.XmlAttributeAttribute("page-number", DataType = "token")]
-        public string pagenumber;
-
-        [System.Xml.Serialization.XmlAttributeAttribute(DataType = "ID")]
-        public string id;
-    }
-
-    [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(TypeName = "page-layout")]
-    public class pagelayout
-    {
-        [System.Xml.Serialization.XmlElementAttribute("page-height")]
-        public decimal pageheight;
-        [System.Xml.Serialization.XmlElementAttribute("page-width")]
-        public decimal pagewidth;
-        [System.Xml.Serialization.XmlElementAttribute("page-margins")]
-        public pagemargins[] pagemargins;
-    }
-
-    [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(TypeName = "page-margins")]
-    public class pagemargins
-    {
-        [System.Xml.Serialization.XmlElementAttribute("left-margin")]
-        public decimal leftmargin;
-        [System.Xml.Serialization.XmlElementAttribute("right-margin")]
-        public decimal rightmargin;
-        [System.Xml.Serialization.XmlElementAttribute("top-margin")]
-        public decimal topmargin;
-        [System.Xml.Serialization.XmlElementAttribute("bottom-margin")]
-        public decimal bottommargin;
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        public margintype type;
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool typeSpecified;
-    }
-
-    [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(TypeName = "margin-type")]
-    public enum margintype
-    {
-        odd,
-        even,
-        both
-    }
-
-    [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(TypeName = "system-layout")]
-    public class systemlayout
-    {
-        [System.Xml.Serialization.XmlElementAttribute("system-margins")]
-        public systemmargins systemmargins;
-
-        [System.Xml.Serialization.XmlElementAttribute("system-distance")]
-        public decimal systemdistance;
-
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool systemdistanceSpecified;
-
-        [System.Xml.Serialization.XmlElementAttribute("top-system-distance")]
-        public decimal topsystemdistance;
-
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool topsystemdistanceSpecified;
-
-        [System.Xml.Serialization.XmlElementAttribute("system-dividers")]
-        public systemdividers systemdividers;
-    }
-
-    [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(TypeName = "system-margins")]
-    public class systemmargins
-    {
-
-        [System.Xml.Serialization.XmlElementAttribute("left-margin")]
-        public decimal leftmargin;
-
-        [System.Xml.Serialization.XmlElementAttribute("right-margin")]
-        public decimal rightmargin;
-    }
-
-    [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(TypeName = "system-dividers")]
-    public class systemdividers
-    {
-
-        [System.Xml.Serialization.XmlElementAttribute("left-divider")]
-        public emptyprintobjectstylealign leftdivider;
-
-        [System.Xml.Serialization.XmlElementAttribute("right-divider")]
-        public emptyprintobjectstylealign rightdivider;
-    }
-
-    [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(TypeName = "empty-print-object-style-align")]
-    public class emptyprintobjectstylealign
-    {
-
-        [System.Xml.Serialization.XmlAttributeAttribute("print-object")]
-        public yesno printobject;
-
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool printobjectSpecified;
-    }
-
-    [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(TypeName = "staff-layout")]
-    public class stafflayout
-    {
-
-        [System.Xml.Serialization.XmlElementAttribute("staff-distance")]
-        public decimal staffdistance;
-
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool staffdistanceSpecified;
-
-        [System.Xml.Serialization.XmlAttributeAttribute(DataType = "positiveInteger")]
-        public string number;
-    }
-
-    [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(TypeName = "name-display")]
-    public class namedisplay
-    {
-
-        [System.Xml.Serialization.XmlElementAttribute("accidental-text", typeof(accidentaltext))]
-        [System.Xml.Serialization.XmlElementAttribute("display-text", typeof(formattedtext))]
-        public object[] Items;
-
-        [System.Xml.Serialization.XmlAttributeAttribute("print-object")]
-        public yesno printobject;
-
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool printobjectSpecified;
-    }
-
-    [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(TypeName = "accidental-text")]
-    public class accidentaltext
-    {
-
-        [System.Xml.Serialization.XmlAttributeAttribute(Form = System.Xml.Schema.XmlSchemaForm.Qualified, Namespace = "http://www.w3.org/XML/1998/namespace")]
-        public string lang;
-
-        [System.Xml.Serialization.XmlAttributeAttribute(Form = System.Xml.Schema.XmlSchemaForm.Qualified, Namespace = "http://www.w3.org/XML/1998/namespace")]
-        public string space;
-
-        [System.Xml.Serialization.XmlAttributeAttribute(DataType = "NMTOKEN")]
-        public string smufl;
-
-        [System.Xml.Serialization.XmlTextAttribute()]
-        public accidentalvalue Value;
-    }
-
-    [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(TypeName = "accidental-value")]
-    public enum accidentalvalue
-    {
-
-        sharp,
-
-        natural,
-
-        flat,
-
-        [System.Xml.Serialization.XmlEnumAttribute("double-sharp")]
-        doublesharp,
-
-        [System.Xml.Serialization.XmlEnumAttribute("sharp-sharp")]
-        sharpsharp,
-
-        [System.Xml.Serialization.XmlEnumAttribute("flat-flat")]
-        flatflat,
-
-        [System.Xml.Serialization.XmlEnumAttribute("natural-sharp")]
-        naturalsharp,
-
-        [System.Xml.Serialization.XmlEnumAttribute("natural-flat")]
-        naturalflat,
-
-        [System.Xml.Serialization.XmlEnumAttribute("quarter-flat")]
-        quarterflat,
-
-        [System.Xml.Serialization.XmlEnumAttribute("quarter-sharp")]
-        quartersharp,
-
-        [System.Xml.Serialization.XmlEnumAttribute("three-quarters-flat")]
-        threequartersflat,
-
-        [System.Xml.Serialization.XmlEnumAttribute("three-quarters-sharp")]
-        threequarterssharp,
-
-        [System.Xml.Serialization.XmlEnumAttribute("sharp-down")]
-        sharpdown,
-
-        [System.Xml.Serialization.XmlEnumAttribute("sharp-up")]
-        sharpup,
-
-        [System.Xml.Serialization.XmlEnumAttribute("natural-down")]
-        naturaldown,
-
-        [System.Xml.Serialization.XmlEnumAttribute("natural-up")]
-        naturalup,
-
-        [System.Xml.Serialization.XmlEnumAttribute("flat-down")]
-        flatdown,
-
-        [System.Xml.Serialization.XmlEnumAttribute("flat-up")]
-        flatup,
-
-        [System.Xml.Serialization.XmlEnumAttribute("double-sharp-down")]
-        doublesharpdown,
-
-        [System.Xml.Serialization.XmlEnumAttribute("double-sharp-up")]
-        doublesharpup,
-
-        [System.Xml.Serialization.XmlEnumAttribute("flat-flat-down")]
-        flatflatdown,
-
-        [System.Xml.Serialization.XmlEnumAttribute("flat-flat-up")]
-        flatflatup,
-
-        [System.Xml.Serialization.XmlEnumAttribute("arrow-down")]
-        arrowdown,
-
-        [System.Xml.Serialization.XmlEnumAttribute("arrow-up")]
-        arrowup,
-
-        [System.Xml.Serialization.XmlEnumAttribute("triple-sharp")]
-        triplesharp,
-
-        [System.Xml.Serialization.XmlEnumAttribute("triple-flat")]
-        tripleflat,
-
-        [System.Xml.Serialization.XmlEnumAttribute("slash-quarter-sharp")]
-        slashquartersharp,
-
-        [System.Xml.Serialization.XmlEnumAttribute("slash-sharp")]
-        slashsharp,
-
-        [System.Xml.Serialization.XmlEnumAttribute("slash-flat")]
-        slashflat,
-
-        [System.Xml.Serialization.XmlEnumAttribute("double-slash-flat")]
-        doubleslashflat,
-
-        [System.Xml.Serialization.XmlEnumAttribute("sharp-1")]
-        sharp1,
-
-        [System.Xml.Serialization.XmlEnumAttribute("sharp-2")]
-        sharp2,
-
-        [System.Xml.Serialization.XmlEnumAttribute("sharp-3")]
-        sharp3,
-
-        [System.Xml.Serialization.XmlEnumAttribute("sharp-5")]
-        sharp5,
-
-        [System.Xml.Serialization.XmlEnumAttribute("flat-1")]
-        flat1,
-
-        [System.Xml.Serialization.XmlEnumAttribute("flat-2")]
-        flat2,
-
-        [System.Xml.Serialization.XmlEnumAttribute("flat-3")]
-        flat3,
-
-        [System.Xml.Serialization.XmlEnumAttribute("flat-4")]
-        flat4,
-
-        sori,
-
-        koron,
-
-        other,
-    }
-
-    [System.SerializableAttribute()]
-    public class figure
-    {
-
-        public styletext prefix;
-
-        [System.Xml.Serialization.XmlElementAttribute("figure-number")]
-        public styletext figurenumber;
-
-        public styletext suffix;
-
-        public extend extend;
-
-        public formattedtext footnote;
-
-        public level level;
-    }
-
-    [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(TypeName = "style-text")]
-    public class styletext
-    {
-
-        [System.Xml.Serialization.XmlTextAttribute()]
-        public string Value;
-    }
-
-    [System.SerializableAttribute()]
-    public class extend
-    {
-
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        public startstopcontinue type;
-
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool typeSpecified;
-
-        [System.Xml.Serialization.XmlAttributeAttribute("default-x")]
-        public decimal defaultx;
-
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool defaultxSpecified;
-
-        [System.Xml.Serialization.XmlAttributeAttribute("default-y")]
-        public decimal defaulty;
-
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool defaultySpecified;
-
-        [System.Xml.Serialization.XmlAttributeAttribute("relative-x")]
-        public decimal relativex;
-
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool relativexSpecified;
-
-        [System.Xml.Serialization.XmlAttributeAttribute("relative-y")]
-        public decimal relativey;
-
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool relativeySpecified;
-
-        [System.Xml.Serialization.XmlAttributeAttribute(DataType = "token")]
-        public string color;
-    }
-
-    [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(TypeName = "figured-bass")]
-    public class figuredbass
-    {
-
-        [System.Xml.Serialization.XmlElementAttribute("figure")]
-        public figure[] figure;
-
-        public decimal duration;
-
-        public formattedtext footnote;
-
-        public level level;
-
-        [System.Xml.Serialization.XmlAttributeAttribute("print-dot")]
-        public yesno printdot;
-
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool printdotSpecified;
-
-        [System.Xml.Serialization.XmlAttributeAttribute("print-lyric")]
-        public yesno printlyric;
-
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool printlyricSpecified;
-
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        public yesno parentheses;
-
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool parenthesesSpecified;
-
-        [System.Xml.Serialization.XmlAttributeAttribute(DataType = "ID")]
-        public string id;
+        @explicit,
+        implied,
+        alternate
     }
 
     [System.SerializableAttribute()]
@@ -6361,10 +4831,8 @@ namespace Transonic.Score.MusicXML
     [System.Xml.Serialization.XmlTypeAttribute(TypeName = "start-stop")]
     public enum startstop
     {
-
         start,
-
-        stop,
+        stop
     }
 
     [System.SerializableAttribute()]
@@ -6557,7 +5025,7 @@ namespace Transonic.Score.MusicXML
     {
         left,
         center,
-        right,
+        right
     }
 
     [System.SerializableAttribute()]
@@ -6587,7 +5055,7 @@ namespace Transonic.Score.MusicXML
     {
         add,
         alter,
-        subtract,
+        subtract
     }
 
     [System.SerializableAttribute()]
@@ -6631,7 +5099,7 @@ namespace Transonic.Score.MusicXML
         minor,
         augmented,
         diminished,
-            [System.Xml.Serialization.XmlEnumAttribute("half-diminished")]
+        [System.Xml.Serialization.XmlEnumAttribute("half-diminished")]
         halfdiminished,
     }
 
@@ -6876,54 +5344,347 @@ namespace Transonic.Score.MusicXML
         public rootalter rootalter;
     }
 
+//- barline classes -----------------------------------------------------------
+
     [System.SerializableAttribute()]
-    public class harmony
+    public class barline
     {
-
-        [System.Xml.Serialization.XmlElementAttribute("function", typeof(styletext))]
-        [System.Xml.Serialization.XmlElementAttribute("root", typeof(root))]
-        public object[] Items;
-
-        [System.Xml.Serialization.XmlElementAttribute("kind")]
-        public kind[] kind;
-
-        [System.Xml.Serialization.XmlElementAttribute("inversion")]
-        public inversion[] inversion;
-
-        [System.Xml.Serialization.XmlElementAttribute("bass")]
-        public bass[] bass;
-
-        [System.Xml.Serialization.XmlElementAttribute("degree")]
-        public degree[] degree;
-
-        public frame frame;
-
-        public offset offset;
-
+        [System.Xml.Serialization.XmlElementAttribute("bar-style")]
+        public barstylecolor barstyle;
         public formattedtext footnote;
-
         public level level;
-
-        [System.Xml.Serialization.XmlElementAttribute(DataType = "positiveInteger")]
-        public string staff;
-
+        [System.Xml.Serialization.XmlElementAttribute("wavy-line")]
+        public wavyline wavyline;
+        public segno segno;
+        public coda coda;
+        [System.Xml.Serialization.XmlElementAttribute("fermata")]
+        public fermata[] fermata;
+        public ending ending;
+        public repeat repeat;
         [System.Xml.Serialization.XmlAttributeAttribute()]
-        public harmonytype type;
-
+        [System.ComponentModel.DefaultValueAttribute(rightleftmiddle.right)]
+        public rightleftmiddle location;
+        [System.Xml.Serialization.XmlAttributeAttribute("segno", DataType = "token")]
+        public string segno1;
+        [System.Xml.Serialization.XmlAttributeAttribute("coda", DataType = "token")]
+        public string coda1;
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public decimal divisions;
         [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool typeSpecified;
+        public bool divisionsSpecified;
+        [System.Xml.Serialization.XmlAttributeAttribute(DataType = "ID")]
+        public string id;
+        public barline()
+        {
+            this.location = rightleftmiddle.right;
+        }
+    }
 
+    [System.SerializableAttribute()]
+    [System.Xml.Serialization.XmlTypeAttribute(TypeName = "bar-style-color")]
+    public class barstylecolor
+    {
+        [System.Xml.Serialization.XmlAttributeAttribute(DataType = "token")]
+        public string color;
+        [System.Xml.Serialization.XmlTextAttribute()]
+        public barstyle Value;
+    }
+
+    [System.SerializableAttribute()]
+    public class ending
+    {
+        [System.Xml.Serialization.XmlAttributeAttribute(DataType = "token")]
+        public string number;
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public startstopdiscontinue type;
         [System.Xml.Serialization.XmlAttributeAttribute("print-object")]
         public yesno printobject;
-
         [System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool printobjectSpecified;
+        [System.Xml.Serialization.XmlAttributeAttribute("end-length")]
+        public decimal endlength;
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool endlengthSpecified;
+        [System.Xml.Serialization.XmlAttributeAttribute("text-x")]
+        public decimal textx;
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool textxSpecified;
+        [System.Xml.Serialization.XmlAttributeAttribute("text-y")]
+        public decimal texty;
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool textySpecified;
+        [System.Xml.Serialization.XmlTextAttribute()]
+        public string Value;
+    }
 
-        [System.Xml.Serialization.XmlAttributeAttribute("print-frame")]
-        public yesno printframe;
+    [System.SerializableAttribute()]
+    public class repeat
+    {
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public backwardforward direction;
+        [System.Xml.Serialization.XmlAttributeAttribute(DataType = "nonNegativeInteger")]
+        public string times;
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public winged winged;
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool wingedSpecified;
+    }
+
+    [System.SerializableAttribute()]
+    [System.Xml.Serialization.XmlTypeAttribute(TypeName = "backward-forward")]
+    public enum backwardforward
+    {
+        backward,
+        forward
+    }
+
+    [System.SerializableAttribute()]
+    public enum winged
+    {
+        none,
+        straight,
+        curved,
+        [System.Xml.Serialization.XmlEnumAttribute("double-straight")]
+        doublestraight,
+        [System.Xml.Serialization.XmlEnumAttribute("double-curved")]
+        doublecurved
+    }
+
+    [System.SerializableAttribute()]
+    [System.Xml.Serialization.XmlTypeAttribute(TypeName = "start-stop-discontinue")]
+    public enum startstopdiscontinue
+    {
+        start,
+        stop,
+        discontinue,
+    }
+
+    [System.SerializableAttribute()]
+    [System.Xml.Serialization.XmlTypeAttribute(TypeName = "yes-no")]
+    public enum yesno
+    {
+        yes,
+        no,
+    }
+
+    [System.SerializableAttribute()]
+    [System.Xml.Serialization.XmlTypeAttribute(TypeName = "bar-style")]
+    public enum barstyle
+    {
+        regular,
+        dotted,
+        dashed,
+        heavy,
+        [System.Xml.Serialization.XmlEnumAttribute("light-light")]
+        lightlight,
+        [System.Xml.Serialization.XmlEnumAttribute("light-heavy")]
+        lightheavy,
+        [System.Xml.Serialization.XmlEnumAttribute("heavy-light")]
+        heavylight,
+        [System.Xml.Serialization.XmlEnumAttribute("heavy-heavy")]
+        heavyheavy,
+        tick,
+        @short,
+        none,
+    }
+
+//- other music data classes --------------------------------------------------
+    
+    [System.SerializableAttribute()]
+    [System.Xml.Serialization.XmlTypeAttribute(TypeName = "figured-bass")]
+    public class figuredbass
+    {
+        [System.Xml.Serialization.XmlElementAttribute("figure")]
+        public figure[] figure;
+        public decimal duration;
+        public formattedtext footnote;
+        public level level;
+        [System.Xml.Serialization.XmlAttributeAttribute("print-dot")]
+        public yesno printdot;
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool printdotSpecified;
+        [System.Xml.Serialization.XmlAttributeAttribute("print-lyric")]
+        public yesno printlyric;
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool printlyricSpecified;
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public yesno parentheses;
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool parenthesesSpecified;
+        [System.Xml.Serialization.XmlAttributeAttribute(DataType = "ID")]
+        public string id;
+    }
+
+    [System.SerializableAttribute()]
+    public class figure
+    {
+        public styletext prefix;
+        [System.Xml.Serialization.XmlElementAttribute("figure-number")]
+        public styletext figurenumber;
+        public styletext suffix;
+        public extend extend;
+        public formattedtext footnote;
+        public level level;
+    }
+
+    [System.SerializableAttribute()]
+    [System.Xml.Serialization.XmlTypeAttribute(TypeName = "style-text")]
+    public class styletext
+    {
+        [System.Xml.Serialization.XmlTextAttribute()]
+        public string Value;
+    }
+
+    [System.SerializableAttribute()]
+    public class extend
+    {
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public startstopcontinue type;
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool typeSpecified;
+        [System.Xml.Serialization.XmlAttributeAttribute("default-x")]
+        public decimal defaultx;
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool defaultxSpecified;
+        [System.Xml.Serialization.XmlAttributeAttribute("default-y")]
+        public decimal defaulty;
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool defaultySpecified;
+        [System.Xml.Serialization.XmlAttributeAttribute("relative-x")]
+        public decimal relativex;
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool relativexSpecified;
+        [System.Xml.Serialization.XmlAttributeAttribute("relative-y")]
+        public decimal relativey;
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool relativeySpecified;
+        [System.Xml.Serialization.XmlAttributeAttribute(DataType = "token")]
+        public string color;
+    }
+
+    [System.SerializableAttribute()]
+    public class grouping
+    {
+        [System.Xml.Serialization.XmlElementAttribute("feature")]
+        public feature[] feature;
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public startstopsingle type;
+        [System.Xml.Serialization.XmlAttributeAttribute(DataType = "token")]
+        [System.ComponentModel.DefaultValueAttribute("1")]
+        public string number;
+        [System.Xml.Serialization.XmlAttributeAttribute("member-of", DataType = "token")]
+        public string memberof;
+        [System.Xml.Serialization.XmlAttributeAttribute(DataType = "ID")]
+        public string id;
+        public grouping()
+        {
+            this.number = "1";
+        }
+    }
+
+    [System.SerializableAttribute()]
+    public class feature
+    {
+        [System.Xml.Serialization.XmlAttributeAttribute(DataType = "token")]
+        public string type;
+        [System.Xml.Serialization.XmlTextAttribute()]
+        public string Value;
+    }
+
+    [System.SerializableAttribute()]
+    [System.Xml.Serialization.XmlTypeAttribute(TypeName = "start-stop-single")]
+    public enum startstopsingle
+    {
+        start,
+        stop,
+        single,
+    }
+
+//- shared subgroup classes ---------------------------------------------------
+
+    [System.SerializableAttribute()]
+    [System.Xml.Serialization.XmlTypeAttribute(TypeName = "formatted-text")]
+    public class formattedtext
+    {
+
+        [System.Xml.Serialization.XmlAttributeAttribute(Form = System.Xml.Schema.XmlSchemaForm.Qualified, Namespace = "http://www.w3.org/XML/1998/namespace")]
+        public string lang;
+
+        [System.Xml.Serialization.XmlAttributeAttribute(Form = System.Xml.Schema.XmlSchemaForm.Qualified, Namespace = "http://www.w3.org/XML/1998/namespace")]
+        public string space;
+
+        [System.Xml.Serialization.XmlTextAttribute()]
+        public string Value;
+    }
+
+    [System.SerializableAttribute()]
+    public class level
+    {
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public yesno reference;
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool referenceSpecified;
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public yesno parentheses;
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool parenthesesSpecified;
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public yesno bracket;
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool bracketSpecified;
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public symbolsize size;
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool sizeSpecified;
+        [System.Xml.Serialization.XmlTextAttribute()]
+        public string Value;
+    }
+
+    [System.SerializableAttribute()]
+    [System.Xml.Serialization.XmlTypeAttribute(TypeName = "symbol-size")]
+    public enum symbolsize
+    {
+        full,
+        cue,
+        [System.Xml.Serialization.XmlEnumAttribute("grace-cue")]
+        gracecue,
+        large,
+    }
+
+    [System.SerializableAttribute()]
+    [System.Xml.Serialization.XmlTypeAttribute(TypeName = "wavy-line")]
+    public class wavyline
+    {
+
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public startstopcontinue type;
+
+        [System.Xml.Serialization.XmlAttributeAttribute(DataType = "positiveInteger")]
+        public string number;
+
+        [System.Xml.Serialization.XmlAttributeAttribute("default-x")]
+        public decimal defaultx;
 
         [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool printframeSpecified;
+        public bool defaultxSpecified;
+
+        [System.Xml.Serialization.XmlAttributeAttribute("default-y")]
+        public decimal defaulty;
+
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool defaultySpecified;
+
+        [System.Xml.Serialization.XmlAttributeAttribute("relative-x")]
+        public decimal relativex;
+
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool relativexSpecified;
+
+        [System.Xml.Serialization.XmlAttributeAttribute("relative-y")]
+        public decimal relativey;
+
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool relativeySpecified;
 
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public abovebelow placement;
@@ -6931,31 +5692,480 @@ namespace Transonic.Score.MusicXML
         [System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool placementSpecified;
 
+        [System.Xml.Serialization.XmlAttributeAttribute(DataType = "token")]
+        public string color;
+
+        [System.Xml.Serialization.XmlAttributeAttribute("start-note")]
+        public startnote startnote;
+
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool startnoteSpecified;
+
+        [System.Xml.Serialization.XmlAttributeAttribute("trill-step")]
+        public trillstep trillstep;
+
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool trillstepSpecified;
+
+        [System.Xml.Serialization.XmlAttributeAttribute("two-note-turn")]
+        public twonoteturn twonoteturn;
+
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool twonoteturnSpecified;
+
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public yesno accelerate;
+
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool accelerateSpecified;
+
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public decimal beats;
+
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool beatsSpecified;
+
+        [System.Xml.Serialization.XmlAttributeAttribute("second-beat")]
+        public decimal secondbeat;
+
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool secondbeatSpecified;
+
+        [System.Xml.Serialization.XmlAttributeAttribute("last-beat")]
+        public decimal lastbeat;
+
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool lastbeatSpecified;
+    }
+
+    [System.SerializableAttribute()]
+    [System.Xml.Serialization.XmlTypeAttribute(TypeName = "start-stop-continue")]
+    public enum startstopcontinue
+    {   start,
+        stop,
+        @continue,
+    }
+
+    [System.SerializableAttribute()]
+    [System.Xml.Serialization.XmlTypeAttribute(TypeName = "above-below")]
+    public enum abovebelow
+    {
+        above,
+        below,
+    }
+
+    [System.SerializableAttribute()]
+    [System.Xml.Serialization.XmlTypeAttribute(TypeName = "start-note")]
+    public enum startnote
+    {
+        upper,
+        main,
+        below,
+    }
+
+    [System.SerializableAttribute()]
+    [System.Xml.Serialization.XmlTypeAttribute(TypeName = "trill-step")]
+    public enum trillstep
+    {
+        whole,
+        half,
+        unison,
+    }
+
+    [System.SerializableAttribute()]
+    [System.Xml.Serialization.XmlTypeAttribute(TypeName = "two-note-turn")]
+    public enum twonoteturn
+    {
+        whole,
+        half,
+        none,
+    }
+
+    [System.SerializableAttribute()]
+    public class segno
+    {
+
+        [System.Xml.Serialization.XmlAttributeAttribute(DataType = "ID")]
+        public string id;
+
+        [System.Xml.Serialization.XmlAttributeAttribute(DataType = "NMTOKEN")]
+        public string smufl;
+    }
+
+    [System.SerializableAttribute()]
+    public class coda
+    {
+
+        [System.Xml.Serialization.XmlAttributeAttribute(DataType = "ID")]
+        public string id;
+
+        [System.Xml.Serialization.XmlAttributeAttribute(DataType = "NMTOKEN")]
+        public string smufl;
+    }
+
+    [System.SerializableAttribute()]
+    public class fermata
+    {
+
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public uprightinverted type;
+
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool typeSpecified;
+
+        [System.Xml.Serialization.XmlAttributeAttribute(DataType = "ID")]
+        public string id;
+
+        [System.Xml.Serialization.XmlTextAttribute()]
+        public fermatashape Value;
+    }
+
+    [System.SerializableAttribute()]
+    [System.Xml.Serialization.XmlTypeAttribute(TypeName = "upright-inverted")]
+    public enum uprightinverted
+    {
+        upright,
+        inverted,
+    }
+
+    [System.SerializableAttribute()]
+    [System.Xml.Serialization.XmlTypeAttribute(TypeName = "fermata-shape")]
+    public enum fermatashape
+    {
+        normal,
+        angled,
+        square,
+        [System.Xml.Serialization.XmlEnumAttribute("double-angled")]
+        doubleangled,
+        [System.Xml.Serialization.XmlEnumAttribute("double-square")]
+        doublesquare,
+        [System.Xml.Serialization.XmlEnumAttribute("double-dot")]
+        doubledot,
+        [System.Xml.Serialization.XmlEnumAttribute("half-curve")]
+        halfcurve,
+        curlew,
+        [System.Xml.Serialization.XmlEnumAttribute("")]
+        Item
+    }
+
+    [System.SerializableAttribute()]
+    [System.Xml.Serialization.XmlTypeAttribute(TypeName = "right-left-middle")]
+    public enum rightleftmiddle
+    {
+        right,
+        left,
+        middle
+    }
+
+    [System.SerializableAttribute()]
+    [System.Xml.Serialization.XmlTypeAttribute(TypeName = "measure-numbering")]
+    public class measurenumbering
+    {
+        [System.Xml.Serialization.XmlTextAttribute()]
+        public measurenumberingvalue Value;
+    }
+
+    [System.SerializableAttribute()]
+    [System.Xml.Serialization.XmlTypeAttribute(TypeName = "measure-numbering-value")]
+    public enum measurenumberingvalue
+    {
+        none,
+        measure,
+        system
+    }
+
+    [System.SerializableAttribute()]
+    [System.Xml.Serialization.XmlTypeAttribute(TypeName = "measure-layout")]
+    public class measurelayout
+    {
+
+        [System.Xml.Serialization.XmlElementAttribute("measure-distance")]
+        public decimal measuredistance;
+
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool measuredistanceSpecified;
+    }
+
+    [System.SerializableAttribute()]
+    public class print
+    {
+
+        [System.Xml.Serialization.XmlElementAttribute("page-layout")]
+        public pagelayout pagelayout;
+
+        [System.Xml.Serialization.XmlElementAttribute("system-layout")]
+        public systemlayout systemlayout;
+
+        [System.Xml.Serialization.XmlElementAttribute("staff-layout")]
+        public stafflayout[] stafflayout;
+
+        [System.Xml.Serialization.XmlElementAttribute("measure-layout")]
+        public measurelayout measurelayout;
+
+        [System.Xml.Serialization.XmlElementAttribute("measure-numbering")]
+        public measurenumbering measurenumbering;
+
+        [System.Xml.Serialization.XmlElementAttribute("part-name-display")]
+        public namedisplay partnamedisplay;
+
+        [System.Xml.Serialization.XmlElementAttribute("part-abbreviation-display")]
+        public namedisplay partabbreviationdisplay;
+
+        [System.Xml.Serialization.XmlAttributeAttribute("staff-spacing")]
+        public decimal staffspacing;
+
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool staffspacingSpecified;
+
+        [System.Xml.Serialization.XmlAttributeAttribute("new-system")]
+        public yesno newsystem;
+
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool newsystemSpecified;
+
+        [System.Xml.Serialization.XmlAttributeAttribute("new-page")]
+        public yesno newpage;
+
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool newpageSpecified;
+
+        [System.Xml.Serialization.XmlAttributeAttribute("blank-page", DataType = "positiveInteger")]
+        public string blankpage;
+
+        [System.Xml.Serialization.XmlAttributeAttribute("page-number", DataType = "token")]
+        public string pagenumber;
+
         [System.Xml.Serialization.XmlAttributeAttribute(DataType = "ID")]
         public string id;
     }
 
     [System.SerializableAttribute()]
-    public class offset
+    [System.Xml.Serialization.XmlTypeAttribute(TypeName = "page-layout")]
+    public class pagelayout
     {
-
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        public yesno sound;
-
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool soundSpecified;
-
-        [System.Xml.Serialization.XmlTextAttribute()]
-        public decimal Value;
+        [System.Xml.Serialization.XmlElementAttribute("page-height")]
+        public decimal pageheight;
+        [System.Xml.Serialization.XmlElementAttribute("page-width")]
+        public decimal pagewidth;
+        [System.Xml.Serialization.XmlElementAttribute("page-margins")]
+        public pagemargins[] pagemargins;
     }
 
     [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(TypeName = "harmony-type")]
-    public enum harmonytype
+    [System.Xml.Serialization.XmlTypeAttribute(TypeName = "page-margins")]
+    public class pagemargins
     {
-        @explicit,
-        implied,
-        alternate
+        [System.Xml.Serialization.XmlElementAttribute("left-margin")]
+        public decimal leftmargin;
+        [System.Xml.Serialization.XmlElementAttribute("right-margin")]
+        public decimal rightmargin;
+        [System.Xml.Serialization.XmlElementAttribute("top-margin")]
+        public decimal topmargin;
+        [System.Xml.Serialization.XmlElementAttribute("bottom-margin")]
+        public decimal bottommargin;
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public margintype type;
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool typeSpecified;
+    }
+
+    [System.SerializableAttribute()]
+    [System.Xml.Serialization.XmlTypeAttribute(TypeName = "margin-type")]
+    public enum margintype
+    {
+        odd,
+        even,
+        both
+    }
+
+    [System.SerializableAttribute()]
+    [System.Xml.Serialization.XmlTypeAttribute(TypeName = "system-layout")]
+    public class systemlayout
+    {
+        [System.Xml.Serialization.XmlElementAttribute("system-margins")]
+        public systemmargins systemmargins;
+
+        [System.Xml.Serialization.XmlElementAttribute("system-distance")]
+        public decimal systemdistance;
+
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool systemdistanceSpecified;
+
+        [System.Xml.Serialization.XmlElementAttribute("top-system-distance")]
+        public decimal topsystemdistance;
+
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool topsystemdistanceSpecified;
+
+        [System.Xml.Serialization.XmlElementAttribute("system-dividers")]
+        public systemdividers systemdividers;
+    }
+
+    [System.SerializableAttribute()]
+    [System.Xml.Serialization.XmlTypeAttribute(TypeName = "system-margins")]
+    public class systemmargins
+    {
+
+        [System.Xml.Serialization.XmlElementAttribute("left-margin")]
+        public decimal leftmargin;
+
+        [System.Xml.Serialization.XmlElementAttribute("right-margin")]
+        public decimal rightmargin;
+    }
+
+    [System.SerializableAttribute()]
+    [System.Xml.Serialization.XmlTypeAttribute(TypeName = "system-dividers")]
+    public class systemdividers
+    {
+
+        [System.Xml.Serialization.XmlElementAttribute("left-divider")]
+        public emptyprintobjectstylealign leftdivider;
+
+        [System.Xml.Serialization.XmlElementAttribute("right-divider")]
+        public emptyprintobjectstylealign rightdivider;
+    }
+
+    [System.SerializableAttribute()]
+    [System.Xml.Serialization.XmlTypeAttribute(TypeName = "empty-print-object-style-align")]
+    public class emptyprintobjectstylealign
+    {
+
+        [System.Xml.Serialization.XmlAttributeAttribute("print-object")]
+        public yesno printobject;
+
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool printobjectSpecified;
+    }
+
+    [System.SerializableAttribute()]
+    [System.Xml.Serialization.XmlTypeAttribute(TypeName = "staff-layout")]
+    public class stafflayout
+    {
+
+        [System.Xml.Serialization.XmlElementAttribute("staff-distance")]
+        public decimal staffdistance;
+
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool staffdistanceSpecified;
+
+        [System.Xml.Serialization.XmlAttributeAttribute(DataType = "positiveInteger")]
+        public string number;
+    }
+
+    [System.SerializableAttribute()]
+    [System.Xml.Serialization.XmlTypeAttribute(TypeName = "name-display")]
+    public class namedisplay
+    {
+
+        [System.Xml.Serialization.XmlElementAttribute("accidental-text", typeof(accidentaltext))]
+        [System.Xml.Serialization.XmlElementAttribute("display-text", typeof(formattedtext))]
+        public object[] Items;
+
+        [System.Xml.Serialization.XmlAttributeAttribute("print-object")]
+        public yesno printobject;
+
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool printobjectSpecified;
+    }
+
+    [System.SerializableAttribute()]
+    [System.Xml.Serialization.XmlTypeAttribute(TypeName = "accidental-text")]
+    public class accidentaltext
+    {
+
+        [System.Xml.Serialization.XmlAttributeAttribute(Form = System.Xml.Schema.XmlSchemaForm.Qualified, Namespace = "http://www.w3.org/XML/1998/namespace")]
+        public string lang;
+
+        [System.Xml.Serialization.XmlAttributeAttribute(Form = System.Xml.Schema.XmlSchemaForm.Qualified, Namespace = "http://www.w3.org/XML/1998/namespace")]
+        public string space;
+
+        [System.Xml.Serialization.XmlAttributeAttribute(DataType = "NMTOKEN")]
+        public string smufl;
+
+        [System.Xml.Serialization.XmlTextAttribute()]
+        public accidentalvalue Value;
+    }
+
+    [System.SerializableAttribute()]
+    [System.Xml.Serialization.XmlTypeAttribute(TypeName = "accidental-value")]
+    public enum accidentalvalue
+    {
+        sharp,
+        natural,
+        flat,
+        [System.Xml.Serialization.XmlEnumAttribute("double-sharp")]
+        doublesharp,
+        [System.Xml.Serialization.XmlEnumAttribute("sharp-sharp")]
+        sharpsharp,
+        [System.Xml.Serialization.XmlEnumAttribute("flat-flat")]
+        flatflat,
+        [System.Xml.Serialization.XmlEnumAttribute("natural-sharp")]
+        naturalsharp,
+        [System.Xml.Serialization.XmlEnumAttribute("natural-flat")]
+        naturalflat,
+        [System.Xml.Serialization.XmlEnumAttribute("quarter-flat")]
+        quarterflat,
+        [System.Xml.Serialization.XmlEnumAttribute("quarter-sharp")]
+        quartersharp,
+        [System.Xml.Serialization.XmlEnumAttribute("three-quarters-flat")]
+        threequartersflat,
+        [System.Xml.Serialization.XmlEnumAttribute("three-quarters-sharp")]
+        threequarterssharp,
+        [System.Xml.Serialization.XmlEnumAttribute("sharp-down")]
+        sharpdown,
+        [System.Xml.Serialization.XmlEnumAttribute("sharp-up")]
+        sharpup,
+        [System.Xml.Serialization.XmlEnumAttribute("natural-down")]
+        naturaldown,
+        [System.Xml.Serialization.XmlEnumAttribute("natural-up")]
+        naturalup,
+        [System.Xml.Serialization.XmlEnumAttribute("flat-down")]
+        flatdown,
+        [System.Xml.Serialization.XmlEnumAttribute("flat-up")]
+        flatup,
+        [System.Xml.Serialization.XmlEnumAttribute("double-sharp-down")]
+        doublesharpdown,
+        [System.Xml.Serialization.XmlEnumAttribute("double-sharp-up")]
+        doublesharpup,
+        [System.Xml.Serialization.XmlEnumAttribute("flat-flat-down")]
+        flatflatdown,
+        [System.Xml.Serialization.XmlEnumAttribute("flat-flat-up")]
+        flatflatup,
+        [System.Xml.Serialization.XmlEnumAttribute("arrow-down")]
+        arrowdown,
+        [System.Xml.Serialization.XmlEnumAttribute("arrow-up")]
+        arrowup,
+        [System.Xml.Serialization.XmlEnumAttribute("triple-sharp")]
+        triplesharp,
+        [System.Xml.Serialization.XmlEnumAttribute("triple-flat")]
+        tripleflat,
+        [System.Xml.Serialization.XmlEnumAttribute("slash-quarter-sharp")]
+        slashquartersharp,
+        [System.Xml.Serialization.XmlEnumAttribute("slash-sharp")]
+        slashsharp,
+        [System.Xml.Serialization.XmlEnumAttribute("slash-flat")]
+        slashflat,
+        [System.Xml.Serialization.XmlEnumAttribute("double-slash-flat")]
+        doubleslashflat,
+        [System.Xml.Serialization.XmlEnumAttribute("sharp-1")]
+        sharp1,
+        [System.Xml.Serialization.XmlEnumAttribute("sharp-2")]
+        sharp2,
+        [System.Xml.Serialization.XmlEnumAttribute("sharp-3")]
+        sharp3,
+        [System.Xml.Serialization.XmlEnumAttribute("sharp-5")]
+        sharp5,
+        [System.Xml.Serialization.XmlEnumAttribute("flat-1")]
+        flat1,
+        [System.Xml.Serialization.XmlEnumAttribute("flat-2")]
+        flat2,
+        [System.Xml.Serialization.XmlEnumAttribute("flat-3")]
+        flat3,
+        [System.Xml.Serialization.XmlEnumAttribute("flat-4")]
+        flat4,
+        sori,
+        koron,
+        other
     }
 
     [System.SerializableAttribute()]
@@ -7093,40 +6303,25 @@ namespace Transonic.Score.MusicXML
     [System.SerializableAttribute()]
     public enum mute
     {
-
         on,
-
         off,
-
         straight,
-
         cup,
-
         [System.Xml.Serialization.XmlEnumAttribute("harmon-no-stem")]
         harmonnostem,
-
         [System.Xml.Serialization.XmlEnumAttribute("harmon-stem")]
         harmonstem,
-
         bucket,
-
         plunger,
-
         hat,
-
         solotone,
-
         practice,
-
         [System.Xml.Serialization.XmlEnumAttribute("stop-mute")]
         stopmute,
-
         [System.Xml.Serialization.XmlEnumAttribute("stop-hand")]
         stophand,
-
         echo,
-
-        palm,
+        palm
     }
 
     [System.SerializableAttribute()]
@@ -7145,21 +6340,15 @@ namespace Transonic.Score.MusicXML
     [System.Xml.Serialization.XmlTypeAttribute(TypeName = "semi-pitched")]
     public enum semipitched
     {
-
         high,
-
         [System.Xml.Serialization.XmlEnumAttribute("medium-high")]
         mediumhigh,
-
         medium,
-
         [System.Xml.Serialization.XmlEnumAttribute("medium-low")]
         mediumlow,
-
         low,
-
         [System.Xml.Serialization.XmlEnumAttribute("very-low")]
-        verylow,
+        verylow
     }
 
     [System.SerializableAttribute()]
@@ -7326,7 +6515,7 @@ namespace Transonic.Score.MusicXML
     {
         [System.Xml.Serialization.XmlElementAttribute("attributes", typeof(attributes))]
         [System.Xml.Serialization.XmlElementAttribute("backup", typeof(backup))]
-        [System.Xml.Serialization.XmlElementAttribute("barline", typeof(barlineXML))]
+        [System.Xml.Serialization.XmlElementAttribute("barline", typeof(barline))]
         [System.Xml.Serialization.XmlElementAttribute("bookmark", typeof(bookmark))]
         [System.Xml.Serialization.XmlElementAttribute("direction", typeof(direction))]
         [System.Xml.Serialization.XmlElementAttribute("figured-bass", typeof(figuredbass))]
@@ -7335,7 +6524,7 @@ namespace Transonic.Score.MusicXML
         [System.Xml.Serialization.XmlElementAttribute("harmony", typeof(harmony))]
         [System.Xml.Serialization.XmlElementAttribute("link", typeof(link))]
         [System.Xml.Serialization.XmlElementAttribute("note", typeof(note))]
-        [System.Xml.Serialization.XmlElementAttribute("print", typeof(printXML))]
+        [System.Xml.Serialization.XmlElementAttribute("print", typeof(print))]
         [System.Xml.Serialization.XmlElementAttribute("sound", typeof(sound))]
         public object[] Items;
 

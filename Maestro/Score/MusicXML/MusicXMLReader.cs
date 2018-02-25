@@ -156,14 +156,14 @@ namespace Transonic.Score.MusicXML
                 //case "sound":
                 //    Sound sound = parseSoundXML(dataNode);
                 //    break;
-                else if (item is printXML)
+                else if (item is print)
                 {
-                    Print print = parsePrintXML((printXML)item);
+                    Print print = parsePrintXML((print)item);
                     measure.setPrint(print);
                 }
-                else if (item is barlineXML)
+                else if (item is barline)
                 {
-                    Barline barline = parseBarlineXML((barlineXML)item);
+                    Barline barline = parseBarlineXML((barline)item);
                     measure.setBarLine(barline);
                 }
                 //case "grouping":
@@ -191,20 +191,36 @@ namespace Transonic.Score.MusicXML
             {
                 switch (notexml.ItemsElementName[i])
                 {
-                    case NoteChoiceType.chord:
+                    case NoteChoiceType.chord:      //empty type
                         note.chord = true;
                         break;
 
-                    case NoteChoiceType.rest:
-                        note.rest = true;
+                    case NoteChoiceType.cue:      //empty type
+                        note.cue = true;
                         break;
 
                     case NoteChoiceType.duration:
                         note.duration = (decimal)notexml.Items[i];
                         break;
 
+                    case NoteChoiceType.grace:
+                        parseGraceXML((grace)notexml.Items[i], note);
+                        break;
+
                     case NoteChoiceType.pitch:
                         parsePitchXML((pitch)notexml.Items[i], note);
+                        break;
+                    
+                    case NoteChoiceType.rest:
+                        parseRestXML((rest)notexml.Items[i], note);
+                        break;
+
+                    case NoteChoiceType.tie:
+                        parseTieXML((tie)notexml.Items[i], note);
+                        break;
+
+                    case NoteChoiceType.unpitched:       
+                        parseUnpitchedXML((unpitched)notexml.Items[i], note);
                         break;
 
                     default:
@@ -212,115 +228,65 @@ namespace Transonic.Score.MusicXML
                 }
             }
 
-            //XmlNodeList childnodes = node.ChildNodes;
-            //int count = (childnodes != null) ? childnodes.Count : 0;
-            //int num = 0;
-
-            ////choice
-            //if (childnodes[num].Name.Equals("grace"))
-            //{
-            //    note.grace = parseGraceXML(childnodes[num++]);
-            //    if (childnodes[num].Name.Equals("cue"))
-            //    {
-            //        note.cue = true;
-            //        num++;
-            //        note.fullnote = parseFullNoteXML(ref num, childnodes);
-            //    }
-            //    else
-            //    {
-            //        note.fullnote = parseFullNoteXML(ref num, childnodes);
-            //        for (int i = 0; i < 2; i++)
-            //        {
-            //            if (childnodes[num].Name.Equals("tie"))
-            //            {
-            //                note.tie[i] = parseTieXML(childnodes[num++]);
-            //            }
-            //        }
-            //    }
-            //}
-            //else if (childnodes[num].Name.Equals("cue"))
-            //{
-            //    note.cue = true;
-            //    num++;
-            //    note.fullnote = parseFullNoteXML(ref num, childnodes);
-            //    note.duration = parseDurationXML(ref num, childnodes);
-            //}
-            //else
-            //{
-            //    note.fullnote = parseFullNoteXML(ref num, childnodes);
-            //    note.duration = parseDurationXML(ref num, childnodes);
-            //    for (int i = 0; i < 2; i++)
-            //    {
-            //        if (childnodes[num].Name.Equals("tie"))
-            //        {
-            //            note.tie[i] = parseTieXML(childnodes[num++]);
-            //        }
-            //    }
-            //}
-
-            //if (childnodes[num].Name.Equals("instrument"))
-            //{
-            //    note.instrument = parseInstrumentXML(childnodes[num++]);
-            //}
-            //note.editorialVoice = parseEditorialVoiceXML(ref num, childnodes);             //required
-            //if ((num < count) && childnodes[num].Name.Equals("type"))
-            //{
-            //    note.notetype = parseNoteTypeXML(childnodes[num++]);
-            //};
-            //while ((num < count) && childnodes[num].Name.Equals("dot"))
-            //{
-            //    note.dot = parseEmptyPlacementXML(childnodes[num++]);
-            //};
-            //if ((num < count) && childnodes[num].Name.Equals("accidental"))
-            //{
-            //    note.accidental = parseAccidentalXML(childnodes[num++]);
-            //};
-            //if ((num < count) && childnodes[num].Name.Equals("time-modification"))
-            //{
-            //    note.timeModification = parseTimeModificationXML(childnodes[num++]);
-            //};
-            //if ((num < count) && childnodes[num].Name.Equals("stem"))
-            //{
-            //    note.stem = parseStemXML(childnodes[num++]);
-            //};
-            //if ((num < count) && childnodes[num].Name.Equals("notehead"))
-            //{
-            //    note.notehead = parseNoteheadXML(childnodes[num++]);
-            //};
-            //if ((num < count) && childnodes[num].Name.Equals("notehead-text"))
-            //{
-            //    note.noteheadText = parseNoteheadTextXML(childnodes[num++]);
-            //};
-            //if ((num < count) && childnodes[num].Name.Equals("staff"))
-            //{
-            //    note.staff = parseStaffXML(ref num, childnodes);
-            //};
-            //for (int i = 0; i < 8; i++)
-            //{
-            //    if ((num < count) && childnodes[num].Name.Equals("beam"))
-            //    {
-            //        note.beam = parseBeamXML(childnodes[num++]);
-            //    };
-            //}
-            //while ((num < count) && childnodes[num].Name.Equals("notations"))
-            //{
-            //    note.notations = parseNotationsXML(childnodes[num++]);
-            //};
-            //while ((num < count) && childnodes[num].Name.Equals("lyric"))
-            //{
-            //    note.lyric = parseLyricXML(childnodes[num++]);
-            //};
-            //if ((num < count) && childnodes[num].Name.Equals("play"))
-            //{
-            //    note.play = parsePlayXML(childnodes[num++]);
-            //};
+            if (notexml.instrument != null)
+            {
+                parseInstrumentXML(notexml.instrument, note);
+            }
+            parseEditorialVoiceNoteXML(notexml, note);
+            if (notexml.type != null)
+            {
+                parseNoteTypeXML(notexml.type, note);
+            }
+            if (notexml.dot != null)
+            {
+                parseEmptyPlacementXML(notexml.dot, note);
+            }
+            if (notexml.accidental != null)
+            {
+                parseAccidentalXML(notexml.accidental, note);
+            }
+            if (notexml.timemodification != null)
+            {
+                parseTimeModificationXML(notexml.timemodification, note);
+            }
+            if (notexml.stem != null)
+            {
+                parseStemXML(notexml.stem, note);
+            }
+            if (notexml.notehead != null)
+            {
+                parseNoteheadXML(notexml.notehead, note);
+            }
+            if (notexml.noteheadtext != null)
+            {
+                parseNoteheadTextXML(notexml.noteheadtext, note);
+            }
+            if (notexml.staff != null)
+            {
+                note.staffnum = Convert.ToInt32(notexml.staff);
+            }
+            if (notexml.beam != null)
+            {
+                parseBeamXML(notexml.beam, note);
+            }
+            if (notexml.notations != null)
+            {
+                parseNotationsXML(notexml.notations, note);
+            }
+            if (notexml.lyric != null)
+            {
+                parseLyricXML(notexml.lyric, note);
+            }
+            if (notexml.play != null)
+            {
+                parsePlayXML(notexml.play, note);
+            }
 
             return note;
         }
 
-        public static Grace parseGraceXML(XmlNode node)
-        {
-            return null;
+        public static void parseGraceXML(grace gracexml, Note note)
+        {            
         }
 
         static int[] StepToPitch = { 0, 2, 4, 5, 7, 9, 11 };
@@ -347,23 +313,91 @@ namespace Transonic.Score.MusicXML
             note.notenum = (note.octave * 12) + StepToPitch[note.step] + note.alter;            
         }
 
-        public static Unpitched parseUnpitchedXML(XmlNode node)
+        public static void parseRestXML(rest restxml, Note note)
         {
-            return null;
+            note.rest = true;
         }
 
-        public static Rest parseRestXML(XmlNode node)
+        public static void parseTieXML(tie tiexml, Note note)
         {
-            return null;
         }
 
-       
+        public static void parseUnpitchedXML(unpitched unpitchedxml, Note note)
+        {
+
+        }
+
+        public static void parseInstrumentXML(instrument instrumentxml, Note note)
+        {            
+        }
+
+        public static void parseEditorialVoiceNoteXML(note notexml, Note note)
+        {
+        //    //if (childnodes[num].Name.Equals("footnote"))
+        //    //{
+        //    //    num = parseFootnoteXML(num, childnodes, note);
+        //    //}
+        //    //if (childnodes[num].Name.Equals("level"))
+        //    //{
+        //    //    num = parseLevelXML(num, childnodes, note);
+        //    //}
+        //    //if (childnodes[num].Name.Equals("voice"))
+        //    //{
+        //    //    num = parseVoiceXML(num, childnodes, note);
+        //    //}
+        //    //return num;
+        }
+
+        public static void parseNoteTypeXML(notetype notetypexml, Note note)
+        {
+            if (notetypexml.sizeSpecified)
+            {
+                note.notesize = (Note.NOTESIZE)notetypexml.size;
+            }
+            note.notetype = (Note.NOTETYPE)notetypexml.Value;
+        }
+
+        public static void parseEmptyPlacementXML(emptyplacement[] emptyplacementxml, Note note)
+        {        
+        }
+
+        public static void parseAccidentalXML(accidental accidentalxml, Note note)
+        {         
+        }
+
+        public static void parseTimeModificationXML(timemodification timemodificationxml, Note note)
+        {        
+        }
+
+        public static void parseStemXML(stem stemxml, Note note)
+        {        
+        }
+
+        public static void parseNoteheadXML(notehead noteheadxml, Note note)
+        {         
+        }
+
+        public static void parseNoteheadTextXML(noteheadtext noteheadtextxml, Note note)
+        {            
+        }
+
+        public static void parseBeamXML(beam[] beamxml, Note note)
+        {         
+        }
+
+        public static void parseNotationsXML(notations[] notationsxml, Note note)
+        {         
+        }
+
+        public static void parseLyricXML(lyric[] lyricxml, Note note)
+        {         
+        }
+
+        public static void parsePlayXML(play playxml, Note note)
+        {        
+        }
+
 //- complex types -------------------------------------------------------------
-
-        public static Accidental parseAccidentalXML(XmlNode node)
-        {
-            return null;
-        }
 
         public static AccidentalMark parseAccidentalMarkXML(XmlNode node)
         {
@@ -577,7 +611,7 @@ namespace Transonic.Score.MusicXML
             return null;
         }
 
-        public static Barline parseBarlineXML(barlineXML item)
+        public static Barline parseBarlineXML(barline item)
         {
             //Console.WriteLine("parsing barline node");
             return null;
@@ -602,16 +636,6 @@ namespace Transonic.Score.MusicXML
         {
             return null;
         }
-
-        public static Beam parseBeamXML(XmlNode node)
-        {
-            return null;
-        }
-
-        //public static void parseBeamXML(int p, XmlNodeList childnodes, Note note)
-        //{
-        //    throw new NotImplementedException();
-        //}
 
         public static BeatUnitTied parseBeatUnitTiedXML(XmlNode node)
         {
@@ -735,11 +759,6 @@ namespace Transonic.Score.MusicXML
             return null;
         }
 
-        public static EmptyPlacement parseEmptyPlacementXML(XmlNode node)
-        {
-            return null;
-        }
-
         public static EmptyPrintObjectStyleAlign parseEmptyPrintObjectStyleAlignXML(XmlNode node)
         {
             return null;
@@ -846,11 +865,6 @@ namespace Transonic.Score.MusicXML
             return null;
         }
 
-        //public static void parseGraceXML(int num, XmlNodeList childnodes, Note note)
-        //{
-        //    throw new NotImplementedException();
-        //}
-
         public static GroupBarline parseGroupBarlineXML(XmlNode node)
         {
             return null;
@@ -938,16 +952,6 @@ namespace Transonic.Score.MusicXML
             return null;
         }
 
-        public static Instrument parseInstrumentXML(XmlNode node)
-        {
-            return null;
-        }
-
-        //public static void parseInstrumentXML(int p, XmlNodeList childnodes, Note note)
-        //{
-        //    throw new NotImplementedException();
-        //}
-
         public static Inversion parseInversionXML(XmlNode node)
         {
             return null;
@@ -973,16 +977,6 @@ namespace Transonic.Score.MusicXML
             //Console.WriteLine("parsing link node");
             return null;
         }
-
-        public static Lyric parseLyricXML(XmlNode node)
-        {
-            return null;
-        }
-
-        //public static void parseLyricXML(int p, XmlNodeList childnodes, Note note)
-        //{
-        //    throw new NotImplementedException();
-        //}
 
         public static LyricFont parseLyricFontXML(XmlNode node)
         {
@@ -1064,50 +1058,10 @@ namespace Transonic.Score.MusicXML
             return null;
         }
 
-        public static Notations parseNotationsXML(XmlNode node)
-        {
-            return null;
-        }
-
-        //public static void parseNotationsXML(int p, XmlNodeList childnodes, Note note)
-        //{
-        //    //throw new NotImplementedException();
-        //}
-        
         public static NoteSize parseNoteSizeXML(XmlNode node)
         {
             return null;
         }
-
-        public static NoteType parseNoteTypeXML(XmlNode node)
-        {
-            return null;
-        }
-
-        //public static void parseNoteTypeXML(int p, XmlNodeList childnodes, Note note)
-        //{
-        //    note.notetype = childnodes[p].Value;
-        //}
-
-        public static Notehead parseNoteheadXML(XmlNode node)
-        {
-            return null;
-        }
-
-        //public static void parseNoteheadXML(int p, XmlNodeList childnodes, Note note)
-        //{
-        //    throw new NotImplementedException();
-        //}
-
-        public static NoteheadText parseNoteheadTextXML(XmlNode node)
-        {
-            return null;
-        }
-
-        //public static void parseNoteheadTextXML(int p, XmlNodeList childnodes, Note note)
-        //{
-        //    throw new NotImplementedException();
-        //}
 
         public static OctaveShift parseOctaveShiftXML(XmlNode node)
         {
@@ -1227,22 +1181,12 @@ namespace Transonic.Score.MusicXML
             return null;
         }
 
-        public static Play parsePlayXML(XmlNode node)
-        {
-            return null;
-        }
-
-        //public static void parsePlayXML(int p, XmlNodeList childnodes, Note note)
-        //{
-        //    throw new NotImplementedException();
-        //}
-
         public static PrincipalVoice parsePrincipalVoiceXML(XmlNode node)
         {
             return null;
         }
 
-        public static Print parsePrintXML(printXML item)
+        public static Print parsePrintXML(print item)
         {
             //Console.WriteLine("parsing print node");
             return null;
@@ -1324,16 +1268,6 @@ namespace Transonic.Score.MusicXML
             return null;
         }
 
-        public static Stem parseStemXML(XmlNode node)
-        {
-            return null;
-        }
-
-        //public static void parseStemXML(int p, XmlNodeList childnodes, Note note)
-        //{
-        //    //throw new NotImplementedException();
-        //}
-
         public static Stick parseStickXML(XmlNode node)
         {
             return null;
@@ -1399,25 +1333,10 @@ namespace Transonic.Score.MusicXML
             return null;
         }
 
-        //public static void parseTieXML(int num, XmlNodeList childnodes)
-        //{            
-        //    throw new NotImplementedException();
-        //}
-
         public static Tied parseTiedXML(XmlNode node)
         {
             return null;
         }
-
-        public static TimeModification parseTimeModificationXML(XmlNode node)
-        {
-            return null;
-        }
-
-        //public static void parseTimeModificationXML(int p, XmlNodeList childnodes)
-        //{
-        //    throw new NotImplementedException();
-        //}
 
         public static Tremolo parseTremoloXML(XmlNode node)
         {
@@ -1502,12 +1421,6 @@ namespace Transonic.Score.MusicXML
             return null;
         }
 
-        //public static int parseDurationXML(int num, XmlNodeList childnodes, Note note)
-        //{
-        //    note.duration = Convert.ToDouble(childnodes[0].Value);
-        //    return 1;
-        //}
-
         public static Editorial parseEditorialXML(ref int num, XmlNodeList childnodes)
         {
             return null;
@@ -1522,24 +1435,6 @@ namespace Transonic.Score.MusicXML
         {
             return null;
         }
-
-        //public static EditorialVoice parseEditorialVoice(ref int num, XmlNodeList childnodes)
-        //{
-        //    //if (childnodes[num].Name.Equals("footnote"))
-        //    //{
-        //    //    num = parseFootnoteXML(num, childnodes, note);
-        //    //}
-        //    //if (childnodes[num].Name.Equals("level"))
-        //    //{
-        //    //    num = parseLevelXML(num, childnodes, note);
-        //    //}
-        //    //if (childnodes[num].Name.Equals("voice"))
-        //    //{
-        //    //    num = parseVoiceXML(num, childnodes, note);
-        //    //}
-        //    //return num;
-        //    return null;
-        //}
 
         public static Footnote parseFootnoteXML(ref int num, XmlNodeList childnodes)
         {
@@ -1645,17 +1540,6 @@ namespace Transonic.Score.MusicXML
         //    return null;
         //}
 
-        public static StaffX parseStaffXML(ref int num, XmlNodeList childnodes)
-        {
-            return null;
-        }
-
-        //public static int parseStaffXML(int num, XmlNodeList childnodes, Note note)
-        //{
-        //    //throw new NotImplementedException();
-        //    return 1;
-        //}
-        
         public static TimeSignature parseTimeSignatureXML(ref int num, XmlNodeList childnodes)
         {
             return null;
