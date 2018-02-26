@@ -84,10 +84,6 @@ namespace Transonic.Score.Symbols
         public Stem stem;
         public Beam beam;
 
-        public int ledgerLinesAbove;
-        public bool ledgerLinesMiddle;
-        public int ledgerLinesBelow;        
-
         public Note() : base()
         {
             chord = false;
@@ -165,6 +161,14 @@ namespace Transonic.Score.Symbols
             {
                 float cpos = staff.spacing * 5;                             //pos of middle C = 60
                 top = (cpos) - ((octave - 5) * halfStep * 7) - (step * halfStep);
+                if (notenum > 80)
+                {
+                    int linesabove = ((step - 3) + ((octave - 6) * 12)) / 2;
+                    if (linesabove > beat.ledgerLinesAbove)
+                    {
+                        beat.ledgerLinesAbove = linesabove;
+                    }
+                }
             }
 
             //bass clef
@@ -187,17 +191,6 @@ namespace Transonic.Score.Symbols
 
         public override void paint(Graphics g)
         {
-            //xorg += xpos;
-            //if (ledgerLinesAbove < 0)
-            //{
-            //    int linepos = top - Staff.lineSpacing;
-            //    for (int i = 0; i > ledgerLinesAbove; i--)
-            //    {
-            //        g.DrawLine(Pens.Red, xorg - 2, linepos, xorg + 10, linepos);
-            //        linepos -= Staff.lineSpacing;
-            //    }
-            //}
-
             //if (ledgerLinesMiddle)
             //{
             //    g.DrawLine(Pens.Red, xorg - 2, top + (Staff.lineSpacing * 5), xorg + 10, top + (Staff.lineSpacing * 5));
@@ -237,14 +230,14 @@ namespace Transonic.Score.Symbols
 
             if (notetype.CompareTo(NOTETYPE.Half) < 0)
             {
-                g.FillEllipse(Brushes.Red, xpos - 4, ypos - 4, 8, 8);
+                g.FillEllipse(Brushes.Red, xpos - 4, ypos - 4, 8, 8);       //closed note head
             }
             else
             {
-                g.DrawEllipse(Pens.Red, xpos - 4, ypos - 4, 8, 8);
+                g.DrawEllipse(Pens.Red, xpos - 4, ypos - 4, 8, 8);          //open note head
                 g.DrawEllipse(Pens.Red, xpos - 3, ypos - 3, 6, 6);
             }
-            //g.DrawLine(Pens.Red, xorg + 8, top, xorg + 8, top - Staff.lineSpacing * 3);
+            g.DrawLine(Pens.Red, xpos + 4, ypos, xpos + 4, ypos - staff.spacing * 3);
 
         }
 

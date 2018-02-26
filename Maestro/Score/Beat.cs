@@ -48,6 +48,10 @@ namespace Transonic.Score
         public float width;
         //public bool hasSharp;
 
+        public int ledgerLinesAbove;
+        public bool ledgerLinesMiddle;
+        public int ledgerLinesBelow;        
+
         public Beat(Measure _measure, decimal _beatpos)
         {
             measure = _measure;
@@ -60,6 +64,10 @@ namespace Transonic.Score
             //tick = (beat * measure.staff.division) / Measure.quantization;
             //width = a + c;
             //hasSharp = false;
+
+            ledgerLinesAbove = 0;
+            ledgerLinesMiddle = false;
+            ledgerLinesBelow = 0;
         }
 
         public void dump()
@@ -89,6 +97,7 @@ namespace Transonic.Score
         //layout symbols pos inside beat box - determines beat's width + if staff needs to add leger lines for this beat 
         public void layoutSymbols()
         {
+            ledgerLinesAbove = 0;
             foreach (Symbol sym in symbols)
             {
                 sym.layout();
@@ -110,6 +119,17 @@ namespace Transonic.Score
             //int left = xorg + xpos;
             //g.DrawLine(Pens.Blue, xorg, top, xorg, top + Staff.grandHeight);
             //g.DrawLine(Pens.Green, xorg+a, top, xorg+a, top + Staff.grandHeight);
+
+            if (ledgerLinesAbove > 0)
+            {
+                float linepos = measure.staff.top - measure.staff.spacing;
+                for (int i = 0; i < ledgerLinesAbove; i++)
+                {
+                    g.DrawLine(Pens.Red, xpos - 6, linepos, xpos + 6, linepos);
+                    linepos -= measure.staff.spacing;
+                }
+            }
+
             foreach (Symbol sym in symbols)
             {
                 sym.paint(g);

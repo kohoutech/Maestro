@@ -142,25 +142,32 @@
 
 //- attributes ----------------------------------
 
+    public class attributes
+    public class attributesDirective (deprectated)
+
+    public class key
+    public class keyoctave
+    public class keyaccidental
+    public class cancel
+
+    public class time
+    public class interchangeable
+
+    public class partsymbol
+
+    public class clef
+
+    public class stafftuning
+    public class staffdetails
+
+    public class transpose
+
+    public class measurestyle
     public class slash
     public class empty
     public class beatrepeat
     public class measurerepeat
     public class multiplerest
-    public class measurestyle
-    public class transpose
-    public class stafftuning
-    public class staffdetails
-    public class clef
-    public class partsymbol
-    public class interchangeable
-    public class time
-    public class keyoctave
-    public class keyaccidental
-    public class cancel
-    public class key
-    public class attributes
-    public class attributesDirective
 
 //- harmony -------------------------------------
 
