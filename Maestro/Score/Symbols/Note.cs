@@ -153,37 +153,54 @@ namespace Transonic.Score.Symbols
         //notes from middle C and higher belong to the treble clef, notes below middle C belong to bass clef
         public override void layout()
         {
-            left = 0;
-            float halfStep = staff.spacing / 2;
-
-            //treble clef
-            if (notenum >= 60)
+            if (!rest)
             {
-                float cpos = staff.spacing * 5;                             //pos of middle C = 60
-                top = (cpos) - ((octave - 5) * halfStep * 7) - (step * halfStep);
-                if (notenum > 80)
+                left = 0;
+                float halfStep = staff.spacing / 2;
+
+                //treble clef
+                if (notenum >= 60)
                 {
-                    int linesabove = ((step - 3) + ((octave - 6) * 12)) / 2;
-                    if (linesabove > beat.ledgerLinesAbove)
+                    float cpos = staff.spacing * 5;                             //pos of middle C = 60
+                    top = (cpos) - ((octave - 5) * halfStep * 7) - (step * halfStep);
+
+                    //ledger lines about the staff
+                    if (notenum > 80)
                     {
-                        beat.ledgerLinesAbove = linesabove;
+                        int linesabove = ((step - 3) + ((octave - 6) * 7)) / 2;
+                        if (linesabove > beat.ledgerLinesAbove)
+                        {
+                            beat.ledgerLinesAbove = linesabove;
+                        }
+                    }
+
+                    beat.ledgerLinesMiddle = (notenum == 60 | notenum == 61);       //middle C ledger line
+                }
+
+                //bass clef
+                else
+                {
+                    float bottom = staff.spacing * 8 + staff.separation;
+                    float cpos = bottom + (staff.spacing * 12 + halfStep);    //pos of MIDI C = 0
+                    top = cpos - (octave * halfStep * 7) - (step * halfStep);
+
+                    if (notenum < 41)
+                    {
+                        int linesbelow = ((step - 4) - ((3 - octave) * 7)) / -2;
+                        if (linesbelow > beat.ledgerLinesBelow)
+                        {
+                            beat.ledgerLinesBelow = linesbelow;
+                        }
                     }
                 }
-            }
 
-            //bass clef
-            else
-            {
-                float bottom = staff.spacing * 8 + staff.separation;
-                float cpos = bottom + (staff.spacing * 12 + halfStep);    //pos of MIDI C = 0
-                top = cpos - (octave * halfStep * 7) - (step * halfStep);
-            }
-
-            int scalealter = circleOfFifths[(beat.measure.attr.key + 6),step];
-            if (scalealter != alter)
-            {
-                hasAccidental = true;
-                accidental = alter;
+                int scalealter = circleOfFifths[(beat.measure.attr.key + 6), step];         //get sharp/flat for note in current key
+                if (scalealter != alter)
+                {
+                    hasAccidental = true;
+                    accidental = alter;
+                    beat.measure.accidentals[notenum] = alter;
+                }
             }
         }
 
@@ -191,23 +208,6 @@ namespace Transonic.Score.Symbols
 
         public override void paint(Graphics g)
         {
-            //if (ledgerLinesMiddle)
-            //{
-            //    g.DrawLine(Pens.Red, xorg - 2, top + (Staff.lineSpacing * 5), xorg + 10, top + (Staff.lineSpacing * 5));
-            //}
-
-            //if (ledgerLinesBelow > 0)
-            //{
-            //    int linepos = top + Staff.grandHeight + Staff.lineSpacing;
-            //    for (int i = 0; i < ledgerLinesBelow; i++)
-            //    {
-            //        g.DrawLine(Pens.Red, xorg - 2, linepos, xorg + 10, linepos);
-            //        linepos += Staff.lineSpacing;
-            //    }
-            //}
-
-            //top += ypos;
-
             if (hasAccidental)
             {
                 Font symfont = new Font("Arial", 14);

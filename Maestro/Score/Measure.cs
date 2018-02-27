@@ -41,6 +41,7 @@ namespace Transonic.Score
         public Attributes attr;             //the time & key sigs for this measure, may have been defined in a prev measure
         public TimeSignature timeSig;       //if this is set, we draw a time sig at the draw of this measure
         public KeySignature keySig;         //same with key sig
+        public int[] accidentals;
 
         List<Beat> beats;        
 
@@ -179,6 +180,13 @@ namespace Transonic.Score
         //    //barline.start = timeNumer;
         //    //barline.startTick = staff.division * timeNumer;
         //    //symbols.Add(barline);
+
+            //init accidentals
+            accidentals = new int[(9 * 7)];
+            for (int i = 0; i < (9 * 7); i++)
+            {
+                accidentals[i] = 0;
+            }
 
             float beatPos = 0;             //hardwired offset of first beat in measure, will change
             if (keySig != null)

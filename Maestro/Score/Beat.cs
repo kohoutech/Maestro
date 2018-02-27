@@ -130,6 +130,23 @@ namespace Transonic.Score
                 }
             }
 
+            if (ledgerLinesMiddle)
+            {
+                g.DrawLine(Pens.Red, xpos - 6, measure.staff.top + (measure.staff.spacing * 5), 
+                    xpos + 6, measure.staff.top + (measure.staff.spacing * 5));
+            }
+
+            if (ledgerLinesBelow > 0)
+            {
+                float linepos = measure.staff.bottom + measure.staff.spacing;
+                for (int i = 0; i < ledgerLinesBelow; i++)
+                {
+                    g.DrawLine(Pens.Red, xpos - 6, linepos, xpos + 6, linepos);
+                    linepos += measure.staff.spacing;
+                }
+            }
+
+
             foreach (Symbol sym in symbols)
             {
                 sym.paint(g);
