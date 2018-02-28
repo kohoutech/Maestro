@@ -134,7 +134,7 @@ namespace Transonic.Score.Symbols
         //int[] scaleTones = { 0, 0, 1, 1, 2, 3, 3, 4, 4, 5, 5, 6 };
         //int[] keyOfC = { 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 0 };
 
-        int[,] circleOfFifths = {{-1, -1, -1, 0, -1, -1, -1},         //Gb
+        public static int[,] circleOfFifths = {{-1, -1, -1, 0, -1, -1, -1},         //Gb
                                  {0, -1, -1, 0, -1, -1, -1},         //Db
                                  {0, -1, -1, 0, 0, -1, -1},         //Ab
                                  {0, 0, -1, 0, 0, -1, -1},         //Eb
@@ -194,13 +194,18 @@ namespace Transonic.Score.Symbols
                     }
                 }
 
-                int scalealter = circleOfFifths[(beat.measure.attr.key + 6), step];         //get sharp/flat for note in current key
-                if (scalealter != alter)
+                int accidnote = (octave * 7) + step;
+                if (beat.measure.accidentals[accidnote] != alter)           //if note's alter diff than current alter val for note
                 {
                     hasAccidental = true;
-                    accidental = alter;
-                    beat.measure.accidentals[notenum] = alter;
+                    accidental = alter;                                     //it has an accidental
+                    beat.measure.accidentals[accidnote] = alter;            //save this accidental so other notes in measure won't have one
                 }
+            }
+            else
+            {
+                left = 0;
+                top = (staffnum == 1) ? staff.spacing * 2 : staff.spacing * 9;
             }
         }
 
@@ -208,37 +213,43 @@ namespace Transonic.Score.Symbols
 
         public override void paint(Graphics g)
         {
-            if (hasAccidental)
+            if (!rest)
             {
-                Font symfont = new Font("Arial", 14);
-                switch (accidental)
+                if (hasAccidental)
                 {
-                    case 0:
-                        g.DrawString(natural, symfont, Brushes.Red, xpos - 14, ypos - 12);
-                        break;
-                    case 1:
-                        g.DrawString(sharp, symfont, Brushes.Red, xpos - 14, ypos - 12);
-                        break;
-                    case -1:
-                        g.DrawString(flat, symfont, Brushes.Red, xpos - 14, ypos - 12);
-                        break;
-                    default:
-                        break;
+                    Font symfont = new Font("Arial", 14);
+                    switch (accidental)
+                    {
+                        case 0:
+                            g.DrawString(natural, symfont, Brushes.Blue, xpos - 14, ypos - 8);
+                            break;
+                        case 1:
+                            g.DrawString(sharp, symfont, Brushes.Blue, xpos - 14, ypos - 12);
+                            break;
+                        case -1:
+                            g.DrawString(flat, symfont, Brushes.Blue, xpos - 14, ypos - 12);
+                            break;
+                        default:
+                            break;
+                    }
+                    symfont.Dispose();
                 }
-                symfont.Dispose();
-            }
 
-            if (notetype.CompareTo(NOTETYPE.Half) < 0)
-            {
-                g.FillEllipse(Brushes.Red, xpos - 4, ypos - 4, 8, 8);       //closed note head
+                if (notetype.CompareTo(NOTETYPE.Half) < 0)
+                {
+                    g.FillEllipse(Brushes.Red, xpos - 4, ypos - 4, 8, 8);       //closed note head
+                }
+                else
+                {
+                    g.DrawEllipse(Pens.Red, xpos - 4, ypos - 4, 8, 8);          //open note head
+                    g.DrawEllipse(Pens.Red, xpos - 3, ypos - 3, 6, 6);
+                }
+                g.DrawLine(Pens.Red, xpos + 4, ypos, xpos + 4, ypos - staff.spacing * 3);
             }
             else
             {
-                g.DrawEllipse(Pens.Red, xpos - 4, ypos - 4, 8, 8);          //open note head
-                g.DrawEllipse(Pens.Red, xpos - 3, ypos - 3, 6, 6);
+                g.FillRectangle(Brushes.Red, xpos + 6, ypos, 8, 4);
             }
-            g.DrawLine(Pens.Red, xpos + 4, ypos, xpos + 4, ypos - staff.spacing * 3);
-
         }
 
      }

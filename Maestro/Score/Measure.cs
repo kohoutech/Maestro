@@ -183,9 +183,12 @@ namespace Transonic.Score
 
             //init accidentals
             accidentals = new int[(9 * 7)];
-            for (int i = 0; i < (9 * 7); i++)
+            int accidnum = 0;            
+            for (int i = 0; i < 9; i++)
             {
-                accidentals[i] = 0;
+                for (int j = 0; j < 7; j++) {
+                accidentals[accidnum++] = Note.circleOfFifths[attr.key + 6, j];
+            }
             }
 
             float beatPos = 0;             //hardwired offset of first beat in measure, will change
@@ -193,6 +196,11 @@ namespace Transonic.Score
             {
                 keySig.layout(beatPos);
                 beatPos += keySig.width;
+            }
+            if (timeSig != null)
+            {
+                timeSig.layout(beatPos);
+                beatPos += timeSig.width;
             }
             beatPos += 20;
             foreach (Beat beat in beats)
@@ -212,6 +220,10 @@ namespace Transonic.Score
             if (keySig != null)
             {
                 keySig.setPos(xpos);                
+            }
+            if (timeSig != null)
+            {
+                timeSig.setPos(xpos);
             }
             foreach (Beat beat in beats)
             {
@@ -242,6 +254,10 @@ namespace Transonic.Score
             if (keySig != null)
             {
                 keySig.paint(g);                
+            }
+            if (timeSig != null)
+            {
+                timeSig.paint(g);
             }
 
             //beats
@@ -301,11 +317,42 @@ namespace Transonic.Score
         public int numer;
         public int denom;
 
+        public float measpos;                       //beat's pos in measure in pixels
+        public float xpos;
+        public float width;
+
         public TimeSignature(Measure _meas, int _numer, int _denom)
         {
             measure = _meas;
             numer = _numer;
             denom = _denom;
+        }
+
+        public void layout(float _pos)
+        {
+            measpos = _pos;
+            width = 20;
+        }
+
+        public void setPos(float _pos)
+        {
+            xpos = measpos + _pos;
+        }
+            
+        public void paint(Graphics g)
+        {
+            Staff staff = measure.staff;
+            Font timefont = new Font("Arial", 14);
+
+            //treble clef
+            g.DrawString(numer.ToString(), timefont, Brushes.Black, xpos, staff.top - 2);
+            g.DrawString(denom.ToString(), timefont, Brushes.Black, xpos, staff.top + (staff.spacing * 2) - 2);
+
+            //bass clef
+            g.DrawString(numer.ToString(), timefont, Brushes.Black, xpos, staff.top + (staff.spacing * 4) - 2 + staff.separation);
+            g.DrawString(denom.ToString(), timefont, Brushes.Black, xpos, staff.top + (staff.spacing * 6) - 2 + staff.separation);
+
+            timefont.Dispose();
         }
     }
 
@@ -331,7 +378,7 @@ namespace Transonic.Score
         public void layout(float _pos)
         {
             measpos = _pos;
-            width = measure.staff.spacing * (key);
+            width = measure.staff.spacing * (key) + 10;
         }
 
         public void setPos(float _pos)
@@ -347,24 +394,29 @@ namespace Transonic.Score
             float ypos = measure.staff.top;
             Staff staff = measure.staff;
             Font keyfont = new Font("Arial", 14);
-            if (key > 0)
+            float y = staff.top - 12;
+            for (int j = 0; j < 2; j++)
             {
-                float x = xpos;
-                for (int i = 0; i < key; i++)
+                if (key > 0)
                 {
-                    g.DrawString("\u266f", keyfont, Brushes.Black, x, staff.top + (sharpYPos[i] * staff.spacing) - 12);
-                    x += staff.spacing;
+                    float x = xpos;
+                    for (int i = 0; i < key; i++)
+                    {
+                        g.DrawString("\u266f", keyfont, Brushes.Black, x, y + (sharpYPos[i] * staff.spacing));
+                        x += staff.spacing;
+                    }
                 }
-            }
-            else
-            {
-                int count = -key;
-                float x = xpos;
-                for (int i = 0; i < count; i++)
+                else
                 {
-                    g.DrawString("\u266d", keyfont, Brushes.Green, x, staff.top + (sharpYPos[i] * staff.spacing) - 12);
-                    x += staff.spacing;
+                    int count = -key;
+                    float x = xpos;
+                    for (int i = 0; i < count; i++)
+                    {
+                        g.DrawString("\u266d", keyfont, Brushes.Green, x, y + (sharpYPos[i] * staff.spacing));
+                        x += staff.spacing;
+                    }                    
                 }
+                y += (staff.spacing * 5) + staff.separation;
             }
             keyfont.Dispose();
         }

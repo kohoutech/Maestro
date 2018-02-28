@@ -103,10 +103,6 @@ namespace Transonic.Score.Symbols
     //        len = _len;
     //    }
 
-    //    public override void paint(Graphics g, int left, int top)
-    //    {
-    //        //g.FillRectangle(Brushes.Blue, left + 6, top + Staff.lineSpacing, 8, 4);
-    //    }
     //}
 
 }
