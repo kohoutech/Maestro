@@ -205,7 +205,7 @@ namespace Transonic.Score.Symbols
             else
             {
                 left = 0;
-                top = (staffnum == 1) ? staff.spacing * 2 : staff.spacing * 9;
+                top = (staffnum == 1) ? staff.spacing * 1.5f : staff.spacing * 9;
             }
         }
 
@@ -244,11 +244,11 @@ namespace Transonic.Score.Symbols
                     g.DrawEllipse(Pens.Red, xpos - 4, ypos - 4, 8, 8);          //open note head
                     g.DrawEllipse(Pens.Red, xpos - 3, ypos - 3, 6, 6);
                 }
-                g.DrawLine(Pens.Red, xpos + 4, ypos, xpos + 4, ypos - staff.spacing * 3);
+                g.DrawLine(Pens.Red, xpos + 4, ypos, xpos + 4, ypos - staff.spacing * 3);       //stem
             }
             else
             {
-                g.FillRectangle(Brushes.Red, xpos + 6, ypos, 8, 4);
+                g.FillRectangle(Brushes.Red, xpos - 4, ypos, 8, 4);         //rest
             }
         }
 

@@ -32,6 +32,7 @@ using Transonic.MIDI.System;
 using Transonic.Widget;
 using Transonic.Score;
 using Transonic.Score.MusicXML;
+using Transonic.Score.Midi;
 using Maestro.UI;
 
 namespace Maestro
@@ -167,14 +168,13 @@ namespace Maestro
             currentScore = MusicXMLReader.loadFromMusicXML(filename);
             scoreSheet.setScore(currentScore);
             this.Text = "Maestro [" + filename + "]";
-            //currentSeq.setMidiSystem(midiSystem);
-            //transport.setSequence(currentSeq);
-            //controlPanel.setSequence(currentSeq);
-            //playTransportMenuItem.Enabled = true;
-            //stopTransportMenuItem.Enabled = true;            
+            currentSeq = ScoreMidi.ConvertScoreToMidi(currentScore);
+            currentSeq.setMidiSystem(midiSystem);
+            transport.setSequence(currentSeq);
+            controlPanel.setSequence(currentSeq);
+            playTransportMenuItem.Enabled = true;
+            stopTransportMenuItem.Enabled = true;            
         }
-
-
 
 //- file events ---------------------------------------------------------------
 

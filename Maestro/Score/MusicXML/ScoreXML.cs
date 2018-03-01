@@ -242,7 +242,7 @@ namespace Transonic.Score.MusicXML
 
         [System.Xml.Serialization.XmlElementAttribute("ItemsElementName")]
         [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public ItemsChoiceType[] ItemsElementName;
+        public EncodingChoiceTypes[] ItemsElementName;
     }
 
     [System.SerializableAttribute()]
@@ -263,7 +263,7 @@ namespace Transonic.Score.MusicXML
 
     [System.SerializableAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(IncludeInSchema = false)]
-    public enum ItemsChoiceType
+    public enum EncodingChoiceTypes
     {
         encoder,
             [System.Xml.Serialization.XmlEnumAttribute("encoding-date")]
@@ -1015,25 +1015,25 @@ namespace Transonic.Score.MusicXML
     [System.SerializableAttribute()]
     public class stem
     {
-        [System.Xml.Serialization.XmlAttributeAttribute("default-x")]
+            [System.Xml.Serialization.XmlAttributeAttribute("default-x")]
         public decimal defaultx;
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
+            [System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool defaultxSpecified;
-        [System.Xml.Serialization.XmlAttributeAttribute("default-y")]
+            [System.Xml.Serialization.XmlAttributeAttribute("default-y")]
         public decimal defaulty;
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
+            [System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool defaultySpecified;
-        [System.Xml.Serialization.XmlAttributeAttribute("relative-x")]
+            [System.Xml.Serialization.XmlAttributeAttribute("relative-x")]
         public decimal relativex;
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
+            [System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool relativexSpecified;
-        [System.Xml.Serialization.XmlAttributeAttribute("relative-y")]
+            [System.Xml.Serialization.XmlAttributeAttribute("relative-y")]
         public decimal relativey;
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
+            [System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool relativeySpecified;
-        [System.Xml.Serialization.XmlAttributeAttribute(DataType = "token")]
+            [System.Xml.Serialization.XmlAttributeAttribute(DataType = "token")]
         public string color;
-        [System.Xml.Serialization.XmlTextAttribute()]
+            [System.Xml.Serialization.XmlTextAttribute()]
         public stemvalue Value;
     }
 
@@ -1209,10 +1209,38 @@ namespace Transonic.Score.MusicXML
 
         [System.Xml.Serialization.XmlElementAttribute("ItemsElementName")]
         [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public ItemsChoiceType4[] ItemsElementName;
+        public ArticulationsChoiceTypes[] ItemsElementName;
 
         [System.Xml.Serialization.XmlAttributeAttribute(DataType = "ID")]
         public string id;
+    }
+
+    [System.SerializableAttribute()]
+    [System.Xml.Serialization.XmlTypeAttribute(IncludeInSchema = false)]
+    public enum ArticulationsChoiceTypes
+    {
+        accent,
+        [System.Xml.Serialization.XmlEnumAttribute("breath-mark")]
+        breathmark,
+        caesura,
+        [System.Xml.Serialization.XmlEnumAttribute("detached-legato")]
+        detachedlegato,
+        doit,
+        falloff,
+        [System.Xml.Serialization.XmlEnumAttribute("other-articulation")]
+        otherarticulation,
+        plop,
+        scoop,
+        [System.Xml.Serialization.XmlEnumAttribute("soft-accent")]
+        softaccent,
+        spiccato,
+        staccatissimo,
+        staccato,
+        stress,
+        [System.Xml.Serialization.XmlEnumAttribute("strong-accent")]
+        strongaccent,
+        tenuto,
+        unstress,
     }
 
     [System.SerializableAttribute()]
@@ -1221,10 +1249,8 @@ namespace Transonic.Score.MusicXML
     {
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public abovebelow placement;
-
         [System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool placementSpecified;
-
         [System.Xml.Serialization.XmlTextAttribute()]
         public breathmarkvalue Value;
     }
@@ -1312,7 +1338,6 @@ namespace Transonic.Score.MusicXML
         @long,
     }
 
-
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(strongaccent))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(heeltoe))]
     [System.SerializableAttribute()]
@@ -1375,7 +1400,7 @@ namespace Transonic.Score.MusicXML
 
         [System.Xml.Serialization.XmlElementAttribute("ItemsElementName")]
         [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public ItemsChoiceType5[] ItemsElementName;
+        public DynamicChoiceTypes[] ItemsElementName;
 
         //attrs
         [System.Xml.Serialization.XmlAttributeAttribute()]
@@ -1398,7 +1423,7 @@ namespace Transonic.Score.MusicXML
 
     [System.SerializableAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(IncludeInSchema = false)]
-    public enum ItemsChoiceType5
+    public enum DynamicChoiceTypes
     {
         f,
         ff,
@@ -1458,16 +1483,16 @@ namespace Transonic.Score.MusicXML
         normal,
         angled,
         square,
-        [System.Xml.Serialization.XmlEnumAttribute("double-angled")]
+            [System.Xml.Serialization.XmlEnumAttribute("double-angled")]
         doubleangled,
-        [System.Xml.Serialization.XmlEnumAttribute("double-square")]
+            [System.Xml.Serialization.XmlEnumAttribute("double-square")]
         doublesquare,
-        [System.Xml.Serialization.XmlEnumAttribute("double-dot")]
+            [System.Xml.Serialization.XmlEnumAttribute("double-dot")]
         doubledot,
-        [System.Xml.Serialization.XmlEnumAttribute("half-curve")]
+            [System.Xml.Serialization.XmlEnumAttribute("half-curve")]
         halfcurve,
         curlew,
-        [System.Xml.Serialization.XmlEnumAttribute("")]
+            [System.Xml.Serialization.XmlEnumAttribute("")]
         Item
     }
 
@@ -1577,7 +1602,7 @@ namespace Transonic.Score.MusicXML
 
         [System.Xml.Serialization.XmlElementAttribute("ItemsElementName")]
         [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public ItemsChoiceType2[] ItemsElementName;
+        public OrnamentChoiceTypes[] ItemsElementName;
 
         [System.Xml.Serialization.XmlElementAttribute("accidental-mark")]
         public accidentalmark[] accidentalmark;
@@ -1588,7 +1613,7 @@ namespace Transonic.Score.MusicXML
 
     [System.SerializableAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(IncludeInSchema = false)]
-    public enum ItemsChoiceType2
+    public enum OrnamentChoiceTypes
     {
         [System.Xml.Serialization.XmlEnumAttribute("delayed-inverted-turn")]
         delayedinvertedturn,
@@ -1732,6 +1757,16 @@ namespace Transonic.Score.MusicXML
         {
             this.type = tremolotype.single;
         }
+    }
+
+    [System.SerializableAttribute()]
+    [System.Xml.Serialization.XmlTypeAttribute(TypeName = "tremolo-type")]
+    public enum tremolotype
+    {
+        start,
+        stop,
+        single,
+        unmeasured
     }
 
     [System.SerializableAttribute()]
@@ -1936,7 +1971,7 @@ namespace Transonic.Score.MusicXML
 
         [System.Xml.Serialization.XmlElementAttribute("ItemsElementName")]
         [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public ItemsChoiceType3[] ItemsElementName;
+        public TechnicalChoiceTypes[] ItemsElementName;
 
         [System.Xml.Serialization.XmlAttributeAttribute(DataType = "ID")]
         public string id;
@@ -1944,7 +1979,7 @@ namespace Transonic.Score.MusicXML
 
     [System.SerializableAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(IncludeInSchema = false)]
-    public enum ItemsChoiceType3
+    public enum TechnicalChoiceTypes
     {
         arrow,
         bend,
@@ -1990,16 +2025,6 @@ namespace Transonic.Score.MusicXML
         tripletongue,
         [System.Xml.Serialization.XmlEnumAttribute("up-bow")]
         upbow
-    }
-
-    [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(TypeName = "tremolo-type")]
-    public enum tremolotype
-    {
-        start,
-        stop,
-        single,
-        unmeasured
     }
 
     [System.SerializableAttribute()]
@@ -2072,7 +2097,9 @@ namespace Transonic.Score.MusicXML
         [System.Xml.Serialization.XmlChoiceIdentifierAttribute("ItemElementName")]
         public empty Item;
         [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public ItemChoiceType1 ItemElementName;
+        public BendChoiceTypes ItemElementName;
+
+        //attrs
         [System.Xml.Serialization.XmlElementAttribute("with-bar")]
         public placementtext withbar;
         [System.Xml.Serialization.XmlAttributeAttribute()]
@@ -2095,7 +2122,7 @@ namespace Transonic.Score.MusicXML
 
     [System.SerializableAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(IncludeInSchema = false)]
-    public enum ItemChoiceType1
+    public enum BendChoiceTypes
     {
         [System.Xml.Serialization.XmlEnumAttribute("pre-bend")]
         prebend,
@@ -2220,19 +2247,23 @@ namespace Transonic.Score.MusicXML
     [System.SerializableAttribute()]
     public class harmonic
     {
+        //elems
         [System.Xml.Serialization.XmlElementAttribute("artificial", typeof(empty))]
         [System.Xml.Serialization.XmlElementAttribute("natural", typeof(empty))]
         [System.Xml.Serialization.XmlChoiceIdentifierAttribute("ItemElementName")]
         public empty Item;
         [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public ItemChoiceType ItemElementName;
+        public HarmonicChoiceTypes ItemElementName;
+
         [System.Xml.Serialization.XmlElementAttribute("base-pitch", typeof(empty))]
         [System.Xml.Serialization.XmlElementAttribute("sounding-pitch", typeof(empty))]
         [System.Xml.Serialization.XmlElementAttribute("touching-pitch", typeof(empty))]
         [System.Xml.Serialization.XmlChoiceIdentifierAttribute("Item1ElementName")]
         public empty Item1;
         [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public Item1ChoiceType Item1ElementName;
+        public PitchChoiceTypes Item1ElementName;
+
+        //attrs
         [System.Xml.Serialization.XmlAttributeAttribute("print-object")]
         public yesno printobject;
         [System.Xml.Serialization.XmlIgnoreAttribute()]
@@ -2245,7 +2276,7 @@ namespace Transonic.Score.MusicXML
 
     [System.SerializableAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(IncludeInSchema = false)]
-    public enum ItemChoiceType
+    public enum HarmonicChoiceTypes
     {
         artificial,
         natural
@@ -2253,7 +2284,7 @@ namespace Transonic.Score.MusicXML
 
     [System.SerializableAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(IncludeInSchema = false)]
-    public enum Item1ChoiceType
+    public enum PitchChoiceTypes
     {
         [System.Xml.Serialization.XmlEnumAttribute("base-pitch")]
         basepitch,
@@ -2267,10 +2298,8 @@ namespace Transonic.Score.MusicXML
     [System.Xml.Serialization.XmlTypeAttribute(TypeName = "heel-toe")]
     public class heeltoe : emptyplacement
     {
-
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public yesno substitution;
-
         [System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool substitutionSpecified;
     }
@@ -2333,34 +2362,6 @@ namespace Transonic.Score.MusicXML
         public string smufl;
         [System.Xml.Serialization.XmlTextAttribute()]
         public string Value;
-    }
-
-    [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(IncludeInSchema = false)]
-    public enum ItemsChoiceType4
-    {
-        accent,
-        [System.Xml.Serialization.XmlEnumAttribute("breath-mark")]
-        breathmark,
-        caesura,
-        [System.Xml.Serialization.XmlEnumAttribute("detached-legato")]
-        detachedlegato,
-        doit,
-        falloff,
-        [System.Xml.Serialization.XmlEnumAttribute("other-articulation")]
-        otherarticulation,
-        plop,
-        scoop,
-        [System.Xml.Serialization.XmlEnumAttribute("soft-accent")]
-        softaccent,
-        spiccato,
-        staccatissimo,
-        staccato,
-        stress,
-        [System.Xml.Serialization.XmlEnumAttribute("strong-accent")]
-        strongaccent,
-        tenuto,
-        unstress,
     }
 
     [System.SerializableAttribute()]
@@ -2622,7 +2623,8 @@ namespace Transonic.Score.MusicXML
         public object[] Items;
         [System.Xml.Serialization.XmlElementAttribute("ItemsElementName")]
         [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public ItemsChoiceType6[] ItemsElementName;
+        public LyricChoiceTypes[] ItemsElementName;
+
         [System.Xml.Serialization.XmlElementAttribute("end-line")]
         public empty endline;
         [System.Xml.Serialization.XmlElementAttribute("end-paragraph")]
@@ -2680,7 +2682,7 @@ namespace Transonic.Score.MusicXML
 
     [System.SerializableAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(IncludeInSchema = false)]
-    public enum ItemsChoiceType6
+    public enum LyricChoiceTypes
     {
         elision,
         extend,
@@ -3424,11 +3426,9 @@ namespace Transonic.Score.MusicXML
     [System.Xml.Serialization.XmlTypeAttribute(TypeName = "metronome-beam")]
     public class metronomebeam
     {
-
         [System.Xml.Serialization.XmlAttributeAttribute(DataType = "positiveInteger")]
         [System.ComponentModel.DefaultValueAttribute("1")]
         public string number;
-
         [System.Xml.Serialization.XmlTextAttribute()]
         public beamvalue Value;
 
@@ -3455,19 +3455,14 @@ namespace Transonic.Score.MusicXML
     [System.Xml.Serialization.XmlTypeAttribute(TypeName = "metronome-note")]
     public class metronomenote
     {
-
         [System.Xml.Serialization.XmlElementAttribute("metronome-type")]
         public notetypevalue metronometype;
-
         [System.Xml.Serialization.XmlElementAttribute("metronome-dot")]
         public empty[] metronomedot;
-
         [System.Xml.Serialization.XmlElementAttribute("metronome-beam")]
         public metronomebeam[] metronomebeam;
-
         [System.Xml.Serialization.XmlElementAttribute("metronome-tied")]
         public metronometied metronometied;
-
         [System.Xml.Serialization.XmlElementAttribute("metronome-tuplet")]
         public metronometuplet metronometuplet;
     }
@@ -3476,19 +3471,14 @@ namespace Transonic.Score.MusicXML
     [System.Xml.Serialization.XmlTypeAttribute(TypeName = "metronome-tuplet")]
     public class metronometuplet : timemodification
     {
-
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public startstop type;
-
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public yesno bracket;
-
         [System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool bracketSpecified;
-
         [System.Xml.Serialization.XmlAttributeAttribute("show-number")]
         public showtuplet shownumber;
-
         [System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool shownumberSpecified;
     }
@@ -3507,16 +3497,12 @@ namespace Transonic.Score.MusicXML
     [System.Xml.Serialization.XmlTypeAttribute(TypeName = "time-modification")]
     public class timemodification
     {
-
         [System.Xml.Serialization.XmlElementAttribute("actual-notes", DataType = "nonNegativeInteger")]
         public string actualnotes;
-
         [System.Xml.Serialization.XmlElementAttribute("normal-notes", DataType = "nonNegativeInteger")]
         public string normalnotes;
-
         [System.Xml.Serialization.XmlElementAttribute("normal-type")]
         public notetypevalue normaltype;
-
         [System.Xml.Serialization.XmlElementAttribute("normal-dot")]
         public empty[] normaldot;
     }
@@ -3525,25 +3511,18 @@ namespace Transonic.Score.MusicXML
     [System.Xml.Serialization.XmlTypeAttribute(TypeName = "per-minute")]
     public class perminute
     {
-
         [System.Xml.Serialization.XmlAttributeAttribute("font-family", DataType = "token")]
         public string fontfamily;
-
         [System.Xml.Serialization.XmlAttributeAttribute("font-style")]
         public fontstyle fontstyle;
-
         [System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool fontstyleSpecified;
-
         [System.Xml.Serialization.XmlAttributeAttribute("font-size")]
         public string fontsize;
-
         [System.Xml.Serialization.XmlAttributeAttribute("font-weight")]
         public fontweight fontweight;
-
         [System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool fontweightSpecified;
-
         [System.Xml.Serialization.XmlTextAttribute()]
         public string Value;
     }
@@ -3552,10 +3531,8 @@ namespace Transonic.Score.MusicXML
     [System.Xml.Serialization.XmlTypeAttribute(TypeName = "beat-unit-tied")]
     public class beatunittied
     {
-
         [System.Xml.Serialization.XmlElementAttribute("beat-unit")]
         public notetypevalue beatunit;
-
         [System.Xml.Serialization.XmlElementAttribute("beat-unit-dot")]
         public empty[] beatunitdot;
     }
@@ -3576,7 +3553,7 @@ namespace Transonic.Score.MusicXML
 
         [System.Xml.Serialization.XmlElementAttribute("ItemsElementName")]
         [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public ItemsChoiceType7[] ItemsElementName;
+        public MetronomeChoiceTypes[] ItemsElementName;
 
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public leftcenterright justify;
@@ -3596,7 +3573,7 @@ namespace Transonic.Score.MusicXML
 
     [System.SerializableAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(IncludeInSchema = false)]
-    public enum ItemsChoiceType7
+    public enum MetronomeChoiceTypes
     {
         [System.Xml.Serialization.XmlEnumAttribute("beat-unit")]
         beatunit,
@@ -3914,7 +3891,7 @@ namespace Transonic.Score.MusicXML
 
         [System.Xml.Serialization.XmlElementAttribute("ItemsElementName")]
         [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public ItemsChoiceType8[] ItemsElementName;
+        public DirectionChoiceTypes[] ItemsElementName;
 
         [System.Xml.Serialization.XmlAttributeAttribute(DataType = "ID")]
         public string id;
@@ -3979,7 +3956,7 @@ namespace Transonic.Score.MusicXML
 
     [System.SerializableAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(IncludeInSchema = false)]
-    public enum ItemsChoiceType8
+    public enum DirectionChoiceTypes
     {
             [System.Xml.Serialization.XmlEnumAttribute("accordion-registration")]
         accordionregistration,

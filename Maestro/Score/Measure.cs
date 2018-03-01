@@ -43,7 +43,7 @@ namespace Transonic.Score
         public KeySignature keySig;         //same with key sig
         public int[] accidentals;
 
-        List<Beat> beats;        
+        public List<Beat> beats;        
 
         public int number;                  //measure number 
         public decimal length;              //number of beats in measure, determined by most recent key signature
