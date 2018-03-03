@@ -24,7 +24,7 @@ using System.Text;
 
 namespace Transonic.MIDI
 {
-    public class Event
+    public class Event : IComparable<Event>
     {
         public uint time;
         public Message msg;
@@ -39,7 +39,11 @@ namespace Transonic.MIDI
         {
             Console.WriteLine("time = {0}, msg = {1}", time, msg);
         }
-
+        
+        public int CompareTo(Event other)
+        {
+            return this.time.CompareTo(other.time);
+        }
     }
     
 }

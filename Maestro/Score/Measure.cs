@@ -46,8 +46,7 @@ namespace Transonic.Score
         public List<Beat> beats;        
 
         public int number;                  //measure number 
-        public decimal length;              //number of beats in measure, determined by most recent key signature
-
+        public decimal length;              //number of beats in measure in divisions, determined by most recent key signature
 
         public float staffpos;                //ofs in staff in measure, in pixels
         public float width;                   //width of measure, sum of all beat widths, in pixels
@@ -73,7 +72,7 @@ namespace Transonic.Score
             keySig = null;
 
             beats = new List<Beat>();
-            length = 0;
+            length = (attr.divisions * 4 * attr.timeNumer) / attr.timeDenom;
 
             staffpos = 0;
             width = 0;
@@ -81,11 +80,12 @@ namespace Transonic.Score
 
         public void setAttributes(Attributes attr)
         {
-            if (attr.beatpos == 0)
+            if (attr.beatpos == 0)          //only attributes at the start of a measure for now
             {
                 this.attr = attr;
                 timeSig = new TimeSignature(this, attr.timeNumer, attr.timeDenom);
                 keySig = new KeySignature(this, attr.key);
+                length = (attr.divisions * 4 * attr.timeNumer) / attr.timeDenom;
             }
         }
 
@@ -124,8 +124,7 @@ namespace Transonic.Score
             {
                 result = new Beat(this, beatPos);
                 beats.Add(result);
-                beats.Sort((a, b) => a.beatpos.CompareTo(b.beatpos));
-                length = beats[beats.Count - 1].beatpos;
+                beats.Sort((a, b) => a.beatpos.CompareTo(b.beatpos));        
             }
             return result;
         }

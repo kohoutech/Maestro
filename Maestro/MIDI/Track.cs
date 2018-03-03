@@ -209,6 +209,11 @@ namespace Transonic.MIDI
             }
         }
 
+        public void sort()
+        {
+            events.Sort();
+        }
+
 //- track saving -------------------------------------------------------------
 
         public void saveTrack(MidiOutStream stream)
