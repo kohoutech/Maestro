@@ -37,7 +37,6 @@ namespace Transonic.Score.Midi
             for (int i = 0; i < doc.parts.Count; i++)
             {
                 Track track = getTrackFromPart(doc.parts[i]);
-                track.sort();
                 seq.addTrack(track);
             }
             return seq;
@@ -58,7 +57,6 @@ namespace Transonic.Score.Midi
                 }
             }
             return track;
-
         }
 
         private static void getEventsFromMeasure(Track track, Measure measure, decimal measurepos)
@@ -80,11 +78,11 @@ namespace Transonic.Score.Midi
                     Note note = (Note)sym;
                     NoteOnMessage onmsg = new NoteOnMessage(0, note.notenum, 0x60);
                     uint evtime = (uint)(beattime * beattick);
-                    Event evt = new Event(evtime, onmsg);
+                    Event evt = new MessageEvent(evtime, onmsg);
                     track.addEvent(evt);
                     NoteOffMessage msg = new NoteOffMessage(0, note.notenum, 0x60);
                     evtime += (uint)(note.duration * beattick);
-                    evt = new Event(evtime, msg);
+                    evt = new MessageEvent(evtime, msg);
                     track.addEvent(evt);
                 }
             }

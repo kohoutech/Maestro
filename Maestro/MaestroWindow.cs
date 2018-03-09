@@ -50,7 +50,7 @@ namespace Maestro
         MidiSystem midiSystem;
         Transport transport;
         Sequence currentSeq;
-        public int displayTrackNum;
+        public int displayPartNum;
 
 
         public MaestroWindow()
@@ -61,8 +61,8 @@ namespace Maestro
             midiSystem = new MidiSystem();
             transport = new Transport(this);
             transport.init();
-            currentSeq = new Sequence(Sequence.DEFAULTDIVISION);
-            displayTrackNum = 0;
+            currentSeq = new Sequence();
+            displayPartNum = 0;
 
             InitializeComponent();
 
@@ -115,65 +115,61 @@ namespace Maestro
 
 //- actions -------------------------------------------------------------------
 
-        public void openSequence(String filename) 
-        {
-            currentSeq = MidiFile.readMidiFile(filename);
-            this.Text = "Maestro [" + filename + "]";
-            currentSeq.setMidiSystem(midiSystem);
-            transport.setSequence(currentSeq);
-            //score.setSequence(currentSeq);
-            controlPanel.setSequence(currentSeq);
-            playTransportMenuItem.Enabled = true;
-            stopTransportMenuItem.Enabled = true;
-            //currentSeq.dump();
-        }
-
-        public void playSequence()
-        {
-            transport.playSequence();
-            masterTimer.Start();
-            controlPanel.setPlaying(true);
-        }
-
-        public void stopSequence()
-        {
-            transport.stopSequence();
-            masterTimer.Stop();
-            controlPanel.setPlaying(false);            
-        }
-
-        public void halfSpeedSequence(bool on)
-        {
-            transport.halfSpeedSequence(on);
-        }
-
-        public void setSequencePos(int tick)
-        {
-            keyboard.allKeysUp();
-            transport.setSequencePos(tick);
-            //score.setDisplayStaffPos(tick);
-            int mstime = transport.getMilliSecTime();
-            controlPanel.timerTick(tick, mstime);
-        }
-
-        public void setDisplayTrack(int trackNum)
-        {
-            keyboard.allKeysUp();
-            displayTrackNum = trackNum;
-            //score.setDisplayStaff(trackNum);
-        }
-
         public void openScore(String filename)
         {
             currentScore = MusicXMLReader.loadFromMusicXML(filename);
             scoreSheet.setScore(currentScore);
             this.Text = "Maestro [" + filename + "]";
             currentSeq = ScoreMidi.ConvertScoreToMidi(currentScore);
-            currentSeq.setMidiSystem(midiSystem);
             transport.setSequence(currentSeq);
             controlPanel.setSequence(currentSeq);
             playTransportMenuItem.Enabled = true;
-            stopTransportMenuItem.Enabled = true;            
+            stopTransportMenuItem.Enabled = true;
+            setTrackOutput();
+        }
+
+        public void setTrackOutput()
+        {
+            for (int i = 0; i < currentSeq.tracks.Count; i++)
+            {
+                currentSeq.tracks[i].setOutputDevice(midiSystem.outputDevices[0]);
+                currentSeq.tracks[i].setOutputChannel(i);
+            }
+        }
+
+        public void playSequence()
+        {
+            transport.play();
+            masterTimer.Start();
+            controlPanel.setPlaying(true);
+        }
+
+        public void stopSequence()
+        {
+            transport.stop();
+            masterTimer.Stop();
+            controlPanel.setPlaying(false);            
+        }
+
+        public void halfSpeedSequence(bool on)
+        {
+            transport.setPlaybackSpeed(on);
+        }
+
+        public void setSequencePos(int tick)
+        {
+            keyboard.allKeysUp();
+            transport.setCurrentPos(tick);
+            //scoreSheet.setDisplayStaffPos(tick);
+            int mstime = transport.getCurrentTime();
+            controlPanel.timerTick(tick, mstime);
+        }
+
+        public void setDisplayPart(int partNum)
+        {
+            keyboard.allKeysUp();
+            displayPartNum = partNum;
+            scoreSheet.setCurrentPart(partNum);
         }
 
 //- file events ---------------------------------------------------------------
@@ -225,14 +221,14 @@ namespace Maestro
         private void masterTimer_Tick(object sender, EventArgs e)
         {
             int tick = transport.tickNum;
-            int mstime = transport.getMilliSecTime();
+            int mstime = transport.getCurrentTime();
             controlPanel.timerTick(tick, mstime);
             //score.setDisplayStaffPos(tick);
         }
 
         public void handleMessage(int track, Transonic.MIDI.Message message)
         {
-            if (track == displayTrackNum)
+            if (track == displayPartNum)
             {
                 if (message is NoteOnMessage)
                 {
@@ -251,6 +247,7 @@ namespace Maestro
         {
             masterTimer.Stop();
             controlPanel.setPlaying(false);
+            keyboard.allKeysUp();            
         }
 
 //- iKeyboardWindow methods ---------------------------------------------------

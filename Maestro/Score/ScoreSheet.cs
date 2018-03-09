@@ -86,6 +86,12 @@ namespace Transonic.Score
             Invalidate();
         }
 
+        public void setCurrentPart(int partNum)
+        {
+            score.curMeasure = partNum;
+            Invalidate();
+        }
+
         private void horzScroll_Scroll(object sender, ScrollEventArgs e)
         {
             Invalidate();
@@ -108,6 +114,7 @@ namespace Transonic.Score
             }
             g.ResetTransform();
         }
+
     }
 
 //-----------------------------------------------------------------------------

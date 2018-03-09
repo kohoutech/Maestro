@@ -51,6 +51,7 @@
   <ItemGroup>
     <Compile Include="MIDI\Engine\MidiTimer.cs" />
     <Compile Include="MIDI\Engine\Transport.cs" />
+    <Compile Include="MIDI\MarkerMap.cs" />
     <Compile Include="MIDI\Message.cs" />
     <Compile Include="MaestroWindow.cs">
       <SubType>Form</SubType>
@@ -59,12 +60,14 @@
       <DependentUpon>MaestroWindow.cs</DependentUpon>
     </Compile>
     <Compile Include="MIDI\Event.cs" />
+    <Compile Include="MIDI\MeterMap.cs" />
     <Compile Include="MIDI\MidiFile.cs" />
     <Compile Include="MIDI\Sequence.cs" />
     <Compile Include="MIDI\System\InputDevice.cs" />
     <Compile Include="MIDI\System\MidiSystem.cs" />
     <Compile Include="MIDI\System\OutputDevice.cs" />
     <Compile Include="MIDI\System\SystemUnit.cs" />
+    <Compile Include="MIDI\TempoMap.cs" />
     <Compile Include="MIDI\Track.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

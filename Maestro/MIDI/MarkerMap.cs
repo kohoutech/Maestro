@@ -22,29 +22,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Transonic.MIDI.System
+namespace Transonic.MIDI
 {
-    public abstract class SystemUnit
+    public class MarkerMap
     {
-        public String name;
-        public InputDevice inputDev;                    //connect from input device
-        public List<OutputDevice> outputDevList;        //connections to output devices
-
-        public SystemUnit(String _name)
-        {
-            name = _name;
-            inputDev = null;
-            outputDevList = new List<OutputDevice>();
-        }
-
-        //for connection to input devices
-        public virtual void receiveMessage(byte[] msg)
-        {
-        }
-
-        //for connection to output devices
-        public virtual void sendMessage(byte[] msg)
-        {
-        }
     }
+
+//-----------------------------------------------------------------------------
+
+    public class Marker
+    {
+    }
+
 }

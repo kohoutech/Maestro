@@ -28,91 +28,88 @@ namespace Transonic.MIDI
 {
     public class Sequence
     {
-        public const int DEFAULTDIVISION = 120;
-        public const int DEFAULTTEMPO = 500000;
+        public const int DEFAULTDIVISION = 96;         //ticks / quarter note
 
-        public MidiSystem midiSystem;
+        public int division;                //ppq - ticks (pulses) / quarter note
+        public int length;                  //total length in ticks
+
         public List<Track> tracks;
-        public int division;
-        public int duration;
-        public List<Event> tempoMap;
+        public TempoMap tempoMap;
+        public MeterMap meterMap;
+        public MarkerMap markerMap;
+
+
+        public Sequence() : this(DEFAULTDIVISION) { }
 
         public Sequence(int _division)
         {
-            midiSystem = null;
             division = _division;
-            duration = 0;
+            length = 0;
 
             tracks = new List<Track>();
-            tempoMap = new List<Event>();
+            tempoMap = new TempoMap();
+            meterMap = new MeterMap();
+            markerMap = new MarkerMap();
         }
 
         public void addTrack(Track track)
         {
             tracks.Add(track);
+            if (track.length > length)
+            {
+                length = track.length;
+            }
         }
 
         public void deleteTrack(Track track)
         {
-            tracks.Remove(track);
+            tracks.Remove(track);            
         }
 
-        public void finalizeLoad()
-        {
-            calcTempoMap();
-            for (int i = 1; i < tracks.Count; i++) 
-            {
-                tracks[i].finalizeLoad();
-                if (duration < tracks[i].duration) duration = tracks[i].duration;
-            }
-        }
-
-        public void setMidiSystem(MidiSystem system)
-        {
-            midiSystem = system;
-            for (int i = 1; i < tracks.Count; i++)
-            {
-                //tracks[i].setInputDevice(system.inputDevices[0]);
-                //tracks[i].setInputChannel(i);
-                tracks[i].setOutputDevice(system.outputDevices[0]);
-                tracks[i].setOutputChannel(i-1);
-            }
-        }
+        //public void finalizeLoad()
+        //{
+        //    calcTempoMap();
+        //    for (int i = 1; i < tracks.Count; i++) 
+        //    {
+        //        tracks[i].finalizeLoad();
+        //        if (length < tracks[i].duration) length = tracks[i].duration;
+        //    }
+        //}
 
         //build the tempo map from tempo message ONLY from track 0; tempo messages in other tracks will be IGNORED
-        public void calcTempoMap()
-        {
-            int time = 0;               //time in MICROseconds
-            int tempo = 0;              //microseconds per quarter note
-            int prevtick = 0;           //tick of prev tempo event
+        //public void calcTempoMap()
+        //{
+            //int time = 0;               //time in MICROseconds
+            //int tempo = 0;              //microseconds per quarter note
+            //int prevtick = 0;           //tick of prev tempo event
 
-            Track tempoTrack = tracks[0];
-            for (int i = 0; i < tempoTrack.events.Count; i++)
-            {
-                Event evt = tempoTrack.events[i];
-                if (evt.msg is TempoMessage)
-                {
-                    TempoMessage tempoMsg = (TempoMessage)evt.msg;
-                    int msgtick = (int)evt.time;                                //the tick this tempo message occurs at
-                    int delta = (msgtick - prevtick);                           //amount of ticks at _prev_ tempo
-                    time += (int)((((float)delta) / division) * tempo);         //calc time in microsec of this tempo event
-                    tempoMsg.timing = new Timing(msgtick, time, 0);
-                    tempoMap.Add(evt);
+            //Track tempoTrack = tracks[0];
+            //for (int i = 0; i < tempoTrack.events.Count; i++)
+            //{
+            //    Event evt = tempoTrack.events[i];
+            //    if (evt.msg is TempoEvent)
+            //    {
+            //        TempoEvent tempoMsg = (TempoEvent)evt.msg;
+            //        int msgtick = (int)evt.time;                                //the tick this tempo message occurs at
+            //        int delta = (msgtick - prevtick);                           //amount of ticks at _prev_ tempo
+            //        time += (int)((((float)delta) / division) * tempo);         //calc time in microsec of this tempo event
+            //        tempoMsg.timing = new Tempo(msgtick, time, 0);
+            //        tempoMap.Add(evt);
 
-                    prevtick = msgtick;
-                    tempo = tempoMsg.tempo;
-                }
-            }
-        }
+            //        prevtick = msgtick;
+            //        tempo = tempoMsg.tempo;
+            //    }
+            //}
+        //}
 
-        public void dump()
-        {
-            for (int i = 0; i < tracks.Count; i++)
-            {
-                Console.WriteLine("contents of track[{0}]", i);
-                tracks[i].dump();
-            }
-        }
+        //public void dump()
+        //{
+        //    for (int i = 0; i < tracks.Count; i++)
+        //    {
+        //        Console.WriteLine("contents of track[{0}]", i);
+        //        tracks[i].dump();
+        //    }
+        //}
 
         public void allNotesOff()
         {
@@ -122,24 +119,5 @@ namespace Transonic.MIDI
             }
         }
     }
-
-//-----------------------------------------------------------------------------
-
-    //maps a tempo message or a time signature message to a elapsed time, so if move the cur pos
-    //in a sequence, we can calculate what time that is; needs to be recalculated any time tempo or time sig change
-    public class Timing
-    {
-        public int tick;
-        public int microsec;
-        public int beat;
-
-        public Timing(int _tick, int _microsec, int _beat)
-        {
-            tick = _tick;
-            microsec = _microsec;
-            beat = _beat;
-        }
-    }
-
 
 }

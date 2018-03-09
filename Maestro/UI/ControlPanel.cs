@@ -47,7 +47,7 @@ namespace Maestro.UI
         public void setSequence(Sequence seq) 
         {
             curSequence = seq;
-            hsbSeqPos.Maximum = seq.duration;
+            hsbSeqPos.Maximum = seq.length;
             hsbSeqPos.LargeChange = seq.division;
             hsbSeqPos.SmallChange = seq.division / 8;
 
@@ -116,7 +116,7 @@ namespace Maestro.UI
 
         private void cbxTracks_SelectedIndexChanged(object sender, EventArgs e)
         {
-                maestroWindow.setDisplayTrack(cbxTracks.SelectedIndex + 1);
+                maestroWindow.setDisplayPart(cbxTracks.SelectedIndex + 1);
         }
     }
 }
