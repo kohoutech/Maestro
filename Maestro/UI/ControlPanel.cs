@@ -53,7 +53,7 @@ namespace Maestro.UI
 
             //populate track selector drop down with track names
             List<String> trackNames = new List<string>();
-            for (int i = 1; i < seq.tracks.Count; i++)
+            for (int i = 0; i < seq.tracks.Count; i++)
             {
                 String trackName = seq.tracks[i].name;
                 if (trackName == null)
@@ -116,7 +116,7 @@ namespace Maestro.UI
 
         private void cbxTracks_SelectedIndexChanged(object sender, EventArgs e)
         {
-                maestroWindow.setDisplayPart(cbxTracks.SelectedIndex + 1);
+                maestroWindow.setDisplayPart(cbxTracks.SelectedIndex);
         }
     }
 }

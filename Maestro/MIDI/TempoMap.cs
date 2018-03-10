@@ -38,6 +38,12 @@ namespace Transonic.MIDI
             tempos.Add(tempo);
             count = 1;
         }
+
+        //find nearest tempo change before this tick
+        public Tempo findTempo(int tick)
+        {
+            return tempos[0];
+        }
     }
 
 //-----------------------------------------------------------------------------
@@ -47,7 +53,7 @@ namespace Transonic.MIDI
     public class Tempo
     {
         public int tick;        //tick which the tempo change occurs at
-        public int rate;         //num of microsec / tick
+        public int rate;        //num of microsec / tick
         public long time;       //cumulative time from sequence start to this tempo change, in microsec
 
         public Tempo(int _tick, int _rate)

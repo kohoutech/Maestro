@@ -88,6 +88,10 @@ namespace Transonic.Score
             if (attr.beatpos == 0)          //only attributes at the start of a measure for now
             {
                 this.attr = attr;
+                if (!attr.haveDivisions)
+                {
+                    attr.divisions = prevMeasure.attr.divisions;
+                }
                 timeSig = new TimeSignature(this, attr.timeNumer, attr.timeDenom);
                 keySig = new KeySignature(this, attr.key);
                 length = (attr.divisions * 4 * attr.timeNumer) / attr.timeDenom;
@@ -301,6 +305,7 @@ namespace Transonic.Score
     public class Attributes 
     {
         public decimal divisions;
+        public bool haveDivisions;
         public int timeNumer;
         public int timeDenom;
         public int key;
@@ -310,6 +315,8 @@ namespace Transonic.Score
 
         public Attributes()
         {
+            divisions = 1;
+            haveDivisions = false;
             timeNumer = 4;
             timeDenom = 4;
             key = 0;

@@ -100,6 +100,15 @@ namespace Transonic.Score
             Measure measure = score.curPart.staves[0].measures[measureNum];
             measure.setCurrentBeat(score.curBeat);
             score.curStaffPos = measure.curBeat.measpos + measure.staffpos + score.curPart.staves[0].left;
+
+            //if we've passed the left side of the window
+            if ((int)score.curStaffPos < (horzScroll.Value))
+            {
+                int newofs = (int)score.curStaffPos - 25;
+                horzScroll.Value = (newofs > horzScroll.Minimum) ? newofs : horzScroll.Minimum;
+            }
+
+            //if we've passed the right side of the window
             if ((int)score.curStaffPos > (horzScroll.Value + this.Width - 25))
             {
                 int newofs = (int)score.curStaffPos - 25;

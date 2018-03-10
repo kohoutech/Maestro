@@ -22,6 +22,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.IO;
+using System.IO.Compression;
 using System.Xml;
 using System.Xml.Serialization;
 
@@ -39,7 +40,7 @@ namespace Transonic.Score.MusicXML
         public static ScoreDoc loadFromMusicXML(String filename)
         {
             FileStream stream = new FileStream(filename, FileMode.Open);            //get file stream from filename
-            
+
             XmlReaderSettings settings = new XmlReaderSettings();
             settings.DtdProcessing = DtdProcessing.Parse;
             settings.XmlResolver = null;
@@ -445,9 +446,20 @@ namespace Transonic.Score.MusicXML
         {
             //Console.WriteLine("parsing attributes node");
             Attributes attrs = new Attributes();
-            attrs.divisions = attrsxml.divisions;
-            parseKeyXML(attrsxml.key[0], attrs);
-            parseTimeXML(attrsxml.time[0], attrs);
+
+            if (attrsxml.divisionsSpecified)
+            {
+                attrs.divisions = attrsxml.divisions;
+                attrs.haveDivisions = true;
+            }
+            if (attrsxml.key != null)
+            {
+                parseKeyXML(attrsxml.key[0], attrs);
+            }
+            if (attrsxml.time != null)
+            {
+                parseTimeXML(attrsxml.time[0], attrs);
+            }
             
             //attrs.editorial = parseEditorialXML(ref num, childnodes);    
             //if ((num < count) && childnodes[num].Name.Equals("staves"))

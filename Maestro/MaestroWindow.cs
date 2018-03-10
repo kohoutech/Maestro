@@ -185,14 +185,14 @@ namespace Maestro
         private void openFileMenuItem_Click(object sender, EventArgs e)
         {
             String filename;
-            //openFileDialog.FileName = "";
-            //openFileDialog.InitialDirectory = Application.StartupPath;
-            //openFileDialog.DefaultExt = "*.mxl";
-            ////openFileDialog.Filter = "musicxml files|*.mxl|midi files|*.mid|All files|*.*";
-            //openFileDialog.Filter = "musicxml files|*.mxl|All files|*.*";
-            //openFileDialog.ShowDialog();
-            //filename = openFileDialog.FileName;
-            filename = "test.mxl";
+            openFileDialog.FileName = "";
+            openFileDialog.InitialDirectory = Application.StartupPath;
+            openFileDialog.DefaultExt = "*.mxl";
+            //openFileDialog.Filter = "musicxml files|*.mxl|midi files|*.mid|All files|*.*";
+            openFileDialog.Filter = "musicxml files|*.mxl|All files|*.*";
+            openFileDialog.ShowDialog();
+            filename = openFileDialog.FileName;
+            //filename = "MyEtude.mxl";
             if (filename.Length > 0)
             {
                 openScore(filename);
