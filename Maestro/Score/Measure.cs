@@ -52,6 +52,9 @@ namespace Transonic.Score
         public float width;                   //width of measure, sum of all beat widths, in pixels
         public float xpos;
 
+        public int curBeatNum;
+        public Beat curBeat;
+
         public Measure(int _number, Measure prev)
         {
             staff = null;
@@ -76,6 +79,8 @@ namespace Transonic.Score
 
             staffpos = 0;
             width = 0;
+            curBeatNum = -1;
+            curBeat = null;
         }
 
         public void setAttributes(Attributes attr)
@@ -230,6 +235,13 @@ namespace Transonic.Score
             }
         }
 
+        public void setCurrentBeat(decimal beatNum)
+        {
+            int i = 0;
+            while ((i < beats.Count - 1) && (beatNum >= (beats[i+1].beatpos / attr.divisions)))
+                i++;
+            curBeat = beats[i];
+        }
 
         ////translate tick to pixels for this measure
         //public int getBeatPos(int tick)
@@ -268,7 +280,6 @@ namespace Transonic.Score
             //barline
             g.DrawLine(Pens.Black, xpos + width, staff.top, xpos + width, staff.bottom);
         }
-
     }
 
 //- measure attributes --------------------------------------------------------

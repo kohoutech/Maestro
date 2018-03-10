@@ -49,6 +49,8 @@ namespace Transonic.Score
         public Part curPart;
 
         public int curMeasure;
+        public decimal curBeat;
+        public float curStaffPos;
 
         //public float docWidth;
         //public float docHeight;
@@ -82,6 +84,7 @@ namespace Transonic.Score
             parts = new List<Part>();
             curPart = null;
             curMeasure = 0;
+            curStaffPos = 0;
         }
 
         public void dump()

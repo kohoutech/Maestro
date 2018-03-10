@@ -88,7 +88,24 @@ namespace Transonic.Score
 
         public void setCurrentPart(int partNum)
         {
-            score.curMeasure = partNum;
+            score.curPart = score.parts[partNum];
+            Invalidate();
+        }
+
+        internal void setCurrentBeat(int measureNum, decimal beat)
+        {
+            score.curMeasure = measureNum;
+            score.curBeat = beat;
+
+            Measure measure = score.curPart.staves[0].measures[measureNum];
+            measure.setCurrentBeat(score.curBeat);
+            score.curStaffPos = measure.curBeat.measpos + measure.staffpos + score.curPart.staves[0].left;
+            if ((int)score.curStaffPos > (horzScroll.Value + this.Width - 25))
+            {
+                int newofs = (int)score.curStaffPos - 25;
+                horzScroll.Value = (newofs < horzScroll.Maximum) ? newofs : horzScroll.Maximum;
+            }
+
             Invalidate();
         }
 
@@ -114,7 +131,6 @@ namespace Transonic.Score
             }
             g.ResetTransform();
         }
-
     }
 
 //-----------------------------------------------------------------------------

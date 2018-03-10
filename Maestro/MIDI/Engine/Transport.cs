@@ -33,6 +33,7 @@ namespace Transonic.MIDI.Engine
 
         Sequence seq;
         TempoMap tempoMap;
+        MeterMap meterMap;
         int division;
         int trackCount;
 
@@ -46,6 +47,8 @@ namespace Transonic.MIDI.Engine
         int[] trackPos;        //pos of the next event in each track
         int tempoPos;          //pos of next tempo event
         Tempo curTempo;
+        int meterPos;
+        Meter curMeter;
 
         bool isPlaying;
         float playbackSpeed;
@@ -65,6 +68,7 @@ namespace Transonic.MIDI.Engine
         {
             seq = _seq;
             tempoMap = seq.tempoMap;
+            meterMap = seq.meterMap;
             division = seq.division;
             trackCount = seq.tracks.Count;
             trackPos = new int[trackCount];
@@ -128,6 +132,9 @@ namespace Transonic.MIDI.Engine
                 tempoPos = 0;
                 setTempo(tempoMap.tempos[tempoPos++]);
 
+                meterPos = 0;
+                curMeter = meterMap.meters[meterPos++];
+
                 tickNum = 0;
                 tickTime = tickLen;                    //time of first tick (not 0 - that would be no ticks)
 
@@ -153,7 +160,7 @@ namespace Transonic.MIDI.Engine
 
         public int getCurrentPos()
         {
-            return 0;
+            return tickNum;
         }
 
         //set cur pos in sequence to a specific tick, only if stoppped
@@ -214,6 +221,16 @@ namespace Transonic.MIDI.Engine
         public int getCurrentTime()
         {
             return (int)(tickTime / 10000L);            //ret tick time in msec
+        }
+
+        public void getCurrentBeat(out int measure, out decimal beat)
+        {
+            int measureticks = (division * 4 * curMeter.numer) / curMeter.denom;
+
+            int ticks = tickNum - curMeter.tick;
+            measure = curMeter.measure + (ticks / measureticks);
+            ticks = ticks % measureticks;
+            beat = ((decimal)ticks) / division;
         }
 
 //- timer method --------------------------------------------------------------
@@ -282,7 +299,7 @@ namespace Transonic.MIDI.Engine
     //for communication with the UI
     public interface IMidiView
     {
-        //public void sequenceBegin();
+        //for passing note on & off msgs to the keyboard bar
         void handleMessage(int track, Transonic.MIDI.Message message);
 
         void sequenceDone();

@@ -130,6 +130,10 @@ namespace Transonic.Score
                 measure.paint(g);
                 xpos += measure.width;
             }
+
+            //current pos marker
+            float linepos = score.curStaffPos;
+            g.DrawLine(Pens.Green, linepos, g.ClipBounds.Top, linepos, g.ClipBounds.Bottom);
         }
     }
 }

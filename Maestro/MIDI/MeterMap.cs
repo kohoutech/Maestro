@@ -26,13 +26,35 @@ namespace Transonic.MIDI
 {
     public class MeterMap
     {
+        public List<Meter> meters;
+        public int count;
+
+        public MeterMap()
+        {
+            meters = new List<Meter>();
+            Meter meter = new Meter(0, 6, 8, 0);
+            meters.Add(meter);
+            count = 1;
+        }
     }
 
 //-----------------------------------------------------------------------------
 
     public class Meter
     {
+        public int tick;        //tick which the meter change occurs at
+        public int numer;
+        public int denom;
+        public int keysig;
+        public int measure;
+
+        public Meter(int _tick, int _numer, int _denom, int _keysig)
+        {
+            tick = _tick;
+            numer = _numer;
+            denom = _denom;
+            keysig = _keysig;
+            measure = 0;
+        }
     }
-
-
 }

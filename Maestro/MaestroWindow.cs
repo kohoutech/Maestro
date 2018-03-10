@@ -160,9 +160,17 @@ namespace Maestro
         {
             keyboard.allKeysUp();
             transport.setCurrentPos(tick);
-            //scoreSheet.setDisplayStaffPos(tick);
             int mstime = transport.getCurrentTime();
             controlPanel.timerTick(tick, mstime);
+            setScorePos();
+        }
+
+        public void setScorePos()
+        {
+            int measure;
+            decimal beat;
+            transport.getCurrentBeat(out measure, out beat);
+            scoreSheet.setCurrentBeat(measure, beat);
         }
 
         public void setDisplayPart(int partNum)
@@ -220,10 +228,10 @@ namespace Maestro
 
         private void masterTimer_Tick(object sender, EventArgs e)
         {
-            int tick = transport.tickNum;
+            int tick = transport.getCurrentPos();
             int mstime = transport.getCurrentTime();
             controlPanel.timerTick(tick, mstime);
-            //score.setDisplayStaffPos(tick);
+            setScorePos();            
         }
 
         public void handleMessage(int track, Transonic.MIDI.Message message)
