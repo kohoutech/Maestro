@@ -49,6 +49,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ENAML\EnamlData.cs" />
     <Compile Include="MIDI\Engine\MidiTimer.cs" />
     <Compile Include="MIDI\Engine\Transport.cs" />
     <Compile Include="MIDI\MarkerMap.cs" />
@@ -87,6 +88,7 @@
     <Compile Include="Score\Symbols\Note.cs" />
     <Compile Include="Score\Symbols\Symbol.cs" />
     <Compile Include="Score\Symbols\XmlClasses.cs" />
+    <Compile Include="Settings.cs" />
     <Compile Include="UI\ControlPanel.cs">
       <SubType>UserControl</SubType>
     </Compile>
